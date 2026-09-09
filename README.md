@@ -4,103 +4,408 @@
 
 ## 📌 Project Overview
 
-**SSMS (Smart School Management System)** is a web-based platform for managing the day-to-day academic and administrative operations of a school from one centralized system.
+**SSMS (Smart School Management System)** is a web-based platform for managing day-to-day academic and administrative operations from one centralized system.
 
-The system is planned around four main user roles:
+### User Roles
 
-- **Admin** — manages the school, users, classes, subjects, timetable, academic settings, and reports.
-- **Teacher** — manages teaching-related activities such as attendance, marks, classes, assignments, and student information.
+- **Admin** — manages school settings, users, classes, subjects, timetable, attendance, examinations, reports, and notices.
+- **Teacher** — manages classes, attendance, assignments, marks, timetable, and student information.
 - **Student** — views timetable, attendance, results, assignments, notices, and academic information.
-- **Parent** — monitors linked students, attendance, results, notices, timetable, and other important school information.
-
-The project is intended to be lightweight, maintainable, secure, responsive, and suitable for deployment on a normal Apache/PHP/MySQL server.
+- **Parent** — monitors linked students, attendance, results, timetable, assignments, and notices.
 
 ---
 
-## 🎯 Main Goals
+# 🎨 Official UI Theme
 
-1. Centralize school management into one platform.
-2. Reduce repetitive manual administration.
-3. Give each user role an appropriate dashboard.
-4. Provide reliable academic and attendance records.
-5. Automate school timetable planning.
-6. Make important information accessible from desktop and mobile devices.
-7. Keep the codebase simple enough to maintain without a large framework.
+This section is the **visual source of truth** for future SSMS implementation.
+
+## Design Style
+
+**Clean • Modern • Professional • Light Glassmorphism**
+
+The interface should feel like a modern school-management SaaS platform: professional for administrators and teachers, simple and friendly for students and parents.
+
+### Core Design Principles
+
+- Clean white surfaces
+- Professional blue primary color
+- Soft light-blue application background
+- Subtle glassmorphism
+- Rounded cards and controls
+- Light shadows and borders
+- Strong readability
+- Spacious layouts
+- Responsive desktop/tablet/mobile design
+- Avoid excessive neon effects
+- Prioritize usability over decoration
 
 ---
 
-## 👥 User Roles
+## 🎨 Official Color Palette
 
-### Admin
+| Purpose | Hex | Usage |
+|---|---|---|
+| **Primary Blue** | `#2563EB` | Main actions, active navigation, links |
+| **Light Blue** | `#3B82F6` | Hover states and secondary blue elements |
+| **Accent Cyan** | `#06B6DA` | Highlights and accents |
+| **Success Green** | `#10B981` | Success/active states |
+| **Warning Amber** | `#F59E0B` | Warnings/pending states |
+| **Danger Red** | `#EF4444` | Errors/destructive actions |
+| **Background** | `#F8FAFC` | Main application background |
+| **Surface** | `#FFFFFF` | Cards, panels, modals |
+| **Text Primary** | `#0F172A` | Headings and important text |
+| **Text Secondary** | `#64748B` | Descriptions and secondary text |
+| **Border** | `#E2E8F0` | Borders/dividers |
 
-- Dashboard and school overview
-- User account management
-- Teacher management
-- Student management
-- Parent management
-- Class and grade management
-- Subject management
-- Academic year/term management
-- Timetable management
-- Attendance overview
-- Examination and result management
-- Notices and announcements
-- Reports and statistics
-- System settings
+### CSS Theme Variables
 
-### Teacher
+```css
+:root {
+    --primary: #2563EB;
+    --primary-light: #3B82F6;
+    --accent: #06B6DA;
 
-- Personal dashboard
-- Assigned classes and subjects
-- Student list
-- Attendance management
-- Marks/results entry
-- Assignment management
-- Class notices
+    --success: #10B981;
+    --warning: #F59E0B;
+    --danger: #EF4444;
+
+    --background: #F8FAFC;
+    --surface: #FFFFFF;
+
+    --text-primary: #0F172A;
+    --text-secondary: #64748B;
+    --border: #E2E8F0;
+
+    --shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+}
+```
+
+---
+
+## ✍️ Typography
+
+### Primary Font
+
+**Inter** is the primary UI font for dashboards, tables, forms, navigation, and mobile interfaces.
+
+### Heading Option
+
+**Poppins** may be used for selected large headings or branding elements.
+
+### Recommended Hierarchy
+
+```text
+Page Title       → Inter / Poppins, SemiBold
+Section Heading  → Inter, SemiBold
+Card Heading     → Inter, SemiBold
+Body Text        → Inter, Regular
+UI Text          → Inter, Medium
+Small Text       → Inter, Regular
+```
+
+Keep typography consistent and avoid unnecessary font families.
+
+---
+
+## 🧊 Glassmorphism
+
+Glassmorphism must remain **subtle** and should not reduce readability.
+
+Recommended style:
+
+```css
+.glass {
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
+}
+```
+
+Use glass effects mainly for:
+
+- Floating panels
+- Modals
+- Header elements
+- Important dashboard widgets
+- Login card
+- Selected navigation elements
+
+Do not apply heavy blur to every component.
+
+---
+
+## 🧭 Navigation Theme
+
+### Desktop Sidebar
+
+The desktop sidebar uses a **deep blue/navy visual treatment** to separate navigation from the light workspace.
+
+Navigation items:
+
+- Dashboard
+- Students
+- Teachers
+- Classes
 - Timetable
-- Student academic overview
-- Profile/settings
-
-### Student
-
-- Personal dashboard
-- My timetable
+- Examinations
 - Attendance
-- Examination results
-- Assignments
-- Notices/announcements
-- Subjects and classes
-- Profile/settings
+- Reports
+- Settings
 
-### Parent
+The SSMS logo and school branding should appear at the top, with school identity information optionally displayed at the bottom.
 
-- Parent dashboard
-- Linked student accounts
-- Student attendance
-- Student results
-- Student timetable
-- Assignments/notices
-- School announcements
-- Profile/settings
+### Active Navigation
+
+Use the primary blue treatment with strong contrast and rounded corners for the active item.
+
+### Mobile Navigation
+
+On small screens, transform the sidebar into a compact drawer or mobile navigation system.
 
 ---
 
-## 🧩 Core Modules
+## 🖥️ Dashboard Theme
 
-### 1. Authentication & Authorization
+The main dashboard uses:
+
+```text
+Background → #F8FAFC
+Cards      → #FFFFFF
+Primary    → #2563EB
+Text       → #0F172A
+Secondary  → #64748B
+```
+
+### Header
+
+Recommended elements:
+
+- Search bar
+- Notifications
+- User profile
+- Role indicator
+- Date/time where useful
+
+### Welcome Area
+
+Example:
+
+```text
+Good Morning, Admin!
+Here's what's happening at your school today.
+```
+
+### Statistics Cards
+
+Recommended cards:
+
+- Total Students
+- Total Teachers
+- Total Classes
+- Today's Attendance
+
+Cards should use white surfaces, rounded corners, soft shadows, clear number hierarchy, and small colored icon circles.
+
+---
+
+## 📊 Charts & Data Visualization
+
+Charts should be clean, simple, and readable.
+
+Use them for:
+
+- Attendance trends
+- Student statistics
+- Examination performance
+- Class distribution
+- Academic summaries
+
+Use the primary blue and status colors consistently. Avoid excessive gradients and unnecessary colors.
+
+---
+
+## 📅 Timetable Theme
+
+The timetable is a major SSMS interface and should be highly readable.
+
+### Visual Rules
+
+- Clear time column
+- Day columns
+- Compact subject cards
+- Teacher/room information where necessary
+- Subtle subject indicators
+- Strong visual distinction for breaks
+- Responsive horizontal scrolling on small screens
+
+### Sri Lankan School Schedule
+
+The project timetable engine follows these requirements:
+
+- **8 periods per day**
+- **40 minutes per period**
+- School starts at **7:30 AM**
+- First teaching period starts at **7:50 AM**
+- Fourth period ends at **10:30 AM**
+- Interval: **10:30 AM – 10:50 AM**
+- School ends at **1:30 PM**
+
+The timetable system should prevent conflicts between teachers, classes, subjects, rooms/resources, and periods.
+
+---
+
+## 🔐 Login Page Theme
+
+The login page should use a professional school-oriented design with a school/SSMS visual area and a clean login card.
+
+Recommended composition:
+
+```text
+┌─────────────────────────────────────────────┐
+│                                             │
+│  School Branding       ┌─────────────────┐  │
+│  / Background          │   Welcome Back  │  │
+│                        │                 │  │
+│                        │ Username/Email  │  │
+│                        │ Password        │  │
+│                        │                 │  │
+│                        │     Login       │  │
+│                        └─────────────────┘  │
+│                                             │
+└─────────────────────────────────────────────┘
+```
+
+The login card should use a white/glass surface, rounded corners, and a soft shadow.
+
+Primary login button: `#2563EB`.
+
+---
+
+## 🧩 Component System
+
+### Buttons
+
+**Primary**
+- Background: `#2563EB`
+- Text: white
+- Hover: `#3B82F6`
+
+**Secondary**
+- White/light surface
+- Blue border/text
+- Subtle hover background
+
+**Success**
+- Background: `#10B981`
+
+**Warning**
+- Background: `#F59E0B`
+
+**Danger**
+- Background: `#EF4444`
+
+All buttons should have consistent height, spacing, typography, and rounded corners.
+
+### Form Controls
+
+Inputs/selects/textareas should use:
+
+- White background
+- `#E2E8F0` border
+- Rounded corners
+- Comfortable height
+- Clear labels
+- Primary blue focus state
+
+Recommended focus state:
+
+```css
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+```
+
+### Status Badges
+
+| Status | Color |
+|---|---|
+| Active / Success | `#10B981` |
+| Pending | `#F59E0B` |
+| Inactive | `#64748B` |
+| Error | `#EF4444` |
+
+Status should not rely on color alone; use text or icons too.
+
+---
+
+## 🪟 Cards & Surfaces
+
+Standard cards:
+
+```text
+Background: #FFFFFF
+Border:     #E2E8F0
+Radius:     12–16px
+Shadow:     Soft / low contrast
+Padding:    20–24px
+```
+
+Cards should have enough spacing to prevent a crowded interface.
+
+---
+
+## 📱 Responsive Design
+
+SSMS must be responsive from the beginning.
+
+### Desktop
+
+- Full sidebar
+- Multi-column dashboard
+- Full data tables
+- Full timetable view
+
+### Tablet
+
+- Compact sidebar
+- Reduced dashboard columns
+- Scrollable tables where necessary
+
+### Mobile
+
+- Collapsible navigation
+- Single-column cards
+- Mobile-friendly forms
+- Responsive timetable
+- Large touch targets
+- Compact header
+
+The mobile interface should feel like an application rather than a desktop page squeezed onto a phone.
+
+---
+
+# 🧩 System Modules
+
+## Authentication & Authorization
 
 - Login/logout
 - Session management
 - Password hashing
 - Role-based access control
-- Protected pages and actions
+- Protected pages/actions
 - Account status management
 
-### 2. Dashboard
-
-Each role receives a different dashboard with relevant information, statistics, shortcuts, notifications, and recent activity.
-
-### 3. Student Management
+## Student Management
 
 - Student registration
 - Admission information
@@ -109,96 +414,65 @@ Each role receives a different dashboard with relevant information, statistics, 
 - Parent linking
 - Student status
 - Academic history
-- Search and filtering
+- Search/filtering
 
-### 4. Teacher Management
+## Teacher Management
 
-- Teacher profiles
-- Teacher accounts
+- Teacher profiles/accounts
 - Subject assignments
 - Class assignments
 - Timetable assignments
 - Teacher status
 
-### 5. Parent Management
+## Parent Management
 
-- Parent profiles
-- Parent accounts
+- Parent profiles/accounts
 - Student-parent relationships
 - Multiple children support
 - Contact information
 
-### 6. Class & Subject Management
+## Class & Subject Management
 
 - Grades/classes
 - Sections
 - Subjects
-- Subject assignments
 - Teacher-subject relationships
 - Student-class relationships
 
-### 7. Timetable Engine
-
-The timetable module is designed around the Sri Lankan school schedule used for this project.
-
-Planned timetable rules:
-
-- **8 periods per school day**
-- **40 minutes per period**
-- School begins at **7:30 AM**
-- First teaching period begins at **7:50 AM**
-- Fourth period ends at **10:30 AM**
-- Interval: **10:30 AM – 10:50 AM**
-- School ends at **1:30 PM**
-
-The timetable engine should help prevent conflicts between:
-
-- Teachers
-- Classes
-- Subjects
-- Rooms/resources
-- Periods
-
-It should support manual editing as well as automated timetable generation in a future implementation stage.
-
-### 8. Attendance
+## Attendance
 
 - Daily attendance
-- Student attendance records
+- Attendance records
 - Teacher attendance entry
-- Attendance summaries
+- Summaries
 - Monthly/term statistics
 - Attendance history
 
-### 9. Examinations & Results
+## Examinations & Results
 
 - Examination setup
-- Subjects and marks
-- Student marks entry
-- Results viewing
+- Marks entry
 - Grade calculation
+- Results viewing
 - Result summaries
 - Academic performance reports
 
-### 10. Assignments
+## Assignments
 
 - Create assignments
 - Assign to classes/subjects
 - Due dates
 - Assignment status
 - Student assignment view
-- Teacher assignment management
 
-### 11. Notices & Announcements
+## Notices & Announcements
 
-- School-wide announcements
+- School-wide notices
 - Role/class-specific notices
 - Publish/unpublish controls
 - Notice history
 
-### 12. Reports
-
-Planned reports include:
+## Reports
 
 - Student reports
 - Attendance reports
@@ -208,15 +482,11 @@ Planned reports include:
 - Timetable reports
 - Academic summaries
 
-### 13. Search & Filtering
-
-The system should provide fast searching and filtering for major data areas such as students, teachers, classes, subjects, attendance, and results.
-
 ---
 
-## 🏗️ Planned Architecture
+# 🏗️ Technical Architecture
 
-SSMS will use a lightweight **PHP OOP + MVC-like architecture** without a full-stack PHP framework.
+SSMS will use a lightweight **PHP OOP + MVC-like architecture** without a full PHP framework.
 
 ```text
 Browser
@@ -238,82 +508,41 @@ Apache / PHP
    └── Views / CSS / JavaScript
 ```
 
-### Architecture Principles
-
-- Separation of concerns
-- Reusable PHP classes
-- Centralized configuration
-- Secure database access
-- Prepared SQL statements
-- Role-based authorization
-- Reusable UI components
-- Minimal dependencies
-- Easy local deployment
-
----
-
-## 💻 Technology Stack
+### Technology Stack
 
 | Layer | Technology |
 |---|---|
 | Backend | PHP 8+ |
 | Architecture | OOP + MVC-like |
 | Database | MySQL / MariaDB |
-| Database Engine | InnoDB |
+| Engine | InnoDB |
 | Frontend | HTML5, CSS3, JavaScript |
 | Dynamic Requests | AJAX / Fetch API |
 | Web Server | Apache |
 | Development | XAMPP / WampServer |
-| Production | Apache + PHP + MariaDB |
 
 No frontend framework or PHP framework is required for the planned core system.
 
 ---
 
-## 🎨 UI / UX Direction
+# 🔐 Security Plan
 
-The interface should be modern, clean, responsive, and easy to use.
+Planned protections:
 
-Planned characteristics:
-
-- Responsive desktop/tablet/mobile layout
-- Modern dashboard cards
-- Sidebar navigation
-- Clear tables and forms
-- Search bars and filters
-- Modal dialogs where appropriate
-- Notifications/toasts
-- Consistent icons
-- Accessible typography and spacing
-- Optional dark mode
-- Subtle glassmorphism where it improves the interface without reducing readability
-
-The design should prioritize usability over excessive visual effects.
-
----
-
-## 🔐 Security Plan
-
-Security is a core requirement of SSMS.
-
-Planned protections include:
-
-- Password hashing with PHP's password APIs
+- Password hashing with PHP password APIs
 - Prepared statements / parameterized queries
 - Server-side validation
 - Output escaping
-- CSRF protection for state-changing forms
+- CSRF protection
 - Session security
-- Role and permission checks on the server
-- Secure file handling where uploads are introduced
-- Login attempt protections where appropriate
-- No database credentials inside public frontend code
+- Server-side role/permission checks
+- Secure file handling if uploads are introduced
+- Login protections where appropriate
+- Never expose database credentials to frontend code
 
 ---
 
-## 🗄️ High-Level Data Model
-
-The planned database will contain entities similar to:
+# 🗄️ High-Level Data Model
 
 ```text
 users
@@ -341,153 +570,51 @@ settings
 activity_logs
 ```
 
-The final database schema will be designed before implementation so relationships and constraints remain consistent.
+The final database schema will be designed before implementation.
 
 ---
 
-## 📱 Responsive / Mobile Support
+# 📁 Planned Project Structure
 
-SSMS is planned as a responsive web application rather than a separate native mobile application.
+```text
+ssms/
+├── app/
+│   ├── Controllers/
+│   ├── Models/
+│   ├── Services/
+│   ├── Middleware/
+│   └── Helpers/
+├── config/
+│   ├── app.php
+│   └── database.php
+├── database/
+│   ├── migrations/
+│   └── seeds/
+├── public/
+│   ├── index.php
+│   └── assets/
+│       ├── css/
+│       ├── js/
+│       └── images/
+├── routes/
+│   └── web.php
+├── views/
+│   ├── layouts/
+│   ├── auth/
+│   ├── admin/
+│   ├── teacher/
+│   ├── student/
+│   └── parent/
+└── storage/
+    ├── logs/
+    └── cache/
+```
 
-The same system should work on:
-
-- Desktop computers
-- Laptops
-- Tablets
-- Mobile phones
-
-Important dashboards and frequently used actions should remain practical on smaller screens.
+This structure is a plan and may evolve during implementation.
 
 ---
 
-## 🔄 Typical Workflows
-
-### Admin Workflow
-
-```text
-Login
-  ↓
-Admin Dashboard
-  ↓
-Configure Academic Year
-  ↓
-Create Classes & Subjects
-  ↓
-Create Teacher/Student/Parent Accounts
-  ↓
-Assign Classes & Subjects
-  ↓
-Configure Timetable
-  ↓
-Monitor Attendance & Results
-  ↓
-Generate Reports
-```
-
-### Teacher Workflow
-
-```text
-Login
-  ↓
-Teacher Dashboard
-  ↓
-View Assigned Classes
-  ↓
-Take Attendance
-  ↓
-Manage Assignments
-  ↓
-Enter Examination Marks
-  ↓
-View Class Information
-```
-
-### Student Workflow
-
-```text
-Login
-  ↓
-Student Dashboard
-  ↓
-View Timetable
-  ↓
-View Attendance
-  ↓
-View Assignments
-  ↓
-View Results
-  ↓
-Read Notices
-```
-
-### Parent Workflow
-
-```text
-Login
-  ↓
-Parent Dashboard
-  ↓
-Select Linked Student
-  ↓
-View Timetable
-  ↓
-Check Attendance
-  ↓
-Check Results
-  ↓
-Read School Notices
-```
-
----
-
-## 📊 Dashboard Concept
-
-### Admin Dashboard
-
-Potential widgets:
-
-- Total students
-- Total teachers
-- Total parents
-- Total classes
-- Today's attendance
-- Upcoming examinations
-- Recent notices
-- System activity
-
-### Teacher Dashboard
-
-Potential widgets:
-
-- Today's classes
-- Assigned subjects
-- Attendance shortcuts
-- Pending assignments
-- Recent notices
-
-### Student Dashboard
-
-Potential widgets:
-
-- Today's timetable
-- Attendance summary
-- Upcoming assignments
-- Latest results
-- Notices
-
-### Parent Dashboard
-
-Potential widgets:
-
-- Children overview
-- Attendance summary
-- Latest results
-- Upcoming assignments
-- Notices
-
----
-
-## 🛠️ Development Roadmap
+# 🛠️ Development Roadmap
 
 ### Phase 1 — Planning
 
@@ -496,12 +623,13 @@ Potential widgets:
 - [x] Define core modules
 - [x] Define technology stack
 - [x] Define timetable requirements
+- [x] Define official UI theme
 - [ ] Finalize database ERD
 - [ ] Finalize permission matrix
 
 ### Phase 2 — Foundation
 
-- [ ] Project directory structure
+- [ ] Project structure
 - [ ] Configuration system
 - [ ] Database connection layer
 - [ ] Routing/controller foundation
@@ -538,7 +666,7 @@ Potential widgets:
 ### Phase 6 — Reports & UX
 
 - [ ] Reports
-- [ ] Advanced search/filtering
+- [ ] Search/filtering
 - [ ] Dashboard statistics
 - [ ] Responsive improvements
 - [ ] Accessibility improvements
@@ -554,58 +682,7 @@ Potential widgets:
 
 ---
 
-## 📁 Planned Project Structure
-
-```text
-ssms/
-├── app/
-│   ├── Controllers/
-│   ├── Models/
-│   ├── Services/
-│   ├── Middleware/
-│   └── Helpers/
-│
-├── config/
-│   ├── app.php
-│   └── database.php
-│
-├── database/
-│   ├── migrations/
-│   └── seeds/
-│
-├── public/
-│   ├── index.php
-│   ├── assets/
-│   │   ├── css/
-│   │   ├── js/
-│   │   └── images/
-│   └── uploads/
-│
-├── routes/
-│   └── web.php
-│
-├── views/
-│   ├── layouts/
-│   ├── auth/
-│   ├── admin/
-│   ├── teacher/
-│   ├── student/
-│   └── parent/
-│
-├── storage/
-│   ├── logs/
-│   └── cache/
-│
-└── README.md
-```
-
-This is a planned structure; implementation may evolve as the project develops.
-
----
-
-## 🌐 Deployment Concept
-
-SSMS is intended to run on a standard PHP hosting/server environment.
+# 🌐 Deployment Concept
 
 ### Local Development
 
@@ -619,7 +696,7 @@ Apache + PHP + MariaDB
 SSMS
 ```
 
-### Server Deployment
+### Server
 
 ```text
 Internet / LAN
@@ -633,56 +710,55 @@ Internet / LAN
  MariaDB/MySQL
 ```
 
-The system should also be usable on a school local network if internet access is unavailable.
+SSMS should also be usable on a school local network when internet access is unavailable.
 
 ---
 
-## 🧪 Testing Strategy
-
-Testing will eventually cover:
-
-- Authentication
-- Authorization
-- CRUD operations
-- Database relationships
-- Timetable conflict detection
-- Attendance calculations
-- Result calculations
-- Search/filter functionality
-- Responsive layouts
-- Security controls
-
----
-
-## 📌 Project Status
+# 📌 Project Status
 
 **Current status: Planning / System Overview**
 
-This repository currently serves as the central planning document for SSMS. The goal at this stage is to define the complete system scope, architecture, modules, workflows, and technical direction before building the actual application.
+This repository is currently the central planning and design document for SSMS. The application itself has not been built yet.
+
+The README defines the system scope, architecture, modules, timetable requirements, and official visual theme that should guide future development.
 
 ---
 
-## 🚀 Future Vision
+# 🚀 Future Vision
 
-SSMS is intended to grow into a complete school management platform where administrators, teachers, students, and parents can use one connected system for everyday school operations and academic information.
-
-Future possibilities may include:
+Possible future capabilities:
 
 - Advanced timetable auto-generation
 - Detailed analytics
-- Notification systems
+- Notification system
 - Printable reports
 - Import/export tools
-- Backup and restore tools
+- Backup and restore
 - PWA support
 - Optional API layer
 - Integration with other school services
+- Optional dark mode using the same design language
 
 ---
 
-## 📄 License
+## 🎯 Official Design Keywords
 
-License to be decided before the production implementation is released.
+```text
+Clean
+Modern
+Professional
+Academic
+Trustworthy
+Responsive
+Light
+Blue
+Subtle Glassmorphism
+Minimal
+Readable
+Organized
+```
+
+> **SSMS should look like a modern professional school platform — clean white surfaces, strong blue navigation and actions, subtle glass effects, excellent readability, and responsive layouts.**
 
 ---
 
