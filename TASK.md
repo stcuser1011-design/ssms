@@ -40,6 +40,10 @@
 - [ ] Define assignment rules
 - [ ] Define notice/announcement rules
 - [ ] Define reporting requirements
+- [ ] Define Student Code generation rules
+- [ ] Define Parent One-Time Registration Code generation, expiry, and claim rules
+- [ ] Define first-child parent registration flow
+- [ ] Define additional-child linking flow from the Parent Dashboard
 
 ## 1.2 Permission Matrix
 
@@ -54,6 +58,8 @@
 - [ ] Define server-side authorization rules
 - [ ] Ensure Secretary cannot access Admin-only system settings or permission management
 - [ ] Ensure Student/Parent access is limited to authorized records
+- [ ] Define who can generate/reissue Parent One-Time Registration Codes
+- [ ] Define who can manually correct parent ↔ student links
 
 ## 1.3 Database Design
 
@@ -66,6 +72,12 @@
 - [ ] Define soft-delete strategy if required
 - [ ] Review database relationships
 - [ ] Design `users`, `students`, `parents`, and `parent_student_links`
+- [ ] Design `parent_registration_codes`
+- [ ] Store parent registration code hashes rather than raw codes where practical
+- [ ] Store code status such as `PENDING` / `USED` / `EXPIRED`
+- [ ] Store code `expires_at` and `used_at` where required
+- [ ] Track which student a Parent One-Time Registration Code belongs to
+- [ ] Track which parent account successfully claimed/used a code
 - [ ] Design student class/academic-year relationships
 - [ ] Design Secretary role/permission relationships
 - [ ] Prepare migration SQL
@@ -83,7 +95,11 @@
 - [ ] Define common forms
 - [ ] Define student admission form
 - [ ] Define parent management form
+- [ ] Define Parent Registration page with Student Code + One-Time Parent Code
 - [ ] Define parent ↔ student linking UI
+- [ ] Define Parent Dashboard child selector/cards
+- [ ] Define Parent Dashboard **Add Child** flow
+- [ ] Define code verification success/error/expired states
 - [ ] Define table/list patterns
 - [ ] Define empty/loading/error states
 - [ ] Define confirmation dialogs
@@ -171,6 +187,8 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Define Teacher routes
 - [ ] Define Student routes
 - [ ] Define Parent routes
+- [ ] Define Parent Registration routes
+- [ ] Define Parent Add Child / linking routes
 - [ ] Define API/AJAX routes if needed
 - [ ] Add route protection
 
@@ -183,6 +201,8 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Student controller
 - [ ] Teacher controller
 - [ ] Parent controller
+- [ ] Parent Registration controller/actions
+- [ ] Parent Child Linking controller/actions
 - [ ] Secretary / Office Staff controller or dedicated office controllers
 - [ ] Class controller
 - [ ] Subject controller
@@ -201,6 +221,9 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Authentication and Authorization services
 - [ ] User, Student, Teacher, Parent services
 - [ ] Secretary / Office Staff service layer
+- [ ] Student Code generation service
+- [ ] Parent Registration Code generation/verification service
+- [ ] Parent-child linking service
 - [ ] Class, Subject, Timetable services
 - [ ] Attendance, Examination, Result services
 - [ ] Assignment, Notice, Report services
@@ -218,6 +241,9 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Session creation and logout
 - [ ] Session timeout
 - [ ] Account active/inactive handling
+- [ ] Parent Registration verification page
+- [ ] Parent first-child account creation after successful code verification
+- [ ] Parent Add Child verification for already authenticated parents
 
 ## 5.2 Authorization
 
@@ -226,6 +252,8 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Admin/Secretary/Teacher/Student/Parent route protection
 - [ ] Prevent IDOR-style access to other users' records
 - [ ] Restrict Secretary to approved student/parent management permissions
+- [ ] Ensure parent child-switching is limited to linked students
+- [ ] Ensure Parent Add Child can only claim a student using a valid Student Code + matching unused One-Time Parent Code
 
 ## 5.3 Security Hardening
 
@@ -238,6 +266,12 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Secure file upload validation if implemented
 - [ ] Remove debug output from production
 - [ ] Centralize security logging
+- [ ] Generate Student/Parent codes using a cryptographically secure random source
+- [ ] Store Parent One-Time Registration Codes securely, preferably as hashes
+- [ ] Never place raw Parent One-Time Registration Codes in URLs, page source, or client-side JavaScript
+- [ ] Invalidate a Parent One-Time Registration Code immediately after successful use
+- [ ] Prevent reuse of used/expired codes
+- [ ] Prevent a Student Code from being sufficient for account creation by itself
 
 ---
 
@@ -257,6 +291,8 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Timetable/Examinations/Attendance/Assignments/Notices/Reports/Settings navigation
 - [ ] Secretary-specific Students and Parents navigation
 - [ ] Global search UI
+- [ ] Parent Dashboard child selector
+- [ ] Parent Dashboard **Add Child** action
 - [ ] Toasts, loading states, form errors, confirmations
 - [ ] Empty, 404, 403, and 500 states
 
@@ -291,9 +327,14 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Manage admission information
 - [ ] Assign students to grade/class/section
 - [ ] Manage student status
-- [ ] Add parent records
+- [ ] Generate a unique Student Code when a student is created
+- [ ] Generate a unique Parent One-Time Registration Code for the new student
+- [ ] Provide the Student Code and Parent Code to the student's parent/guardian through an approved channel
+- [ ] View code status without exposing stored raw code
+- [ ] Reissue a new Parent One-Time Registration Code when authorized and necessary
+- [ ] Add parent records when manual parent management is required
 - [ ] Edit parent contact information
-- [ ] Link parents to students
+- [ ] Link parents to students when authorized
 - [ ] Support one parent with multiple children
 - [ ] Support multiple parents/guardians for one student where required
 - [ ] View permitted student/parent reports
@@ -325,6 +366,11 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Validate all information server-side
 - [ ] Prevent duplicate Student/Admission Number
 - [ ] Create the student record
+- [ ] Automatically generate a unique Student Code
+- [ ] Automatically generate a unique One-Time Parent Registration Code for that student
+- [ ] Store only the secure representation of the Parent Code where practical
+- [ ] Show the newly generated code to the authorized Secretary only when appropriate for delivery
+- [ ] Never expose stored raw codes after initial generation
 
 ### Student Account
 
@@ -337,10 +383,13 @@ Use the approved SSMS blue/white visual direction.
 
 - [ ] Student database table/model
 - [ ] Student profile and ID/reference number
+- [ ] System-generated Student Code
 - [ ] Class assignment and status
 - [ ] Student search/filter/detail page
 - [ ] Academic history
 - [ ] Parent linking
+- [ ] Parent registration-code status display
+- [ ] Parent registration-code reissue flow for authorized staff
 - [ ] Student record change audit trail
 
 ## 7.4 Teacher Management — Pre-Registration + Self-Completion
@@ -389,36 +438,137 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Class assignments
 - [ ] Teacher search/filter
 
-## 7.5 Parent Management — Secretary Managed
+## 7.5 Parent Management — Student Code + One-Time Code
 
-### Parent Registration / Account Creation
+### Parent Registration — First Child
 
-- [ ] Secretary can open **Parents → Add Parent**
-- [ ] Enter Parent Full Name
-- [ ] Enter relationship to student
-- [ ] Enter phone number
-- [ ] Enter email where available
-- [ ] Enter address where required
-- [ ] Set parent/guardian status
-- [ ] Create or activate parent account according to school policy
-- [ ] Validate parent information server-side
+- [ ] Parent Registration page asks for **Student Code**
+- [ ] Parent Registration page asks for **One-Time Parent Registration Code**
+- [ ] Do not allow registration using Student Code alone
+- [ ] Verify that the Student Code identifies an eligible student
+- [ ] Verify that the Parent Code belongs to the same student
+- [ ] Verify that the Parent Code is `PENDING` and not expired
+- [ ] Show parent profile/account fields only after successful verification
+- [ ] Allow Parent Full Name, relationship, phone, email, address, username, and password to be completed as appropriate
+- [ ] Keep verified student identity clear during account creation
+- [ ] Create the parent account after successful completion
+- [ ] Automatically create the `parent_student_links` relationship
+- [ ] Mark the Parent One-Time Registration Code as `USED`
+- [ ] Record `used_at` and the claiming parent account
+- [ ] Prevent the same code from being used again
+- [ ] Send the parent to the Parent Dashboard after successful registration
+
+### Parent Registration Flow
+
+```text
+Secretary Adds Student
+          ↓
+Student Record Created
+          ↓
+System Generates Student Code
+          ↓
+System Generates One-Time Parent Code
+          ↓
+Secretary Gives Both Codes to Parent
+          ↓
+Parent Registration
+          ↓
+Enter Student Code + One-Time Parent Code
+          ↓
+SSMS Verifies Matching Student + Unused Code
+          ↓
+Parent Completes Account Information
+          ↓
+Parent Account Created
+          ↓
+Child Automatically Linked
+          ↓
+One-Time Code Invalidated
+          ↓
+Parent Dashboard
+```
 
 ### Parent ↔ Student Linking
 
-- [ ] Secretary can link an existing parent to an existing student
-- [ ] Do not create duplicate parent accounts for additional children
-- [ ] Support one parent → multiple children
+- [ ] Use `parent_student_links` as the relationship table
+- [ ] Support one parent account → multiple children
 - [ ] Support multiple parents/guardians → one student where required
-- [ ] Allow authorized Secretary to add/remove a relationship
-- [ ] Record relationship changes in the audit log
+- [ ] Do not create a duplicate parent account for an additional child
+- [ ] Allow authorized Secretary/Admin users to perform manual link corrections when necessary
+- [ ] Audit all manual link/unlink changes
+
+### Add 2nd / 3rd / 4th Child
+
+- [ ] Parent Dashboard displays all currently linked children
+- [ ] Parent Dashboard provides **+ Add Child**
+- [ ] Add Child form asks for the new child's **Student Code**
+- [ ] Add Child form asks for the new child's **One-Time Parent Registration Code**
+- [ ] Verify the Student Code + Parent Code pair belongs to the same student
+- [ ] Verify the code is unused and not expired
+- [ ] Verify the authenticated parent account is allowed to claim/link the child
+- [ ] Automatically create a new `parent_student_links` record
+- [ ] Keep the existing parent account unchanged
+- [ ] Mark the new child's code as `USED`
+- [ ] Prevent reuse of the code
+- [ ] Refresh the Parent Dashboard child selector/cards after successful linking
+- [ ] Do not impose an artificial 2/3/4-child limit; support additional children using the same mechanism
+
+### Multi-Child Parent Dashboard
+
+- [ ] Show child cards or a child selector
+- [ ] Clearly identify each child's name, grade, and class
+- [ ] Allow parent to switch active child
+- [ ] Scope attendance to the selected child
+- [ ] Scope results to the selected child
+- [ ] Scope timetable to the selected child
+- [ ] Scope assignments to the selected child
+- [ ] Scope notices to the selected child where applicable
+- [ ] Ensure switching children never exposes another student's data
+
+Example:
+
+```text
+Parent Account
+      │
+      ├── Student A — Grade 10A
+      ├── Student B — Grade 7B
+      ├── Student C — Grade 5C
+      └── Student D — Grade 3A
+```
+
+### Parent Code Rules
+
+- [ ] Generate Parent Codes with a cryptographically secure random source
+- [ ] Make each code unique enough to prevent guessing/collision
+- [ ] Tie each code to exactly one intended student before it is claimed
+- [ ] Store a secure hash rather than the raw code where practical
+- [ ] Use `PENDING`, `USED`, and `EXPIRED` lifecycle states as appropriate
+- [ ] Support optional expiry time
+- [ ] Invalidate immediately after successful first-child registration or Add Child linking
+- [ ] Never expose raw codes in URLs, frontend source, or logs
+- [ ] Do not allow Student Code alone to claim a student
+- [ ] Allow authorized Secretary/Admin users to reissue a new code when necessary
+- [ ] Audit generation, reissue, successful claim, expiry, and relevant invalidation events without storing the raw secret code
+
+### Parent Information
+
+- [ ] Full Name
+- [ ] Relationship to student
+- [ ] Phone number
+- [ ] Email where available
+- [ ] Address
+- [ ] Parent/guardian status
+- [ ] Linked student records
+- [ ] Account status
 
 ### Parent Access
 
 - [ ] Parent sees only linked children
 - [ ] Parent can switch between linked children
-- [ ] Parent can view permitted attendance/results/timetable/assignments/notices
+- [ ] Parent can add another child only by providing the valid Student Code + One-Time Parent Registration Code for that child
+- [ ] Parent cannot edit protected academic records
 - [ ] Parent cannot view unrelated students
-- [ ] Parent cannot modify protected academic records
+- [ ] Multiple-child support is required
 
 ## 7.6 Class Management
 
@@ -563,6 +713,7 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Students by grade/class
 - [ ] Parent records
 - [ ] Parent-linking requests/tasks where used
+- [ ] Parent registration-code status overview where permitted
 - [ ] Quick Add Student
 - [ ] Quick Add Parent
 - [ ] Recent student/parent changes
@@ -584,10 +735,15 @@ Use the approved SSMS blue/white visual direction.
 ## Parent
 - [ ] Linked children
 - [ ] Child selector
-- [ ] Attendance
-- [ ] Results
-- [ ] Assignments
-- [ ] Notices
+- [ ] Child cards showing basic class/grade information
+- [ ] **Add Child** action
+- [ ] Add Child Student Code + One-Time Code form
+- [ ] Attendance for selected child
+- [ ] Results for selected child
+- [ ] Timetable for selected child
+- [ ] Assignments for selected child
+- [ ] Notices for selected child where applicable
+- [ ] Clear success/error feedback when adding a child
 
 ---
 
@@ -601,6 +757,7 @@ Use the approved SSMS blue/white visual direction.
 - [ ] AJAX/Fetch search where beneficial
 - [ ] Debounced live search
 - [ ] No-result states
+- [ ] Parent child selector/search behavior where needed
 
 ---
 
@@ -631,6 +788,7 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Theme settings
 - [ ] Dark mode if implemented
 - [ ] Maintenance settings
+- [ ] Parent registration-code expiry/reissue settings if configurable
 
 ---
 
@@ -644,6 +802,7 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Result publication notifications
 - [ ] Notice notifications
 - [ ] Attendance notifications if required
+- [ ] Optional notification when a parent successfully links a new child
 
 Email/SMS/push notifications are optional future extensions and should not block the core system.
 
@@ -671,6 +830,10 @@ Email/SMS/push notifications are optional future extensions and should not block
 - [ ] User changes
 - [ ] Secretary student/parent changes
 - [ ] Student record changes
+- [ ] Student Code generation events
+- [ ] Parent One-Time Registration Code generation events
+- [ ] Parent Code reissue events
+- [ ] Parent Code successful claim/use events without storing the raw code
 - [ ] Teacher registration/pre-registration activity
 - [ ] Attendance changes
 - [ ] Result changes
@@ -691,6 +854,7 @@ Email/SMS/push notifications are optional future extensions and should not block
 - [ ] Optimize search/filter queries
 - [ ] Test with 3000+ student records
 - [ ] Test with large parent/student relationship datasets
+- [ ] Test parent dashboard with multiple linked children
 - [ ] Cache appropriate read-heavy data if required
 - [ ] Optimize dashboard statistics
 
@@ -705,6 +869,8 @@ Email/SMS/push notifications are optional future extensions and should not block
 - [ ] Error messages understandable without color alone
 - [ ] Touch-friendly mobile controls
 - [ ] Responsive student/parent/Secretary workflows
+- [ ] Accessible Parent Registration form
+- [ ] Accessible Add Child flow
 
 ---
 
@@ -726,16 +892,31 @@ Email/SMS/push notifications are optional future extensions and should not block
 - [ ] Student editing tests
 - [ ] Class assignment tests
 - [ ] Search/filter tests
+- [ ] Student Code generation tests
+- [ ] Parent One-Time Registration Code generation tests
 - [ ] Large dataset tests with 3000+ students
 
 ## Parent Management
 
 - [ ] Parent creation tests
 - [ ] Parent editing tests
-- [ ] Parent ↔ student linking tests
-- [ ] Multiple children tests
+- [ ] Parent Registration Student Code + One-Time Code verification tests
+- [ ] Matching Student Code + Code success tests
+- [ ] Wrong Student Code tests
+- [ ] Wrong Parent Code tests
+- [ ] Student Code + code mismatch tests
+- [ ] Used-code rejection tests
+- [ ] Expired-code rejection tests
+- [ ] First-child automatic linking tests
+- [ ] Parent Dashboard child selector tests
+- [ ] Add 2nd child tests
+- [ ] Add 3rd child tests
+- [ ] Add 4th child tests
+- [ ] Additional-child tests beyond four children
+- [ ] Verify no duplicate parent account is created for additional children
 - [ ] Multiple guardians tests where enabled
 - [ ] Verify parent cannot see unrelated students
+- [ ] Verify linked-child data is correctly scoped after switching children
 
 ## Teacher Registration
 
@@ -751,7 +932,10 @@ Email/SMS/push notifications are optional future extensions and should not block
 
 - [ ] Secretary can add/edit students
 - [ ] Secretary can add/edit parents
-- [ ] Secretary can link parents and students
+- [ ] Secretary can generate Student Codes
+- [ ] Secretary can generate/reissue Parent One-Time Registration Codes where permitted
+- [ ] Secretary can view code status without exposing stored raw codes
+- [ ] Secretary can link parents and students when authorized
 - [ ] Secretary cannot access Admin-only settings
 - [ ] Secretary cannot change unauthorized roles/permissions
 - [ ] Secretary actions appear in audit logs
@@ -796,6 +980,9 @@ Email/SMS/push notifications are optional future extensions and should not block
 - [ ] Teacher guide
 - [ ] Student guide
 - [ ] Parent guide
+- [ ] Parent Registration guide
+- [ ] Add Child guide
+- [ ] Parent Code reissue guide for authorized staff
 - [ ] Timetable guide
 - [ ] Attendance guide
 - [ ] Examination/result guide
@@ -811,9 +998,18 @@ Email/SMS/push notifications are optional future extensions and should not block
 - [ ] Secretary / Office Staff permissions verified
 - [ ] Teacher pre-registration flow verified end-to-end
 - [ ] Student admission/registration flow verified end-to-end
+- [ ] Student Code generation verified end-to-end
+- [ ] Parent One-Time Registration Code generation verified end-to-end
+- [ ] Parent first-child registration and automatic linking verified end-to-end
 - [ ] Parent account creation flow verified end-to-end
 - [ ] Parent ↔ student linking verified
+- [ ] Parent Dashboard Add Child flow verified
 - [ ] Multiple-child parent accounts verified
+- [ ] 2nd/3rd/4th child linking verified
+- [ ] Additional-child linking beyond four children verified
+- [ ] One-time codes cannot be reused
+- [ ] Parent cannot claim a student using Student Code alone
+- [ ] Parent can only access linked children
 - [ ] 3000+ student performance verified
 - [ ] Timetable requirements verified
 - [ ] Attendance verified
@@ -843,7 +1039,13 @@ SHARED UI + NAVIGATION
   ↓
 ADMIN + SECRETARY/OFFICE STAFF
   ↓
-STUDENTS + PARENTS + LINKING
+STUDENTS + STUDENT CODES
+  ↓
+PARENT REGISTRATION + ONE-TIME CODES
+  ↓
+AUTOMATIC FIRST-CHILD LINKING
+  ↓
+PARENT DASHBOARD + ADD CHILD
   ↓
 TEACHERS + TEACHER REGISTRATION
   ↓
@@ -895,3 +1097,5 @@ A module is considered complete only when:
 **Planning / Task Breakdown**
 
 The task file is the master implementation checklist. Student and Parent management is explicitly designed around the **Secretary / Office Staff role** so the system can scale to schools with 3000+ students without requiring the Admin to manually handle every student and parent record.
+
+The confirmed Parent registration architecture uses a **Student Code + One-Time Parent Registration Code**. The first successful parent registration automatically links the child to the newly created parent account. After login, the Parent Dashboard provides **+ Add Child**, where the parent enters the next child's Student Code + One-Time Parent Registration Code and the system automatically adds that child to the same parent account. The design supports 2nd, 3rd, 4th, and additional children without creating duplicate parent accounts or imposing an artificial child-count limit.
