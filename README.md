@@ -158,14 +158,19 @@ Students are managed by the **Secretary / Office Staff** role so the Admin does 
 1. Secretary opens **Students → Add Student**.
 2. Secretary enters the student's school/admission information.
 3. The system creates the student record and assigns the relevant academic year, grade, and class.
-4. The student receives a system account/activation method according to the school's chosen account policy.
-5. The student can later log in and access only their own academic information.
+4. The system automatically generates a unique **Student Code** for the student.
+5. The system automatically generates a unique **one-time Parent Registration Code** for that student.
+6. The Secretary securely gives the Student Code and Parent Registration Code to the student's parent/guardian.
+7. The parent can use those two codes during Parent Registration to claim and link the child automatically.
+8. The student receives a system account/activation method according to the school's chosen student account policy.
+9. The student can later log in and access only their own academic information.
 
 ### Student Information
 
 The student record can include:
 
 - Admission / Student Number
+- System-generated Student Code
 - Full Name
 - Date of Birth
 - Gender where required by the school
@@ -182,7 +187,9 @@ The student record can include:
 
 - Secretary can add, edit, search, filter, and manage student records.
 - Secretary can assign students to classes.
-- Secretary can link students to parent accounts.
+- Secretary can generate/reissue a parent one-time registration code where permitted.
+- Secretary can view the status of a student's parent registration code without exposing the stored secret value.
+- Secretary can link students to parent accounts when an authorized manual correction is required.
 - Admin retains system-level authority and permissions.
 - Students cannot edit protected school/admission information themselves.
 
@@ -242,9 +249,10 @@ The **Secretary / Office Staff** role is specifically designed for schools with 
 - Search and filter students
 - Assign students to grades/classes/sections
 - Manage admission information
-- Add parent records
+- Generate/reissue parent one-time registration codes where permitted
+- Add parent records when manual parent management is required
 - Edit parent contact information
-- Link parents to students
+- Link parents to students when authorized
 - Support multiple children for one parent
 - View relevant student/parent reports
 
@@ -264,29 +272,125 @@ All Secretary actions must be checked server-side by the authorization layer and
 
 ## Parent Management
 
-Parent accounts are managed through the Secretary / Office Staff workflow rather than requiring the Admin to manually handle every parent.
+Parent registration is designed around a **Student Code + One-Time Parent Registration Code** flow. This removes the need for the Secretary to manually create every parent account and manually link every child.
 
-### Parent Registration / Account Creation Flow
+### Parent Registration — First Child
 
-1. Secretary opens **Parents → Add Parent**.
-2. Secretary enters the parent's basic information.
-3. Secretary creates or activates the parent account according to the school's account policy.
-4. Secretary links the parent to one or more existing student records.
-5. The parent can log in and see only their linked children.
+When the Secretary adds a student, SSMS automatically generates:
 
-### Parent ↔ Student Linking
+- A unique **Student Code** for that student.
+- A unique **One-Time Parent Registration Code** for that student.
 
-The system must support one parent linked to multiple children and, where the school requires it, multiple parents/guardians linked to the same student.
+The Secretary gives both values to the student's parent/guardian through the school's approved communication method.
+
+The Parent Registration page asks for:
+
+- Student Code
+- One-Time Parent Registration Code
+
+The system verifies that the two values belong to the **same eligible student** and that the parent code is still unused and valid.
+
+If verification succeeds:
+
+1. The student identity is confirmed.
+2. The parent completes their account/profile information.
+3. The parent account is created.
+4. SSMS automatically creates the `parent_student_links` relationship between the new parent account and that student.
+5. The one-time parent code is immediately marked as used/invalidated.
+6. The parent is taken to the Parent Dashboard with the child already available.
+
+The parent must never be able to claim a student by Student Code alone.
+
+### Parent Registration Flow
+
+```text
+Secretary Adds Student
+          ↓
+Student Record Created
+          ↓
+System Generates Student Code
+          ↓
+System Generates One-Time Parent Code
+          ↓
+Secretary Gives Both Codes to Parent
+          ↓
+Parent Registration
+          ↓
+Enter Student Code + One-Time Parent Code
+          ↓
+SSMS Verifies Matching Student + Unused Code
+          ↓
+Parent Completes Account Information
+          ↓
+Parent Account Created
+          ↓
+Child Automatically Linked
+          ↓
+One-Time Code Invalidated
+          ↓
+Parent Dashboard
+```
+
+### Add 2nd / 3rd / 4th Child
+
+A parent must not create a new parent account for each child.
+
+After the first registration, the Parent Dashboard provides an **Add Child** action.
+
+```text
+Parent Dashboard
+       │
+       ├── Child 1
+       │
+       ├── Child 2
+       │
+       ├── Child 3
+       │
+       └── + Add Child
+```
+
+When **Add Child** is selected, the parent enters:
+
+- The new child's Student Code
+- The new child's One-Time Parent Registration Code
+
+SSMS verifies the pair. If valid, the new child is automatically linked to the **existing parent account**. The code is then invalidated so it cannot be reused.
+
+The system should not impose an artificial four-child limit. It should support additional children through the same linking mechanism.
+
+### Multi-Child Parent Dashboard
+
+The Parent Dashboard should provide a clear child selector or child cards. After selecting a child, all child-specific information is scoped to that student:
+
+- Attendance
+- Results
+- Timetable
+- Assignments
+- Notices
+- Other permitted academic information
+
+Example:
 
 ```text
 Parent Account
       │
       ├── Student A — Grade 10A
       ├── Student B — Grade 7B
-      └── Student C — Grade 5C
+      ├── Student C — Grade 5C
+      └── Student D — Grade 3A
 ```
 
-The relationship is stored separately so adding another child does not require creating another parent account.
+### Parent ↔ Student Linking Rules
+
+- One parent account can be linked to multiple children.
+- A child can have multiple parents/guardians where the school's policy requires it.
+- Additional children are linked to the existing parent account; a duplicate parent account must not be created.
+- A parent can see only children linked to that parent account.
+- A parent cannot use a Student Code alone to claim or access a student.
+- One-time parent registration codes are single-use and must be invalidated after successful linking.
+- Codes should have an optional expiry period and may be reissued by authorized Secretary/Admin users when necessary.
+- Code values should be generated securely and stored as hashes where practical; raw codes must not be exposed in URLs, page source, or logs.
+- Linking and unlinking actions must be authorization-checked and audited.
 
 ### Parent Information
 
@@ -302,6 +406,8 @@ The relationship is stored separately so adding another child does not require c
 ### Parent Access Rules
 
 - Parent can view only linked children's information.
+- Parent can switch between linked children.
+- Parent can add another child only by providing the valid Student Code + One-Time Parent Registration Code for that child.
 - Parent cannot edit protected academic records.
 - Parent cannot view unrelated students.
 - Multiple-child support is required.
@@ -422,6 +528,8 @@ Planned protections:
 
 Teacher registration codes must be securely generated, preferably hashed, single-use, and invalidated after successful registration.
 
+Parent one-time registration codes must also be securely generated, preferably hashed, tied to the intended student, single-use, invalidated after successful linking, optionally expiry-controlled, and never exposed in URLs or frontend source.
+
 ---
 
 # 🗄️ High-Level Data Model
@@ -439,6 +547,15 @@ teacher_pre_registrations
  ├── expires_at
  ├── registered_at
  └── teacher_id
+
+parent_registration_codes
+ ├── student_id
+ ├── code_hash
+ ├── status
+ ├── expires_at
+ ├── used_at
+ ├── created_by
+ └── claimed_by_parent_id
 
 classes
 subjects
@@ -460,7 +577,7 @@ settings
 activity_logs
 ```
 
-The final database schema will be designed before implementation.
+The final database schema will be designed before implementation. Parent registration codes must be associated with a student and tracked independently from the parent account so the first successful registration can claim the child and later codes can add further children to the same parent account.
 
 ---
 
@@ -516,6 +633,9 @@ This structure is a plan and may evolve during implementation.
 - [x] Define official UI theme
 - [x] Confirm scalable Student/Parent management through Secretary / Office Staff
 - [x] Confirm Teacher pre-registration workflow
+- [x] Confirm Student Code + Parent One-Time Code registration flow
+- [x] Confirm automatic parent-child linking
+- [x] Confirm multi-child Parent Dashboard linking
 - [ ] Finalize database ERD
 - [ ] Finalize permission matrix
 
@@ -538,6 +658,9 @@ This structure is a plan and may evolve during implementation.
 - [ ] Secretary authentication and permissions
 - [ ] Student authentication
 - [ ] Parent authentication
+- [ ] Parent Student Code + One-Time Code verification flow
+- [ ] Automatic parent-child linking during registration
+- [ ] Add Child verification flow for existing parent accounts
 
 ### Phase 4 — School Management
 
@@ -550,6 +673,7 @@ This structure is a plan and may evolve during implementation.
 - [ ] Subjects
 - [ ] Academic years/terms
 - [ ] Student-parent linking
+- [ ] Student-generated parent registration code lifecycle
 
 ### Phase 5 — Academic Modules
 
@@ -574,6 +698,8 @@ This structure is a plan and may evolve during implementation.
 - [ ] Functional testing
 - [ ] Database integrity testing
 - [ ] Performance testing with large student datasets
+- [ ] Parent registration-code lifecycle testing
+- [ ] Multi-child linking testing
 - [ ] Deployment documentation
 - [ ] Backup/restore documentation
 
@@ -619,29 +745,3 @@ Possible future capabilities:
 - Optional API layer
 - Integration with other school services
 - Optional dark mode using the same design language
-
----
-
-## 🎯 Official Design Keywords
-
-```text
-Clean
-Modern
-Professional
-Academic
-Trustworthy
-Responsive
-Light
-Blue
-Subtle Glassmorphism
-Minimal
-Readable
-Organized
-```
-
-> **SSMS should look like a modern professional school platform — clean white surfaces, strong blue navigation and actions, subtle glass effects, excellent readability, and responsive layouts.**
-
----
-
-**SSMS — Smart School Management System**  
-*Plan the system first. Build it right.*
