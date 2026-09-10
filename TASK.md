@@ -74,9 +74,7 @@
 - [ ] Define mobile navigation
 - [ ] Define common forms
 - [ ] Define table/list patterns
-- [ ] Define empty states
-- [ ] Define loading states
-- [ ] Define error states
+- [ ] Define empty/loading/error states
 - [ ] Define confirmation dialogs
 
 ---
@@ -100,36 +98,19 @@ Use the approved SSMS blue/white visual direction.
 
 ## 2.2 Typography
 
-- [ ] Use Inter as primary UI font where available
+- [ ] Use Inter as primary UI font
 - [ ] Use Poppins for headings/branding where appropriate
-- [ ] Define heading sizes
-- [ ] Define body text sizes
-- [ ] Define label/helper text sizes
-- [ ] Define font weights
-- [ ] Ensure readable contrast
+- [ ] Define typography hierarchy and readable contrast
 
 ## 2.3 Components
 
-- [ ] Buttons
-- [ ] Icon buttons
-- [ ] Inputs
-- [ ] Textareas
-- [ ] Selects
-- [ ] Checkboxes
-- [ ] Radio buttons
-- [ ] Toggles
-- [ ] Cards
-- [ ] Tables
-- [ ] Badges
-- [ ] Alerts
-- [ ] Toasts
-- [ ] Modals
-- [ ] Dropdowns
-- [ ] Tabs
-- [ ] Pagination
-- [ ] Breadcrumbs
-- [ ] Search bars
-- [ ] Date/time controls
+- [ ] Buttons and icon buttons
+- [ ] Inputs, selects, textareas
+- [ ] Checkboxes, radios, toggles
+- [ ] Cards, tables, badges
+- [ ] Alerts, toasts, modals, dropdowns
+- [ ] Tabs, pagination, breadcrumbs
+- [ ] Search bars and date/time controls
 - [ ] Loading indicators
 
 ## 2.4 Glassmorphism Rules
@@ -138,7 +119,7 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Keep text readable
 - [ ] Avoid excessive blur
 - [ ] Maintain strong card/input boundaries
-- [ ] Use shadows consistently
+- [ ] Use consistent shadows
 - [ ] Keep the interface professional rather than overly decorative
 
 ## 2.5 Responsive Design
@@ -147,68 +128,23 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Laptop layout
 - [ ] Tablet layout
 - [ ] Mobile layout
-- [ ] Responsive sidebar
-- [ ] Responsive tables
-- [ ] Mobile-friendly forms
-- [ ] Mobile-friendly dashboards
+- [ ] Responsive sidebar/tables/forms/dashboards
 - [ ] Touch-friendly controls
 
 ---
 
 # PHASE 3 — Project Foundation
 
-## 3.1 Directory Structure
-
-- [ ] Create `app/`
-- [ ] Create `app/Controllers/`
-- [ ] Create `app/Models/`
-- [ ] Create `app/Services/`
-- [ ] Create `app/Middleware/`
-- [ ] Create `app/Helpers/`
-- [ ] Create `config/`
-- [ ] Create `database/migrations/`
-- [ ] Create `database/seeds/`
-- [ ] Create `public/`
-- [ ] Create `public/assets/css/`
-- [ ] Create `public/assets/js/`
-- [ ] Create `public/assets/images/`
-- [ ] Create `routes/`
-- [ ] Create `views/layouts/`
-- [ ] Create `views/auth/`
-- [ ] Create `views/admin/`
-- [ ] Create `views/teacher/`
-- [ ] Create `views/student/`
-- [ ] Create `views/parent/`
-- [ ] Create `storage/logs/`
-- [ ] Create `storage/cache/`
-
-## 3.2 Configuration
-
-- [ ] Create application configuration
-- [ ] Create database configuration
-- [ ] Configure environment-specific settings
+- [ ] Create planned `app/`, `config/`, `database/`, `public/`, `routes/`, `views/`, and `storage/` directories
+- [ ] Create application/database configuration
 - [ ] Keep secrets outside public files
-- [ ] Configure timezone
-- [ ] Configure error logging
-- [ ] Configure application URL
-
-## 3.3 Bootstrap
-
-- [ ] Create application entry point
-- [ ] Create autoloading strategy
-- [ ] Create request/response foundation
-- [ ] Create route loading
-- [ ] Create global helper loading
+- [ ] Configure timezone, URL, and error logging
+- [ ] Create application entry point and autoloading
+- [ ] Create request/response and routing foundation
 - [ ] Create centralized error handling
-
-## 3.4 Database Layer
-
-- [ ] Create PDO/MySQLi database connection layer
-- [ ] Prefer PDO or a consistent secure database abstraction
+- [ ] Create secure PDO/MySQLi database layer
 - [ ] Enable prepared statements
-- [ ] Create transaction helper
-- [ ] Create query/data-access conventions
-- [ ] Add connection error handling
+- [ ] Add transactions and connection error handling
 - [ ] Test database connection
 
 ---
@@ -217,8 +153,7 @@ Use the approved SSMS blue/white visual direction.
 
 ## 4.1 Routing
 
-- [ ] Define GET routes
-- [ ] Define POST routes
+- [ ] Define GET/POST routes
 - [ ] Define authentication routes
 - [ ] Define Admin routes
 - [ ] Define Teacher routes
@@ -250,21 +185,11 @@ Use the approved SSMS blue/white visual direction.
 
 ## 4.3 Services
 
-- [ ] Authentication service
-- [ ] Authorization service
-- [ ] User service
-- [ ] Student service
-- [ ] Teacher service
-- [ ] Parent service
-- [ ] Class service
-- [ ] Subject service
-- [ ] Timetable service
-- [ ] Attendance service
-- [ ] Examination service
-- [ ] Result service
-- [ ] Assignment service
-- [ ] Notice service
-- [ ] Report service
+- [ ] Authentication and Authorization services
+- [ ] User, Student, Teacher, Parent services
+- [ ] Class, Subject, Timetable services
+- [ ] Attendance, Examination, Result services
+- [ ] Assignment, Notice, Report services
 - [ ] Notification service if required
 
 ---
@@ -273,24 +198,18 @@ Use the approved SSMS blue/white visual direction.
 
 ## 5.1 Authentication
 
-- [ ] Login page
-- [ ] Login form validation
+- [ ] Login page and validation
 - [ ] Verify credentials
 - [ ] Password hashing
-- [ ] Session creation
-- [ ] Logout
-- [ ] Session timeout behavior
-- [ ] Remember-me behavior if required
+- [ ] Session creation and logout
+- [ ] Session timeout
 - [ ] Account active/inactive handling
 
 ## 5.2 Authorization
 
 - [ ] Role middleware
 - [ ] Permission checks
-- [ ] Admin route protection
-- [ ] Teacher route protection
-- [ ] Student route protection
-- [ ] Parent route protection
+- [ ] Admin/Teacher/Student/Parent route protection
 - [ ] Prevent IDOR-style access to other users' records
 
 ## 5.3 Security Hardening
@@ -299,7 +218,7 @@ Use the approved SSMS blue/white visual direction.
 - [ ] XSS-safe output escaping
 - [ ] SQL injection protection
 - [ ] Secure session cookie settings
-- [ ] Login rate/attempt protection where appropriate
+- [ ] Login attempt protection where appropriate
 - [ ] Secure password reset design if implemented
 - [ ] Secure file upload validation if implemented
 - [ ] Remove debug output from production
@@ -309,44 +228,16 @@ Use the approved SSMS blue/white visual direction.
 
 # PHASE 6 — Base Layout & Navigation
 
-## 6.1 Shared Layout
-
-- [ ] Create main application shell
-- [ ] Create sidebar
-- [ ] Create top navigation
-- [ ] Create user profile menu
-- [ ] Create notification area
-- [ ] Create page header
-- [ ] Create content container
-- [ ] Create footer where needed
-
-## 6.2 Navigation
-
-- [ ] Dashboard
-- [ ] Students
-- [ ] Teachers
-- [ ] Parents
-- [ ] Classes
-- [ ] Subjects
-- [ ] Timetable
-- [ ] Examinations
-- [ ] Attendance
-- [ ] Assignments
-- [ ] Notices
-- [ ] Reports
-- [ ] Settings
-
-## 6.3 Shared UX
-
+- [ ] Main application shell
+- [ ] Sidebar and top navigation
+- [ ] User profile menu
+- [ ] Notification area
+- [ ] Page header/content container/footer where needed
+- [ ] Dashboard, Students, Teachers, Parents, Classes, Subjects navigation
+- [ ] Timetable, Examinations, Attendance, Assignments, Notices, Reports, Settings navigation
 - [ ] Global search UI
-- [ ] Toast notifications
-- [ ] Loading states
-- [ ] Form error messages
-- [ ] Confirmation dialogs
-- [ ] Empty states
-- [ ] 404 page
-- [ ] 403 page
-- [ ] 500 page
+- [ ] Toasts, loading states, form errors, confirmations
+- [ ] Empty, 404, 403, and 500 states
 
 ---
 
@@ -355,45 +246,73 @@ Use the approved SSMS blue/white visual direction.
 ## 7.1 User Management
 
 - [ ] User model
-- [ ] User creation
-- [ ] User editing
+- [ ] User creation/editing
 - [ ] User activation/deactivation
-- [ ] User search
-- [ ] User filtering
+- [ ] User search/filter
 - [ ] Role assignment
 - [ ] Profile management
 
 ## 7.2 Student Management
 
-- [ ] Student database table
-- [ ] Student model
+- [ ] Student database table/model
 - [ ] Student registration
-- [ ] Student profile
-- [ ] Student ID/reference number
+- [ ] Student profile and ID/reference number
 - [ ] Admission information
-- [ ] Class assignment
-- [ ] Student status
-- [ ] Student search
-- [ ] Student filtering
-- [ ] Student detail page
+- [ ] Class assignment and status
+- [ ] Student search/filter/detail page
 - [ ] Academic history
 - [ ] Parent linking
 
-## 7.3 Teacher Management
+## 7.3 Teacher Management — Pre-Registration + Self-Completion
 
-- [ ] Teacher table
+### Admin Pre-Registration
+
+- [ ] Admin can open **Teachers → Pre-Register Teacher**
+- [ ] Admin enters only the teacher's **full name** for pre-registration
+- [ ] System automatically generates a unique random **secret registration code**
+- [ ] Store the pre-registration with `PENDING` status
+- [ ] Store the secret code securely, preferably as a hash
+- [ ] Admin can view/copy the generated code to share with that teacher
+
+### Teacher Registration Verification
+
+- [ ] Teacher Registration page asks for **Pre-Registered Full Name**
+- [ ] Teacher Registration page asks for **Secret Registration Code**
+- [ ] Verify that the full name and secret code match the **same PENDING pre-registration**
+- [ ] Do not allow registration when either value does not match
+- [ ] Do not allow a code belonging to another teacher to be used
+- [ ] Keep the verified pre-registered full name locked after successful verification
+
+### Teacher Self-Completion
+
+- [ ] Only after successful verification, show the remaining registration fields
+- [ ] Allow approved profile information such as email, phone, address, date of birth, qualification, username, and password
+- [ ] Validate all submitted information server-side
+- [ ] Create the teacher account after successful completion
+- [ ] Link the new teacher account to the original pre-registration record
+- [ ] Change pre-registration status from `PENDING` to `REGISTERED`
+
+### Secret Code Rules
+
+- [ ] Secret registration code is single-use
+- [ ] Invalidate the code immediately after successful registration
+- [ ] Prevent duplicate registration with the same code
+- [ ] Optional expiry time for unused codes
+- [ ] Do not expose secret codes in public pages, URLs, or frontend source
+- [ ] Log important registration actions without logging the raw secret code
+
+### Teacher Management After Registration
+
 - [ ] Teacher profile
-- [ ] Teacher account
-- [ ] Teacher status
+- [ ] Teacher account/status
 - [ ] Subject assignments
 - [ ] Class assignments
 - [ ] Teacher search/filter
 
 ## 7.4 Parent Management
 
-- [ ] Parent table
-- [ ] Parent profile
-- [ ] Parent account
+- [ ] Parent table/model
+- [ ] Parent profile/account
 - [ ] Parent contact details
 - [ ] Link parent to student
 - [ ] Multiple children support
@@ -405,13 +324,11 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Section creation
 - [ ] Class teacher assignment
 - [ ] Student assignment
-- [ ] Class details
-- [ ] Class search/filter
+- [ ] Class details/search/filter
 
 ## 7.6 Subject Management
 
-- [ ] Subject creation
-- [ ] Subject editing
+- [ ] Subject creation/editing
 - [ ] Subject code
 - [ ] Subject/class assignment
 - [ ] Teacher-subject assignment
@@ -421,8 +338,7 @@ Use the approved SSMS blue/white visual direction.
 
 - [ ] Academic year creation
 - [ ] Term creation
-- [ ] Active academic year
-- [ ] Active term
+- [ ] Active academic year/term
 - [ ] Historical academic periods
 - [ ] Prevent invalid overlapping active periods
 
@@ -444,7 +360,7 @@ Use the approved SSMS blue/white visual direction.
 
 ## 8.2 Timetable Data
 
-- [ ] Timetable table/schema
+- [ ] Timetable schema
 - [ ] Class-period assignments
 - [ ] Teacher-period assignments
 - [ ] Subject-period assignments
@@ -482,213 +398,106 @@ Use the approved SSMS blue/white visual direction.
 
 # PHASE 9 — Attendance System
 
-## 9.1 Attendance Setup
-
-- [ ] Attendance schema
-- [ ] Attendance statuses
-- [ ] Present status
-- [ ] Absent status
-- [ ] Late status if required
-- [ ] Excused status if required
-
-## 9.2 Teacher Attendance Workflow
-
-- [ ] Select class
-- [ ] Select date
-- [ ] Load students
-- [ ] Mark attendance
-- [ ] Save attendance
+- [ ] Attendance schema and statuses
+- [ ] Present/Absent status
+- [ ] Late/Excused status if required
+- [ ] Teacher selects class/date and loads students
+- [ ] Mark and save attendance
 - [ ] Edit attendance with permission
 - [ ] Prevent unauthorized modification
-
-## 9.3 Attendance Reports
-
 - [ ] Student attendance history
-- [ ] Daily summary
-- [ ] Monthly summary
-- [ ] Term summary
+- [ ] Daily/monthly/term summaries
 - [ ] Class attendance statistics
-- [ ] Parent attendance view
-- [ ] Student attendance view
+- [ ] Parent and Student attendance views
 
 ---
 
 # PHASE 10 — Examinations & Results
 
-## 10.1 Examination Setup
-
-- [ ] Examination creation
-- [ ] Examination date
-- [ ] Academic year/term association
-- [ ] Classes included
-- [ ] Subjects included
+- [ ] Examination creation/date/year/term
+- [ ] Classes and subjects included
 - [ ] Maximum marks
-
-## 10.2 Marks Entry
-
 - [ ] Teacher marks-entry screen
-- [ ] Student list
-- [ ] Marks validation
-- [ ] Save marks
-- [ ] Edit marks with permission
+- [ ] Marks validation/save/edit
 - [ ] Lock/publish results if required
-
-## 10.3 Result Processing
-
-- [ ] Grade calculation rules
-- [ ] Subject result calculation
-- [ ] Overall result calculation
-- [ ] Result summaries
-- [ ] Student result view
-- [ ] Parent result view
+- [ ] Grade calculation
+- [ ] Subject and overall result calculation
+- [ ] Student and Parent result views
 - [ ] Printable result report
 
 ---
 
 # PHASE 11 — Assignment System
 
-## 11.1 Teacher Features
-
-- [ ] Create assignment
-- [ ] Select class
-- [ ] Select subject
-- [ ] Set title
-- [ ] Set description
-- [ ] Set due date
-- [ ] Edit assignment
-- [ ] Delete/cancel assignment
-- [ ] View assignment status
-
-## 11.2 Student Features
-
-- [ ] View assignments
-- [ ] Filter assignments
-- [ ] View due dates
-- [ ] Mark/view assignment status
-- [ ] Show overdue assignments
-
-## 11.3 Parent Features
-
-- [ ] View linked student's assignments
-- [ ] Show upcoming due dates
+- [ ] Teacher creates assignment with class, subject, title, description, and due date
+- [ ] Edit/delete/cancel assignment
+- [ ] Student assignment list/filter/due/overdue views
+- [ ] Parent view of linked student's assignments
 
 ---
 
 # PHASE 12 — Notices & Announcements
 
 - [ ] Notice database
-- [ ] Create notice
-- [ ] Edit notice
-- [ ] Publish/unpublish notice
-- [ ] Delete notice
-- [ ] Target all users
-- [ ] Target specific role
-- [ ] Target specific class/section
-- [ ] Notice list
-- [ ] Notice detail page
-- [ ] Student notice view
-- [ ] Parent notice view
-- [ ] Teacher notice view
+- [ ] Create/edit/publish/unpublish/delete notices
+- [ ] Target all users, roles, or classes/sections
+- [ ] Notice list/detail pages
+- [ ] Student, Parent, and Teacher notice views
 
 ---
 
 # PHASE 13 — Dashboards
 
-## 13.1 Admin Dashboard
-
-- [ ] Total students card
-- [ ] Total teachers card
-- [ ] Total parents card
-- [ ] Total classes card
-- [ ] Today's attendance card
+## Admin
+- [ ] Students, Teachers, Parents, Classes statistics
+- [ ] Today's attendance
 - [ ] Upcoming examinations
-- [ ] Recent activities
-- [ ] Recent notices
-- [ ] Attendance chart
-- [ ] Quick actions
+- [ ] Recent activities/notices
+- [ ] Attendance chart and quick actions
 
-## 13.2 Teacher Dashboard
-
+## Teacher
 - [ ] Today's classes
 - [ ] Assigned subjects
 - [ ] Attendance shortcut
 - [ ] Pending assignments
-- [ ] Recent notices
-- [ ] Student overview
+- [ ] Notices and student overview
 
-## 13.3 Student Dashboard
-
+## Student
 - [ ] Today's timetable
 - [ ] Attendance summary
-- [ ] Upcoming assignments
-- [ ] Latest results
+- [ ] Assignments
+- [ ] Results
 - [ ] Notices
 
-## 13.4 Parent Dashboard
-
+## Parent
 - [ ] Linked children
 - [ ] Child selector
-- [ ] Attendance summary
-- [ ] Latest results
-- [ ] Upcoming assignments
+- [ ] Attendance
+- [ ] Results
+- [ ] Assignments
 - [ ] Notices
 
 ---
 
 # PHASE 14 — Search, Filtering & Data UX
 
-- [ ] Global search foundation
-- [ ] Student search
-- [ ] Teacher search
-- [ ] Parent search
-- [ ] Class search
-- [ ] Subject search
-- [ ] Attendance filters
-- [ ] Result filters
-- [ ] Assignment filters
-- [ ] Notice filters
-- [ ] Pagination
-- [ ] Sorting
+- [ ] Global search
+- [ ] Student/Teacher/Parent/Class/Subject search
+- [ ] Attendance/Result/Assignment/Notice filters
+- [ ] Pagination and sorting
 - [ ] AJAX/Fetch search where beneficial
-- [ ] Debounce live search requests
-- [ ] Handle no-result states
+- [ ] Debounced live search
+- [ ] No-result states
 
 ---
 
 # PHASE 15 — Reports
 
-## 15.1 Student Reports
-
-- [ ] Student profile report
-- [ ] Student academic history
-- [ ] Student attendance report
-
-## 15.2 Class Reports
-
-- [ ] Class student list
-- [ ] Class attendance report
-- [ ] Class results summary
-
-## 15.3 Teacher Reports
-
-- [ ] Teacher workload/timetable report
-- [ ] Assigned classes report
-- [ ] Assigned subjects report
-
-## 15.4 Examination Reports
-
-- [ ] Examination result report
-- [ ] Subject performance report
-- [ ] Grade distribution
-
-## 15.5 Timetable Reports
-
-- [ ] Class timetable print view
-- [ ] Teacher timetable print view
-- [ ] School timetable overview
-
-## 15.6 Export
-
+- [ ] Student profile/academic/attendance reports
+- [ ] Class student/attendance/result reports
+- [ ] Teacher workload/timetable/assignment reports
+- [ ] Examination/subject/grade reports
+- [ ] Class and Teacher timetable print views
 - [ ] Printable HTML reports
 - [ ] CSV export where useful
 - [ ] PDF export if required later
@@ -697,8 +506,7 @@ Use the approved SSMS blue/white visual direction.
 
 # PHASE 16 — Settings & Administration
 
-- [ ] School profile
-- [ ] School name/logo
+- [ ] School profile/name/logo
 - [ ] Academic settings
 - [ ] Timetable settings
 - [ ] Attendance settings
@@ -706,30 +514,27 @@ Use the approved SSMS blue/white visual direction.
 - [ ] User settings
 - [ ] Notification settings
 - [ ] Theme settings
-- [ ] Dark mode setting if implemented
-- [ ] System maintenance settings
+- [ ] Dark mode if implemented
+- [ ] Maintenance settings
 
 ---
 
 # PHASE 17 — Notifications
 
-- [ ] Notification database/schema
+- [ ] Notification schema
 - [ ] In-app notifications
 - [ ] Unread count
-- [ ] Mark as read
-- [ ] Mark all as read
+- [ ] Mark read/all read
 - [ ] Assignment notifications
 - [ ] Result publication notifications
 - [ ] Notice notifications
-- [ ] Attendance-related notifications if required
+- [ ] Attendance notifications if required
 
 Email/SMS/push notifications are optional future extensions and should not block the core system.
 
 ---
 
 # PHASE 18 — File & Media Handling
-
-Only implement this where a module genuinely needs files.
 
 - [ ] Define allowed file types
 - [ ] Validate MIME/type and extension
@@ -738,9 +543,9 @@ Only implement this where a module genuinely needs files.
 - [ ] Store files outside executable paths where possible
 - [ ] Prevent executable uploads
 - [ ] Permission-check downloads
-- [ ] Assignment attachment support if required
-- [ ] Profile image support if required
-- [ ] Notice attachment support if required
+- [ ] Assignment attachments if required
+- [ ] Profile images if required
+- [ ] Notice attachments if required
 
 ---
 
@@ -750,6 +555,7 @@ Only implement this where a module genuinely needs files.
 - [ ] Login activity
 - [ ] User changes
 - [ ] Student record changes
+- [ ] Teacher registration/pre-registration activity
 - [ ] Attendance changes
 - [ ] Result changes
 - [ ] Timetable changes
@@ -763,12 +569,11 @@ Only implement this where a module genuinely needs files.
 # PHASE 20 — Performance
 
 - [ ] Add database indexes based on real queries
-- [ ] Avoid N+1 database queries
+- [ ] Avoid N+1 queries
 - [ ] Paginate large lists
 - [ ] Optimize dashboard queries
 - [ ] Minimize unnecessary AJAX requests
-- [ ] Optimize CSS/JS assets
-- [ ] Optimize images
+- [ ] Optimize CSS/JS assets and images
 - [ ] Add caching where useful
 - [ ] Test with realistic school-sized data
 
@@ -790,36 +595,37 @@ Only implement this where a module genuinely needs files.
 
 # PHASE 22 — Testing
 
-## 22.1 Functional Testing
+## Functional Testing
 
-- [ ] Authentication tests
-- [ ] Authorization tests
+- [ ] Authentication and authorization tests
 - [ ] Student CRUD tests
-- [ ] Teacher CRUD tests
-- [ ] Parent CRUD tests
-- [ ] Class CRUD tests
-- [ ] Subject CRUD tests
-- [ ] Academic year/term tests
+- [ ] Teacher pre-registration tests
+- [ ] Teacher name + secret-code verification tests
+- [ ] Teacher wrong-code/wrong-name rejection tests
+- [ ] Teacher single-use code tests
+- [ ] Teacher duplicate-registration prevention tests
+- [ ] Teacher account completion tests
+- [ ] Parent CRUD/linking tests
+- [ ] Class/Subject/Academic year tests
 - [ ] Timetable tests
 - [ ] Attendance tests
-- [ ] Examination tests
-- [ ] Result tests
+- [ ] Examination/Result tests
 - [ ] Assignment tests
 - [ ] Notice tests
 - [ ] Report tests
 
-## 22.2 Security Testing
+## Security Testing
 
 - [ ] SQL injection checks
 - [ ] XSS checks
 - [ ] CSRF checks
 - [ ] Session security checks
 - [ ] Authorization bypass checks
-- [ ] File upload security checks
+- [ ] Teacher registration-code security checks
 - [ ] Direct URL access checks
 - [ ] Sensitive data exposure checks
 
-## 22.3 UI Testing
+## UI/Data Testing
 
 - [ ] Desktop Chrome/Edge testing
 - [ ] Mobile browser testing
@@ -827,10 +633,6 @@ Only implement this where a module genuinely needs files.
 - [ ] Form validation testing
 - [ ] Navigation testing
 - [ ] Responsive layout testing
-- [ ] Dark mode testing if enabled
-
-## 22.4 Data Testing
-
 - [ ] Foreign key integrity
 - [ ] Duplicate prevention
 - [ ] Required-field validation
@@ -841,21 +643,20 @@ Only implement this where a module genuinely needs files.
 
 # PHASE 23 — Deployment
 
-## 23.1 Local Deployment
+## Local
 
 - [ ] Apache configuration
 - [ ] PHP configuration
 - [ ] MariaDB/MySQL configuration
 - [ ] Database creation
-- [ ] Database migration process
+- [ ] Migration process
 - [ ] Seed/demo data process
 - [ ] Local virtual host setup
 
-## 23.2 Production Deployment
+## Production
 
 - [ ] Production server preparation
-- [ ] PHP version verification
-- [ ] Required PHP extensions
+- [ ] PHP version/extensions verification
 - [ ] Apache configuration
 - [ ] HTTPS configuration
 - [ ] Database configuration
@@ -864,13 +665,13 @@ Only implement this where a module genuinely needs files.
 - [ ] Error logging
 - [ ] Disable debug mode
 
-## 23.3 Backup
+## Backup
 
-- [ ] Database backup process
-- [ ] File backup process
+- [ ] Database backup
+- [ ] File backup
 - [ ] Restore process
 - [ ] Backup documentation
-- [ ] Test restoration regularly
+- [ ] Regular restoration tests
 
 ---
 
@@ -878,12 +679,10 @@ Only implement this where a module genuinely needs files.
 
 - [ ] Update `README.md`
 - [ ] Keep `TASK.md` updated
-- [ ] Installation guide
-- [ ] Configuration guide
-- [ ] Database setup guide
+- [ ] Installation/configuration/database guides
 - [ ] User/role documentation
 - [ ] Admin guide
-- [ ] Teacher guide
+- [ ] Teacher guide including pre-registration and registration-code flow
 - [ ] Student guide
 - [ ] Parent guide
 - [ ] Deployment guide
@@ -897,6 +696,7 @@ Only implement this where a module genuinely needs files.
 
 - [ ] All core modules complete
 - [ ] All four roles tested
+- [ ] Teacher pre-registration flow tested end-to-end
 - [ ] Database schema finalized
 - [ ] Timetable engine validated
 - [ ] Attendance validated
@@ -917,8 +717,6 @@ Only implement this where a module genuinely needs files.
 ---
 
 # Recommended Build Order
-
-For implementation, follow this order:
 
 ```text
 1. Planning
@@ -957,8 +755,6 @@ For implementation, follow this order:
    ↓
 18. Stable Release
 ```
-
----
 
 # Definition of Done
 
