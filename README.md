@@ -9,10 +9,10 @@
 ### User Roles
 
 - **Admin** — manages school settings, users, teachers, classes, subjects, timetable, attendance, examinations, reports, notices, and system permissions.
-- **Secretary / Office Staff** — manages student and parent records, student admissions, parent accounts, and student-parent linking. This role reduces the administrative workload of managing a large student population.
-- **Teacher** — manages assigned classes, attendance, assignments, marks, timetable, and student information.
-- **Student** — views timetable, attendance, results, assignments, notices, and academic information.
-- **Parent** — monitors linked students, attendance, results, timetable, assignments, and notices.
+- **Secretary / Office Staff** — manages student and parent records, student admissions, student profile records, achievements, certificates, examination history, O/L and A/L results, leaving/completion records, parent accounts, and student-parent linking. This role reduces the administrative workload of managing a large student population.
+- **Teacher** — manages assigned classes, attendance, assignments, marks, timetable, and permitted student information.
+- **Student** — views timetable, attendance, results, assignments, notices, achievements, certificates, and permitted academic information.
+- **Parent** — monitors linked students, attendance, results, timetable, assignments, notices, achievements, certificates, and permitted academic information.
 
 ---
 
@@ -46,7 +46,7 @@ The interface should feel like a modern school-management SaaS platform: profess
 |---|---|---|
 | **Primary Blue** | `#2563EB` | Main actions, active navigation, links |
 | **Light Blue** | `#3B82F6` | Hover states and secondary blue elements |
-| **Accent Cyan** | `#06B6DA` | Highlights and accents |
+| **Accent Cyan** | `#06B6D4` | Highlights and accents |
 | **Success Green** | `#10B981` | Success/active states |
 | **Warning Amber** | `#F59E0B` | Warnings/pending states |
 | **Danger Red** | `#EF4444` | Errors/destructive actions |
@@ -62,7 +62,7 @@ The interface should feel like a modern school-management SaaS platform: profess
 :root {
     --primary: #2563EB;
     --primary-light: #3B82F6;
-    --accent: #06B6DA;
+    --accent: #06B6D4;
     --success: #10B981;
     --warning: #F59E0B;
     --danger: #EF4444;
@@ -248,7 +248,7 @@ Students are managed by the **Secretary / Office Staff** role so the Admin does 
 6. The Secretary securely gives the Student Code and Parent Registration Code to the student's parent/guardian.
 7. The parent can use those two codes during Parent Registration to claim and link the child automatically.
 8. The student receives a system account/activation method according to the school's chosen student account policy.
-9. The student can later log in and access only their own academic information.
+9. The student can later log in and access only their own permitted academic information.
 
 ### Student Information
 
@@ -267,13 +267,98 @@ The student record can include:
 - Student status
 - Admission information
 - Academic history
+- Examination history
+- O/L results
+- A/L results
+- Achievements and awards
+- Certificates and supporting documents
+- Leaving/completion information
+
+### Student Profile & Achievement Records
+
+Each student has a long-term profile that can preserve important school history from admission until leaving/completion.
+
+### Achievements & Certificates
+
+Authorized Office Staff/Secretary users can add or update permitted student achievement records, including:
+
+- Academic achievements
+- School-level achievements
+- Zonal achievements
+- Provincial achievements
+- National achievements
+- International achievements
+- Sports achievements
+- Arts/aesthetic achievements
+- Clubs and societies
+- Scouts/Cadets/Guides and similar activities
+- Competitions and awards
+- Positions/ranks received
+- Achievement date
+- Event/competition name
+- Description
+- Certificate/document attachment
+
+Each achievement should record who added or updated it and when.
+
+### Examination & Academic History
+
+The student profile should preserve important academic results across the student's school years. Depending on the school's configuration and permissions, authorized Office Staff can maintain historical records such as:
+
+- School examination results
+- Term-test results
+- Scholarship/external examination records where required
+- **G.C.E. O/L results**
+- **G.C.E. A/L results**
+- Subject name/code
+- Grade/result
+- Marks where the school stores marks
+- Examination year
+- Attempt information where applicable
+- Index/reference number where required by the school
+- Result publication/verification status
+- Supporting result document where permitted
+
+Protected live marks-entry and result-publication workflows remain controlled by their designated academic permissions. Office Staff should not automatically receive unrestricted access to protected teacher/examiner workflows simply because they can maintain historical student profile records.
+
+### Student Leaving / Completion Record
+
+When a student completes school or leaves the school, the system should not delete the student's history. Instead, authorized staff can change the student status to an appropriate state such as **COMPLETED**, **LEFT**, or another configured status.
+
+The system can then generate a **Student Leaving / School Completion Report** containing, where permitted:
+
+- Student identity and Student Code
+- Admission number
+- Date of birth
+- Date of admission
+- Date of leaving/completion
+- Final grade/class
+- Academic years attended
+- Academic/examination summary
+- O/L results
+- A/L results where applicable
+- Attendance summary
+- Achievements and awards
+- Certificates recorded in the system
+- School activities/organizations where permitted
+- Exit/leaving reason where the school records one
+- Authorized officer information
+- Report/reference number
+- Generated date
+
+The original student record remains available in the **Student Records Archive** according to the school's retention policy.
 
 ### Student Management Rules
 
-- Secretary can add, edit, search, filter, and manage student records.
+- Secretary can add, edit, search, filter, and manage permitted student records.
+- Secretary can open a student profile only after server-side role/permission verification.
+- Student lookup can use Student Code, Admission Number, student name, grade, or class.
+- Student Code identifies the student but is not by itself a permission credential.
 - Secretary can assign students to classes.
 - Secretary can generate/reissue a parent one-time registration code where permitted.
 - Secretary can view the status of a student's parent registration code without exposing the stored secret value.
+- Secretary can maintain achievements, certificates, and permitted historical academic records.
+- Secretary can generate authorized student reports and leaving/completion reports.
 - Secretary can link students to parent accounts when an authorized manual correction is required.
 - Admin retains system-level authority and permissions.
 - Students cannot edit protected school/admission information themselves.
@@ -327,19 +412,51 @@ The teacher secret code is one-time use, securely generated, preferably stored a
 
 The **Secretary / Office Staff** role is specifically designed for schools with a large number of students, such as 3000+ students. It separates daily student/parent data entry from system administration.
 
+### Office Staff Login & Student Verification
+
+Office Staff use their own staff account and never log in as a student to edit a student's record.
+
+```text
+Office Staff Login
+       ↓
+Secretary / Office Dashboard
+       ↓
+Students → Search Student
+       ↓
+Student Code / Admission No. / Name / Grade / Class
+       ↓
+Open Student Profile
+       ↓
+Server-side role + permission check
+       ↓
+Authorized Profile Access
+```
+
+Student Code is a reliable student identifier, but it is **not** treated as a password or permission credential. Every profile action is authorized server-side.
+
 ### Secretary Responsibilities
 
 - Add new students
-- Edit student records
+- Edit permitted student profile information
 - Search and filter students
-- Assign students to grades/classes/sections
+- Open verified student profiles
 - Manage admission information
+- Assign students to grades/classes/sections
+- Manage permitted student status fields
 - Generate/reissue parent one-time registration codes where permitted
 - Add parent records when manual parent management is required
 - Edit parent contact information
 - Link parents to students when authorized
 - Support multiple children for one parent
+- Maintain student achievements and awards
+- Add/update certificate records and permitted certificate files
+- Maintain permitted historical examination records
+- Maintain **O/L results** and **A/L results** where the school assigns this permission
+- Maintain other approved academic-history records
+- Generate permitted student profile reports
+- Generate Student Leaving / School Completion Reports
 - View relevant student/parent reports
+- View an audit history of changes made by Office Staff where permitted
 
 ### Secretary Restrictions
 
@@ -348,9 +465,10 @@ The Secretary must not have unrestricted access to:
 - System settings
 - Role/permission administration
 - Admin account management
-- Teacher pre-registration
+- Teacher pre-registration unless explicitly granted
 - Timetable configuration unless explicitly permitted
 - Sensitive system configuration
+- Unrestricted live examination/marks workflows unless explicitly permitted
 - Destructive changes to protected academic records
 
 All Secretary actions must be checked server-side by the authorization layer and recorded in the activity/audit log where appropriate.
@@ -452,6 +570,8 @@ The Parent Dashboard should provide a clear child selector or child cards. After
 - Timetable
 - Assignments
 - Notices
+- Achievements
+- Certificates
 - Other permitted academic information
 
 Example:
@@ -504,6 +624,8 @@ Parent Account
 - Subjects
 - Teacher-subject relationships
 - Student-class relationships
+- Subject weekly period requirements
+- Double-period requirements where applicable
 
 ## Attendance
 
@@ -522,6 +644,10 @@ Parent Account
 - Results viewing
 - Result summaries
 - Academic performance reports
+- Historical examination records
+- G.C.E. O/L results
+- G.C.E. A/L results
+- Result verification/publication status
 
 ## Assignments
 
@@ -538,11 +664,59 @@ Parent Account
 - Publish/unpublish controls
 - Notice history
 
+## Student Achievements & Certificates
+
+The Student Achievements & Certificates module keeps long-term non-academic and academic accomplishments inside the student profile.
+
+Achievement records can include school, zonal, provincial, national, international, sports, arts, clubs, societies, Scouts/Cadets/Guides, competitions, awards, and other configured categories.
+
+Each record can contain:
+
+- Achievement category
+- Achievement title
+- Event/competition
+- Level
+- Position/award
+- Date
+- Description
+- Certificate/document attachment
+- Added by
+- Updated by
+- Created/updated timestamps
+
+Students and authorized parents can view permitted achievement information. Office Staff/Secretary and Admin can add/update records according to permissions.
+
+## Student Leaving & Completion Reports
+
+SSMS should generate a formal report when a student completes school or leaves the school. The report can summarize the student's school history and, where permitted, include:
+
+- Student identity
+- Admission details
+- Academic years attended
+- Final grade/class
+- Attendance summary
+- Examination history
+- O/L results
+- A/L results where applicable
+- Achievements and awards
+- Certificates
+- Activities/organizations
+- Leaving/completion date and status
+- Authorized officer details
+- Unique report/reference number
+- Generated date
+
+The report should be printable and suitable for later PDF export. Archived student history must remain available according to the school's retention policy.
+
 ## Reports
 
-- Student reports
+- Student profile reports
 - Attendance reports
 - Examination/result reports
+- O/L and A/L result summaries
+- Student achievement reports
+- Certificate/achievement lists
+- Student leaving/completion reports
 - Class reports
 - Teacher reports
 - Parent/student reports
@@ -610,6 +784,11 @@ Planned protections:
 - Prevent Secretary access to Admin-only functions
 - Prevent students/parents from accessing unrelated records
 - Prevent IDOR-style access to another student's data
+- Permission-check every student-profile update
+- Permission-check every certificate/document download
+- Validate uploaded certificate/document MIME type, extension, and size
+- Keep uploaded documents outside executable public paths where possible
+- Preserve audit history for academic-history and achievement changes
 
 Teacher registration codes must be securely generated, preferably hashed, single-use, and invalidated after successful registration.
 
@@ -641,6 +820,48 @@ parent_registration_codes
  ├── used_at
  ├── created_by
  └── claimed_by_parent_id
+
+student_achievements
+ ├── student_id
+ ├── category
+ ├── title
+ ├── level
+ ├── award_position
+ ├── achievement_date
+ ├── description
+ ├── created_by
+ └── updated_by
+
+student_certificates
+ ├── student_id
+ ├── achievement_id (optional)
+ ├── title
+ ├── file_path
+ ├── file_type
+ ├── file_size
+ ├── uploaded_by
+ └── created_at
+
+student_academic_history
+ ├── student_id
+ ├── examination_type
+ ├── examination_year
+ ├── subject
+ ├── grade/result
+ ├── marks (optional)
+ ├── index/reference (optional)
+ ├── verification_status
+ └── recorded_by
+
+student_exit_records
+ ├── student_id
+ ├── status
+ ├── leaving_date
+ ├── final_grade/class
+ ├── reason (optional)
+ ├── report_reference
+ ├── generated_by
+ └── generated_at
 
 classes
 subjects
@@ -703,12 +924,14 @@ ssms/
 │   ├── layouts/
 │   ├── auth/
 │   ├── admin/
+│   ├── secretary/
 │   ├── teacher/
 │   ├── student/
 │   └── parent/
 └── storage/
     ├── logs/
-    └── cache/
+    ├── cache/
+    └── student-documents/
 ```
 
 This structure is a plan and may evolve during implementation.
@@ -724,14 +947,17 @@ This structure is a plan and may evolve during implementation.
 - [x] Define core modules
 - [x] Define technology stack
 - [x] Define timetable requirements
+- [x] Define automatic timetable matching and double-period requirements
 - [x] Define official UI theme
 - [x] Confirm scalable Student/Parent management through Secretary / Office Staff
 - [x] Confirm Teacher pre-registration workflow
 - [x] Confirm Student Code + Parent One-Time Code registration flow
 - [x] Confirm automatic parent-child linking
 - [x] Confirm multi-child Parent Dashboard linking
-- [x] Confirm automatic Class–Subject–Period timetable matching
-- [x] Confirm double-period timetable support
+- [x] Confirm Student Achievements & Certificates records
+- [x] Confirm O/L and A/L historical result records
+- [x] Confirm Student Leaving / Completion Report workflow
+- [x] Confirm Office Staff student-profile management permissions
 - [ ] Finalize database ERD
 - [ ] Finalize permission matrix
 
@@ -757,6 +983,7 @@ This structure is a plan and may evolve during implementation.
 - [ ] Parent Student Code + One-Time Code verification flow
 - [ ] Automatic parent-child linking during registration
 - [ ] Add Child verification flow for existing parent accounts
+- [ ] Server-side authorization for every student profile action
 
 ### Phase 4 — School Management
 
@@ -770,18 +997,16 @@ This structure is a plan and may evolve during implementation.
 - [ ] Academic years/terms
 - [ ] Student-parent linking
 - [ ] Student-generated parent registration code lifecycle
+- [ ] Student profile history
+- [ ] Student achievements and certificates
+- [ ] Historical O/L and A/L results
+- [ ] Student leaving/completion records
 
 ### Phase 5 — Academic Modules
 
-- [ ] Timetable
-- [ ] Automatic Class–Subject–Period matching engine
-- [ ] Subject weekly-period requirements
-- [ ] Teacher/class availability constraints
-- [ ] Single-period assignment support
-- [ ] Double-period assignment support
-- [ ] Automatic conflict detection and validation
-- [ ] Draft → Review → Published timetable workflow
-- [ ] Manual adjustment after automatic generation
+- [ ] Automatic timetable generation and class-subject-period matching
+- [ ] Double-period timetable support
+- [ ] Timetable conflict validation and publish workflow
 - [ ] Attendance
 - [ ] Examinations
 - [ ] Results
@@ -790,6 +1015,10 @@ This structure is a plan and may evolve during implementation.
 
 ### Phase 6 — Reports & UX
 
+- [ ] Student profile reports
+- [ ] Achievement/certificate reports
+- [ ] O/L and A/L result reports
+- [ ] Student Leaving / School Completion Report
 - [ ] Reports
 - [ ] Search/filtering
 - [ ] Dashboard statistics
@@ -801,9 +1030,13 @@ This structure is a plan and may evolve during implementation.
 - [ ] Security testing
 - [ ] Functional testing
 - [ ] Database integrity testing
+- [ ] Database/file upload security testing
 - [ ] Performance testing with large student datasets
 - [ ] Parent registration-code lifecycle testing
 - [ ] Multi-child linking testing
+- [ ] Achievement/certificate authorization testing
+- [ ] O/L/A/L historical-result validation testing
+- [ ] Student leaving/completion report testing
 - [ ] Automatic timetable generation testing
 - [ ] Timetable conflict and double-period testing
 - [ ] Deployment documentation
@@ -833,7 +1066,7 @@ MariaDB/MySQL
 
 This repository is currently the central planning and design document for SSMS. The application itself has not been built yet.
 
-The README defines the system scope, architecture, modules, timetable requirements, automatic timetable generation/matching rules, double-period support, official visual theme, role permissions, and registration/management workflows.
+The README defines the system scope, architecture, modules, timetable requirements, automatic timetable matching, official visual theme, role permissions, Office Staff workflows, student achievements/certificates, O/L/A/L historical results, and student leaving/completion reporting.
 
 ---
 
@@ -845,6 +1078,8 @@ Possible future capabilities:
 - Detailed analytics
 - Notification system
 - Printable reports
+- Digital student portfolio
+- Certificate/document verification workflows
 - Import/export tools
 - Backup and restore
 - PWA support
