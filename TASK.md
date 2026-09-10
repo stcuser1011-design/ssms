@@ -27,6 +27,7 @@
 ## 1.1 Requirements
 
 - [ ] Define all Admin requirements
+- [ ] Define all Secretary / Office Staff requirements
 - [ ] Define all Teacher requirements
 - [ ] Define all Student requirements
 - [ ] Define all Parent requirements
@@ -44,12 +45,15 @@
 
 - [ ] Create role/permission matrix
 - [ ] Define Admin permissions
+- [ ] Define Secretary / Office Staff permissions
 - [ ] Define Teacher permissions
 - [ ] Define Student permissions
 - [ ] Define Parent permissions
 - [ ] Define read/write/delete permissions
 - [ ] Define permissions for sensitive academic records
 - [ ] Define server-side authorization rules
+- [ ] Ensure Secretary cannot access Admin-only system settings or permission management
+- [ ] Ensure Student/Parent access is limited to authorized records
 
 ## 1.3 Database Design
 
@@ -61,18 +65,25 @@
 - [ ] Define timestamps/audit fields
 - [ ] Define soft-delete strategy if required
 - [ ] Review database relationships
+- [ ] Design `users`, `students`, `parents`, and `parent_student_links`
+- [ ] Design student class/academic-year relationships
+- [ ] Design Secretary role/permission relationships
 - [ ] Prepare migration SQL
 - [ ] Prepare seed/demo data
 
 ## 1.4 UX Planning
 
-- [ ] Define navigation structure
+- [ ] Define navigation structure for each role
 - [ ] Define Admin dashboard
+- [ ] Define Secretary / Office Staff dashboard
 - [ ] Define Teacher dashboard
 - [ ] Define Student dashboard
 - [ ] Define Parent dashboard
 - [ ] Define mobile navigation
 - [ ] Define common forms
+- [ ] Define student admission form
+- [ ] Define parent management form
+- [ ] Define parent ↔ student linking UI
 - [ ] Define table/list patterns
 - [ ] Define empty/loading/error states
 - [ ] Define confirmation dialogs
@@ -156,6 +167,7 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Define GET/POST routes
 - [ ] Define authentication routes
 - [ ] Define Admin routes
+- [ ] Define Secretary / Office Staff routes
 - [ ] Define Teacher routes
 - [ ] Define Student routes
 - [ ] Define Parent routes
@@ -171,6 +183,7 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Student controller
 - [ ] Teacher controller
 - [ ] Parent controller
+- [ ] Secretary / Office Staff controller or dedicated office controllers
 - [ ] Class controller
 - [ ] Subject controller
 - [ ] Academic controller
@@ -187,6 +200,7 @@ Use the approved SSMS blue/white visual direction.
 
 - [ ] Authentication and Authorization services
 - [ ] User, Student, Teacher, Parent services
+- [ ] Secretary / Office Staff service layer
 - [ ] Class, Subject, Timetable services
 - [ ] Attendance, Examination, Result services
 - [ ] Assignment, Notice, Report services
@@ -209,8 +223,9 @@ Use the approved SSMS blue/white visual direction.
 
 - [ ] Role middleware
 - [ ] Permission checks
-- [ ] Admin/Teacher/Student/Parent route protection
+- [ ] Admin/Secretary/Teacher/Student/Parent route protection
 - [ ] Prevent IDOR-style access to other users' records
+- [ ] Restrict Secretary to approved student/parent management permissions
 
 ## 5.3 Security Hardening
 
@@ -230,11 +245,17 @@ Use the approved SSMS blue/white visual direction.
 
 - [ ] Main application shell
 - [ ] Sidebar and top navigation
+- [ ] Role-aware navigation
 - [ ] User profile menu
 - [ ] Notification area
 - [ ] Page header/content container/footer where needed
-- [ ] Dashboard, Students, Teachers, Parents, Classes, Subjects navigation
-- [ ] Timetable, Examinations, Attendance, Assignments, Notices, Reports, Settings navigation
+- [ ] Dashboard navigation
+- [ ] Students navigation
+- [ ] Teachers navigation
+- [ ] Parents navigation
+- [ ] Classes/Subjects navigation
+- [ ] Timetable/Examinations/Attendance/Assignments/Notices/Reports/Settings navigation
+- [ ] Secretary-specific Students and Parents navigation
 - [ ] Global search UI
 - [ ] Toasts, loading states, form errors, confirmations
 - [ ] Empty, 404, 403, and 500 states
@@ -252,18 +273,77 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Role assignment
 - [ ] Profile management
 
-## 7.2 Student Management
+## 7.2 Secretary / Office Staff Management
+
+### Role Definition
+
+- [ ] Create `SECRETARY` / `OFFICE_STAFF` role
+- [ ] Allow Admin to create/activate Secretary accounts
+- [ ] Allow multiple Secretary / Office Staff accounts
+- [ ] Define granular permissions for student and parent management
+- [ ] Record Secretary actions in activity/audit logs
+
+### Secretary Responsibilities
+
+- [ ] Add new students
+- [ ] Edit student records
+- [ ] Search/filter students
+- [ ] Manage admission information
+- [ ] Assign students to grade/class/section
+- [ ] Manage student status
+- [ ] Add parent records
+- [ ] Edit parent contact information
+- [ ] Link parents to students
+- [ ] Support one parent with multiple children
+- [ ] Support multiple parents/guardians for one student where required
+- [ ] View permitted student/parent reports
+
+### Secretary Restrictions
+
+- [ ] Cannot manage Admin accounts
+- [ ] Cannot change system-wide permissions
+- [ ] Cannot manage security settings
+- [ ] Cannot access Admin-only configuration
+- [ ] Cannot manage Teacher pre-registration unless explicitly granted by Admin
+- [ ] Cannot modify protected academic records without explicit permission
+
+## 7.3 Student Management — Secretary Managed
+
+### Student Registration / Admission
+
+- [ ] Secretary can open **Students → Add Student**
+- [ ] Enter Admission / Student Number
+- [ ] Enter Full Name
+- [ ] Enter Date of Birth
+- [ ] Enter required demographic information
+- [ ] Select Academic Year
+- [ ] Select Grade
+- [ ] Select Class / Section
+- [ ] Enter address/contact information where required
+- [ ] Enter admission information
+- [ ] Set student status
+- [ ] Validate all information server-side
+- [ ] Prevent duplicate Student/Admission Number
+- [ ] Create the student record
+
+### Student Account
+
+- [ ] Define school policy for student login/account activation
+- [ ] Create or activate student account when required
+- [ ] Keep protected school/admission fields controlled by authorized staff
+- [ ] Student can access only their own information
+
+### Student Management
 
 - [ ] Student database table/model
-- [ ] Student registration
 - [ ] Student profile and ID/reference number
-- [ ] Admission information
 - [ ] Class assignment and status
 - [ ] Student search/filter/detail page
 - [ ] Academic history
 - [ ] Parent linking
+- [ ] Student record change audit trail
 
-## 7.3 Teacher Management — Pre-Registration + Self-Completion
+## 7.4 Teacher Management — Pre-Registration + Self-Completion
 
 ### Admin Pre-Registration
 
@@ -309,16 +389,38 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Class assignments
 - [ ] Teacher search/filter
 
-## 7.4 Parent Management
+## 7.5 Parent Management — Secretary Managed
 
-- [ ] Parent table/model
-- [ ] Parent profile/account
-- [ ] Parent contact details
-- [ ] Link parent to student
-- [ ] Multiple children support
-- [ ] Parent search/filter
+### Parent Registration / Account Creation
 
-## 7.5 Class Management
+- [ ] Secretary can open **Parents → Add Parent**
+- [ ] Enter Parent Full Name
+- [ ] Enter relationship to student
+- [ ] Enter phone number
+- [ ] Enter email where available
+- [ ] Enter address where required
+- [ ] Set parent/guardian status
+- [ ] Create or activate parent account according to school policy
+- [ ] Validate parent information server-side
+
+### Parent ↔ Student Linking
+
+- [ ] Secretary can link an existing parent to an existing student
+- [ ] Do not create duplicate parent accounts for additional children
+- [ ] Support one parent → multiple children
+- [ ] Support multiple parents/guardians → one student where required
+- [ ] Allow authorized Secretary to add/remove a relationship
+- [ ] Record relationship changes in the audit log
+
+### Parent Access
+
+- [ ] Parent sees only linked children
+- [ ] Parent can switch between linked children
+- [ ] Parent can view permitted attendance/results/timetable/assignments/notices
+- [ ] Parent cannot view unrelated students
+- [ ] Parent cannot modify protected academic records
+
+## 7.6 Class Management
 
 - [ ] Grade/class creation
 - [ ] Section creation
@@ -326,7 +428,7 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Student assignment
 - [ ] Class details/search/filter
 
-## 7.6 Subject Management
+## 7.7 Subject Management
 
 - [ ] Subject creation/editing
 - [ ] Subject code
@@ -334,7 +436,7 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Teacher-subject assignment
 - [ ] Subject search/filter
 
-## 7.7 Academic Year & Terms
+## 7.8 Academic Year & Terms
 
 - [ ] Academic year creation
 - [ ] Term creation
@@ -442,7 +544,7 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Create/edit/publish/unpublish/delete notices
 - [ ] Target all users, roles, or classes/sections
 - [ ] Notice list/detail pages
-- [ ] Student, Parent, and Teacher notice views
+- [ ] Student, Parent, Teacher, and Secretary notice views where permitted
 
 ---
 
@@ -454,6 +556,16 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Upcoming examinations
 - [ ] Recent activities/notices
 - [ ] Attendance chart and quick actions
+
+## Secretary / Office Staff
+- [ ] Total students
+- [ ] New admissions
+- [ ] Students by grade/class
+- [ ] Parent records
+- [ ] Parent-linking requests/tasks where used
+- [ ] Quick Add Student
+- [ ] Quick Add Parent
+- [ ] Recent student/parent changes
 
 ## Teacher
 - [ ] Today's classes
@@ -483,6 +595,7 @@ Use the approved SSMS blue/white visual direction.
 
 - [ ] Global search
 - [ ] Student/Teacher/Parent/Class/Subject search
+- [ ] Secretary student/parent search
 - [ ] Attendance/Result/Assignment/Notice filters
 - [ ] Pagination and sorting
 - [ ] AJAX/Fetch search where beneficial
@@ -496,6 +609,7 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Student profile/academic/attendance reports
 - [ ] Class student/attendance/result reports
 - [ ] Teacher workload/timetable/assignment reports
+- [ ] Parent/student relationship reports
 - [ ] Examination/subject/grade reports
 - [ ] Class and Teacher timetable print views
 - [ ] Printable HTML reports
@@ -512,6 +626,7 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Attendance settings
 - [ ] Result/grade settings
 - [ ] User settings
+- [ ] Role/permission settings
 - [ ] Notification settings
 - [ ] Theme settings
 - [ ] Dark mode if implemented
@@ -554,12 +669,14 @@ Email/SMS/push notifications are optional future extensions and should not block
 - [ ] Define audit log schema
 - [ ] Login activity
 - [ ] User changes
+- [ ] Secretary student/parent changes
 - [ ] Student record changes
 - [ ] Teacher registration/pre-registration activity
 - [ ] Attendance changes
 - [ ] Result changes
 - [ ] Timetable changes
 - [ ] Notice changes
+- [ ] Parent ↔ student relationship changes
 - [ ] Record who performed the action
 - [ ] Record timestamp
 - [ ] Restrict audit log access
@@ -570,12 +687,12 @@ Email/SMS/push notifications are optional future extensions and should not block
 
 - [ ] Add database indexes based on real queries
 - [ ] Avoid N+1 queries
-- [ ] Paginate large lists
-- [ ] Optimize dashboard queries
-- [ ] Minimize unnecessary AJAX requests
-- [ ] Optimize CSS/JS assets and images
-- [ ] Add caching where useful
-- [ ] Test with realistic school-sized data
+- [ ] Paginate large student/parent lists
+- [ ] Optimize search/filter queries
+- [ ] Test with 3000+ student records
+- [ ] Test with large parent/student relationship datasets
+- [ ] Cache appropriate read-heavy data if required
+- [ ] Optimize dashboard statistics
 
 ---
 
@@ -583,197 +700,198 @@ Email/SMS/push notifications are optional future extensions and should not block
 
 - [ ] Keyboard navigation
 - [ ] Visible focus states
-- [ ] Semantic HTML
-- [ ] Form labels
-- [ ] Accessible error messages
-- [ ] Sufficient text contrast
-- [ ] Responsive text sizing
-- [ ] Avoid color-only status indicators
-- [ ] Screen-reader-friendly important controls
+- [ ] Accessible form labels
+- [ ] Good text/background contrast
+- [ ] Error messages understandable without color alone
+- [ ] Touch-friendly mobile controls
+- [ ] Responsive student/parent/Secretary workflows
 
 ---
 
 # PHASE 22 — Testing
 
-## Functional Testing
+## Authentication & Roles
 
-- [ ] Authentication and authorization tests
-- [ ] Student CRUD tests
+- [ ] Test Admin login/permissions
+- [ ] Test Secretary login/permissions
+- [ ] Test Teacher login/permissions
+- [ ] Test Student login/permissions
+- [ ] Test Parent login/permissions
+- [ ] Verify unauthorized routes are blocked
+
+## Student Management
+
+- [ ] Student creation tests
+- [ ] Duplicate Student/Admission Number tests
+- [ ] Student editing tests
+- [ ] Class assignment tests
+- [ ] Search/filter tests
+- [ ] Large dataset tests with 3000+ students
+
+## Parent Management
+
+- [ ] Parent creation tests
+- [ ] Parent editing tests
+- [ ] Parent ↔ student linking tests
+- [ ] Multiple children tests
+- [ ] Multiple guardians tests where enabled
+- [ ] Verify parent cannot see unrelated students
+
+## Teacher Registration
+
 - [ ] Teacher pre-registration tests
 - [ ] Teacher name + secret-code verification tests
-- [ ] Teacher wrong-code/wrong-name rejection tests
-- [ ] Teacher single-use code tests
-- [ ] Teacher duplicate-registration prevention tests
+- [ ] Wrong-code/wrong-name rejection tests
+- [ ] Single-use code tests
+- [ ] Duplicate-registration prevention tests
 - [ ] Teacher account completion tests
-- [ ] Parent CRUD/linking tests
-- [ ] Class/Subject/Academic year tests
-- [ ] Timetable tests
+- [ ] Teacher registration-code security checks
+
+## Secretary Role
+
+- [ ] Secretary can add/edit students
+- [ ] Secretary can add/edit parents
+- [ ] Secretary can link parents and students
+- [ ] Secretary cannot access Admin-only settings
+- [ ] Secretary cannot change unauthorized roles/permissions
+- [ ] Secretary actions appear in audit logs
+
+## System Testing
+
+- [ ] Timetable conflict tests
 - [ ] Attendance tests
-- [ ] Examination/Result tests
+- [ ] Examination/result tests
 - [ ] Assignment tests
 - [ ] Notice tests
 - [ ] Report tests
-
-## Security Testing
-
-- [ ] SQL injection checks
-- [ ] XSS checks
-- [ ] CSRF checks
-- [ ] Session security checks
-- [ ] Authorization bypass checks
-- [ ] Teacher registration-code security checks
-- [ ] Direct URL access checks
-- [ ] Sensitive data exposure checks
-
-## UI/Data Testing
-
-- [ ] Desktop Chrome/Edge testing
-- [ ] Mobile browser testing
-- [ ] Tablet testing
-- [ ] Form validation testing
-- [ ] Navigation testing
-- [ ] Responsive layout testing
-- [ ] Foreign key integrity
-- [ ] Duplicate prevention
-- [ ] Required-field validation
-- [ ] Transaction rollback tests
-- [ ] Backup/restore tests
+- [ ] Security regression tests
+- [ ] Responsive/mobile tests
 
 ---
 
 # PHASE 23 — Deployment
 
-## Local
-
 - [ ] Apache configuration
 - [ ] PHP configuration
 - [ ] MariaDB/MySQL configuration
-- [ ] Database creation
-- [ ] Migration process
-- [ ] Seed/demo data process
-- [ ] Local virtual host setup
-
-## Production
-
-- [ ] Production server preparation
-- [ ] PHP version/extensions verification
-- [ ] Apache configuration
-- [ ] HTTPS configuration
-- [ ] Database configuration
-- [ ] File permissions
-- [ ] Environment configuration
-- [ ] Error logging
-- [ ] Disable debug mode
-
-## Backup
-
-- [ ] Database backup
-- [ ] File backup
-- [ ] Restore process
-- [ ] Backup documentation
-- [ ] Regular restoration tests
+- [ ] Production environment configuration
+- [ ] HTTPS where deployed publicly
+- [ ] Secure secrets/configuration
+- [ ] Database migrations
+- [ ] Initial admin account setup
+- [ ] Initial Secretary / Office Staff account setup
+- [ ] Backup strategy
+- [ ] Restore procedure
+- [ ] Production error logging
 
 ---
 
 # PHASE 24 — Documentation
 
-- [ ] Update `README.md`
-- [ ] Keep `TASK.md` updated
-- [ ] Installation/configuration/database guides
-- [ ] User/role documentation
+- [ ] Installation guide
+- [ ] Configuration guide
+- [ ] Database setup guide
 - [ ] Admin guide
-- [ ] Teacher guide including pre-registration and registration-code flow
+- [ ] Secretary / Office Staff guide
+- [ ] Teacher guide
 - [ ] Student guide
 - [ ] Parent guide
-- [ ] Deployment guide
+- [ ] Timetable guide
+- [ ] Attendance guide
+- [ ] Examination/result guide
 - [ ] Backup/restore guide
-- [ ] Troubleshooting guide
-- [ ] Security documentation
+- [ ] Security notes
 
 ---
 
 # PHASE 25 — Final Release Checklist
 
-- [ ] All core modules complete
-- [ ] All four roles tested
-- [ ] Teacher pre-registration flow tested end-to-end
-- [ ] Database schema finalized
-- [ ] Timetable engine validated
-- [ ] Attendance validated
-- [ ] Results validated
-- [ ] Reports validated
-- [ ] Security review complete
-- [ ] Responsive review complete
-- [ ] Accessibility review complete
-- [ ] Performance review complete
+- [ ] All core roles implemented
+- [ ] Admin permissions verified
+- [ ] Secretary / Office Staff permissions verified
+- [ ] Teacher pre-registration flow verified end-to-end
+- [ ] Student admission/registration flow verified end-to-end
+- [ ] Parent account creation flow verified end-to-end
+- [ ] Parent ↔ student linking verified
+- [ ] Multiple-child parent accounts verified
+- [ ] 3000+ student performance verified
+- [ ] Timetable requirements verified
+- [ ] Attendance verified
+- [ ] Examinations/results verified
+- [ ] Assignments verified
+- [ ] Notices verified
+- [ ] Reports verified
+- [ ] Security checks passed
+- [ ] Mobile/responsive checks passed
+- [ ] Documentation completed
 - [ ] Backup/restore tested
-- [ ] Production configuration tested
-- [ ] Documentation complete
-- [ ] Remove development/test accounts
-- [ ] Remove debug code
-- [ ] Review permissions
-- [ ] Create first stable release
 
 ---
 
 # Recommended Build Order
 
 ```text
-1. Planning
-   ↓
-2. Database + Architecture
-   ↓
-3. Project Foundation
-   ↓
-4. Authentication + Security
-   ↓
-5. Shared UI + Navigation
-   ↓
-6. Users / Students / Teachers / Parents
-   ↓
-7. Classes / Subjects / Academic Years
-   ↓
-8. Timetable
-   ↓
-9. Attendance
-   ↓
-10. Examinations + Results
-   ↓
-11. Assignments
-   ↓
-12. Notices
-   ↓
-13. Dashboards
-   ↓
-14. Search + Reports
-   ↓
-15. Settings + Notifications
-   ↓
-16. Testing + Security Review
-   ↓
-17. Deployment + Documentation
-   ↓
-18. Stable Release
+PLAN
+  ↓
+DATABASE + ARCHITECTURE
+  ↓
+PROJECT FOUNDATION
+  ↓
+AUTH + SECURITY + ROLES
+  ↓
+SHARED UI + NAVIGATION
+  ↓
+ADMIN + SECRETARY/OFFICE STAFF
+  ↓
+STUDENTS + PARENTS + LINKING
+  ↓
+TEACHERS + TEACHER REGISTRATION
+  ↓
+CLASSES + SUBJECTS + ACADEMIC YEARS
+  ↓
+TIMETABLE
+  ↓
+ATTENDANCE
+  ↓
+EXAMS + RESULTS
+  ↓
+ASSIGNMENTS
+  ↓
+NOTICES
+  ↓
+DASHBOARDS
+  ↓
+SEARCH + REPORTS
+  ↓
+SETTINGS + NOTIFICATIONS
+  ↓
+TESTING + SECURITY
+  ↓
+DEPLOYMENT + DOCUMENTATION
+  ↓
+RELEASE
 ```
 
 # Definition of Done
 
-A task is considered complete only when:
+A module is considered complete only when:
 
-- [ ] The feature works correctly
-- [ ] The feature follows the SSMS UI theme
-- [ ] Server-side validation exists where needed
-- [ ] Authorization is enforced
-- [ ] Database operations use safe queries
-- [ ] Errors are handled cleanly
-- [ ] Responsive behavior is checked
-- [ ] Related workflows are tested
-- [ ] Documentation is updated when behavior changes
+- [ ] UI is implemented according to the official theme
+- [ ] Backend logic is implemented
+- [ ] Database schema/queries are implemented
+- [ ] Validation is implemented
+- [ ] Authorization is implemented
+- [ ] Error states are handled
+- [ ] Responsive behavior is implemented
+- [ ] Security checks are implemented
+- [ ] Audit logging is added where appropriate
+- [ ] Tests are completed
+- [ ] Documentation is updated
 
 ---
 
-## Project Status
+# 📌 Current Status
 
-**Current stage: Planning / Task Breakdown**
+**Planning / Task Breakdown**
 
-This file is the master checklist for the future SSMS implementation. Checkboxes should be updated as development progresses. The project should be implemented incrementally rather than attempting to build the entire system in one step.
+The task file is the master implementation checklist. Student and Parent management is explicitly designed around the **Secretary / Office Staff role** so the system can scale to schools with 3000+ students without requiring the Admin to manually handle every student and parent record.
