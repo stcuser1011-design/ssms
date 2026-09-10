@@ -37,6 +37,10 @@
 - [ ] Define subject behavior
 - [ ] Define attendance rules
 - [ ] Define examination/result rules
+- [ ] Define O/L result record rules
+- [ ] Define A/L result record rules
+- [ ] Define student achievement and certificate rules
+- [ ] Define student leaving/completion rules
 - [ ] Define assignment rules
 - [ ] Define notice/announcement rules
 - [ ] Define reporting requirements
@@ -55,11 +59,16 @@
 - [ ] Define Parent permissions
 - [ ] Define read/write/delete permissions
 - [ ] Define permissions for sensitive academic records
+- [ ] Define permission for Office Staff to maintain student achievements/certificates
+- [ ] Define permission for Office Staff to maintain historical O/L/A/L records
+- [ ] Define permission for Office Staff to generate Student Leaving / Completion Reports
 - [ ] Define server-side authorization rules
 - [ ] Ensure Secretary cannot access Admin-only system settings or permission management
 - [ ] Ensure Student/Parent access is limited to authorized records
 - [ ] Define who can generate/reissue Parent One-Time Registration Codes
 - [ ] Define who can manually correct parent ↔ student links
+- [ ] Define who can change student status to `COMPLETED` / `LEFT`
+- [ ] Define who can delete/archive achievement and certificate records
 
 ## 1.3 Database Design
 
@@ -80,6 +89,13 @@
 - [ ] Track which parent account successfully claimed/used a code
 - [ ] Design student class/academic-year relationships
 - [ ] Design Secretary role/permission relationships
+- [ ] Design `student_achievements`
+- [ ] Design `student_certificates`
+- [ ] Design `student_academic_history`
+- [ ] Design O/L and A/L historical result records
+- [ ] Design `student_exit_records` / leaving-completion records
+- [ ] Design report/reference-number generation for student exit reports
+- [ ] Design secure student-document storage metadata
 - [ ] Prepare migration SQL
 - [ ] Prepare seed/demo data
 
@@ -99,6 +115,13 @@
 - [ ] Define parent ↔ student linking UI
 - [ ] Define Parent Dashboard child selector/cards
 - [ ] Define Parent Dashboard **Add Child** flow
+- [ ] Define Student Profile layout
+- [ ] Define Student Profile **Achievements & Certificates** section
+- [ ] Define Student Profile **Academic History** section
+- [ ] Define O/L results view/edit form for authorized Office Staff
+- [ ] Define A/L results view/edit form for authorized Office Staff
+- [ ] Define Student Leaving / Completion workflow
+- [ ] Define Student Leaving / Completion Report preview
 - [ ] Define code verification success/error/expired states
 - [ ] Define table/list patterns
 - [ ] Define empty/loading/error states
@@ -139,6 +162,10 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Tabs, pagination, breadcrumbs
 - [ ] Search bars and date/time controls
 - [ ] Loading indicators
+- [ ] Achievement badges/cards
+- [ ] Certificate/document preview components
+- [ ] Student profile timeline/history components
+- [ ] Report preview/download controls
 
 ## 2.4 Glassmorphism Rules
 
@@ -157,6 +184,9 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Mobile layout
 - [ ] Responsive sidebar/tables/forms/dashboards
 - [ ] Touch-friendly controls
+- [ ] Responsive Student Profile
+- [ ] Responsive achievement/certificate lists
+- [ ] Responsive report preview
 
 ---
 
@@ -189,6 +219,12 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Define Parent routes
 - [ ] Define Parent Registration routes
 - [ ] Define Parent Add Child / linking routes
+- [ ] Define Student Profile routes
+- [ ] Define Achievement/Certificate routes
+- [ ] Define Academic History routes
+- [ ] Define O/L and A/L history routes
+- [ ] Define Student Leaving / Completion routes
+- [ ] Define Report routes
 - [ ] Define API/AJAX routes if needed
 - [ ] Add route protection
 
@@ -204,6 +240,10 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Parent Registration controller/actions
 - [ ] Parent Child Linking controller/actions
 - [ ] Secretary / Office Staff controller or dedicated office controllers
+- [ ] Student Achievement controller
+- [ ] Student Certificate controller
+- [ ] Student Academic History controller
+- [ ] Student Exit / Leaving controller
 - [ ] Class controller
 - [ ] Subject controller
 - [ ] Academic controller
@@ -224,6 +264,14 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Student Code generation service
 - [ ] Parent Registration Code generation/verification service
 - [ ] Parent-child linking service
+- [ ] Student Profile service
+- [ ] Achievement management service
+- [ ] Certificate/document service
+- [ ] Historical academic record service
+- [ ] O/L result service
+- [ ] A/L result service
+- [ ] Student exit/completion service
+- [ ] Student report generation service
 - [ ] Class, Subject, Timetable services
 - [ ] Attendance, Examination, Result services
 - [ ] Assignment, Notice, Report services
@@ -254,6 +302,12 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Restrict Secretary to approved student/parent management permissions
 - [ ] Ensure parent child-switching is limited to linked students
 - [ ] Ensure Parent Add Child can only claim a student using a valid Student Code + matching unused One-Time Parent Code
+- [ ] Require server-side permission checks for every Student Profile update
+- [ ] Require permission checks for achievement creation/edit/delete
+- [ ] Require permission checks for certificate upload/download/delete
+- [ ] Require permission checks for historical O/L/A/L record changes
+- [ ] Require permission checks for Student Leaving / Completion status changes
+- [ ] Require permission checks for report generation and sensitive report downloads
 
 ## 5.3 Security Hardening
 
@@ -272,6 +326,11 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Invalidate a Parent One-Time Registration Code immediately after successful use
 - [ ] Prevent reuse of used/expired codes
 - [ ] Prevent a Student Code from being sufficient for account creation by itself
+- [ ] Validate certificate/document MIME type, extension, and size
+- [ ] Generate safe stored filenames for student documents
+- [ ] Prevent executable uploads
+- [ ] Store private student documents outside executable public paths where possible
+- [ ] Permission-check every private document download
 
 ---
 
@@ -290,6 +349,7 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Classes/Subjects navigation
 - [ ] Timetable/Examinations/Attendance/Assignments/Notices/Reports/Settings navigation
 - [ ] Secretary-specific Students and Parents navigation
+- [ ] Secretary-specific Student Profile management navigation
 - [ ] Global search UI
 - [ ] Parent Dashboard child selector
 - [ ] Parent Dashboard **Add Child** action
@@ -319,14 +379,27 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Define granular permissions for student and parent management
 - [ ] Record Secretary actions in activity/audit logs
 
+### Office Staff Login & Student Verification
+
+- [ ] Office Staff logs in using their own staff account
+- [ ] Do not require Office Staff to log in as the student
+- [ ] Provide **Students → Search Student** workflow
+- [ ] Search by Student Code
+- [ ] Search by Admission Number
+- [ ] Search by Student Name
+- [ ] Filter by Grade/Class/Section
+- [ ] Open student profile only after server-side role/permission verification
+- [ ] Treat Student Code as an identifier, not a password or permission credential
+- [ ] Display clear verified student identity before editing
+
 ### Secretary Responsibilities
 
 - [ ] Add new students
-- [ ] Edit student records
+- [ ] Edit permitted student profile information
 - [ ] Search/filter students
 - [ ] Manage admission information
 - [ ] Assign students to grade/class/section
-- [ ] Manage student status
+- [ ] Manage permitted student status
 - [ ] Generate a unique Student Code when a student is created
 - [ ] Generate a unique Parent One-Time Registration Code for the new student
 - [ ] Provide the Student Code and Parent Code to the student's parent/guardian through an approved channel
@@ -337,6 +410,15 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Link parents to students when authorized
 - [ ] Support one parent with multiple children
 - [ ] Support multiple parents/guardians for one student where required
+- [ ] Maintain student achievements and awards
+- [ ] Add/update student certificate records
+- [ ] Upload/replace permitted certificate documents
+- [ ] Maintain permitted historical academic records
+- [ ] Maintain O/L result records where permission is granted
+- [ ] Maintain A/L result records where permission is granted
+- [ ] Maintain other approved examination history
+- [ ] Generate permitted student profile reports
+- [ ] Generate Student Leaving / School Completion Reports
 - [ ] View permitted student/parent reports
 
 ### Secretary Restrictions
@@ -346,7 +428,10 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Cannot manage security settings
 - [ ] Cannot access Admin-only configuration
 - [ ] Cannot manage Teacher pre-registration unless explicitly granted by Admin
-- [ ] Cannot modify protected academic records without explicit permission
+- [ ] Cannot modify protected live examination/marks records without explicit permission
+- [ ] Cannot publish protected academic results without the required permission
+- [ ] Cannot bypass Student Profile authorization checks
+- [ ] Cannot access unrelated student records
 
 ## 7.3 Student Management — Secretary Managed
 
@@ -391,6 +476,97 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Parent registration-code status display
 - [ ] Parent registration-code reissue flow for authorized staff
 - [ ] Student record change audit trail
+- [ ] Student profile history/overview page
+
+### Student Profile — Achievements & Certificates
+
+- [ ] Add **Achievements & Certificates** section to student profile
+- [ ] Add achievement title
+- [ ] Add achievement category
+- [ ] Add level: School / Zonal / Provincial / National / International
+- [ ] Add event/competition name
+- [ ] Add position/award
+- [ ] Add achievement date
+- [ ] Add description
+- [ ] Support academic achievements
+- [ ] Support sports achievements
+- [ ] Support arts/aesthetic achievements
+- [ ] Support clubs/societies
+- [ ] Support Scouts/Cadets/Guides and similar activities
+- [ ] Support other configurable achievement categories
+- [ ] Link certificate/document to an achievement where appropriate
+- [ ] Allow authorized Office Staff to edit achievement records
+- [ ] Allow authorized Admin users to edit/delete achievement records
+- [ ] Record created_by/updated_by and timestamps
+- [ ] Show achievement history in student profile
+
+### Student Academic History
+
+- [ ] Add **Academic History** section to student profile
+- [ ] Support school/term examination history
+- [ ] Support historical examination records by academic year
+- [ ] Store subject, result/grade, and marks where applicable
+- [ ] Store examination type and year
+- [ ] Store index/reference number where required
+- [ ] Store verification/publication status where required
+- [ ] Record who entered/updated the historical record
+
+### G.C.E. O/L Results
+
+- [ ] Add dedicated O/L historical result workflow
+- [ ] Store O/L examination year
+- [ ] Store O/L index/reference number where required
+- [ ] Store subject and result/grade
+- [ ] Store marks if the school requires them
+- [ ] Store attempt information where applicable
+- [ ] Store result verification status
+- [ ] Allow authorized Office Staff to add/update O/L history
+- [ ] Allow Admin to review/correct O/L history
+- [ ] Prevent unauthorized changes to O/L records
+- [ ] Audit every O/L record change
+
+### G.C.E. A/L Results
+
+- [ ] Add dedicated A/L historical result workflow
+- [ ] Store A/L examination year
+- [ ] Store A/L index/reference number where required
+- [ ] Store stream where applicable
+- [ ] Store subject and result/grade
+- [ ] Store marks if the school requires them
+- [ ] Store attempt information where applicable
+- [ ] Store result verification status
+- [ ] Allow authorized Office Staff to add/update A/L history
+- [ ] Allow Admin to review/correct A/L history
+- [ ] Prevent unauthorized changes to A/L records
+- [ ] Audit every A/L record change
+
+### Student Leaving / Completion
+
+- [ ] Define student exit statuses such as `COMPLETED`, `LEFT`, or configured alternatives
+- [ ] Add authorized **Student Exit / Leaving** action
+- [ ] Capture leaving/completion date
+- [ ] Capture final grade/class
+- [ ] Capture academic years attended
+- [ ] Capture leaving reason where the school records one
+- [ ] Prevent accidental deletion of historical student data
+- [ ] Create a Student Records Archive state
+- [ ] Generate unique report/reference number
+- [ ] Generate Student Leaving / School Completion Report
+- [ ] Include student identity and Student Code
+- [ ] Include admission information
+- [ ] Include academic/examination summary
+- [ ] Include O/L results where applicable
+- [ ] Include A/L results where applicable
+- [ ] Include attendance summary
+- [ ] Include achievements and awards
+- [ ] Include certificates recorded in the system
+- [ ] Include permitted school activities/organizations
+- [ ] Include authorized officer details
+- [ ] Include generated date
+- [ ] Provide printable report view
+- [ ] Prepare PDF export capability
+- [ ] Restrict exit-status changes and report generation to authorized users
+- [ ] Preserve the student's historical profile after exit
 
 ## 7.4 Teacher Management — Pre-Registration + Self-Completion
 
@@ -523,18 +699,8 @@ Parent Dashboard
 - [ ] Scope timetable to the selected child
 - [ ] Scope assignments to the selected child
 - [ ] Scope notices to the selected child where applicable
+- [ ] Scope achievements/certificates to the selected child
 - [ ] Ensure switching children never exposes another student's data
-
-Example:
-
-```text
-Parent Account
-      │
-      ├── Student A — Grade 10A
-      ├── Student B — Grade 7B
-      ├── Student C — Grade 5C
-      └── Student D — Grade 3A
-```
 
 ### Parent Code Rules
 
@@ -566,6 +732,7 @@ Parent Account
 - [ ] Parent sees only linked children
 - [ ] Parent can switch between linked children
 - [ ] Parent can add another child only by providing the valid Student Code + One-Time Parent Registration Code for that child
+- [ ] Parent can view permitted achievements/certificates of linked children
 - [ ] Parent cannot edit protected academic records
 - [ ] Parent cannot view unrelated students
 - [ ] Multiple-child support is required
@@ -584,6 +751,8 @@ Parent Account
 - [ ] Subject code
 - [ ] Subject/class assignment
 - [ ] Teacher-subject assignment
+- [ ] Weekly required periods per class/subject
+- [ ] Double-period requirement where applicable
 - [ ] Subject search/filter
 
 ## 7.8 Academic Year & Terms
@@ -593,6 +762,29 @@ Parent Account
 - [ ] Active academic year/term
 - [ ] Historical academic periods
 - [ ] Prevent invalid overlapping active periods
+
+## 7.9 Student Achievements, Certificates & Academic Portfolio
+
+- [ ] Define achievement categories
+- [ ] Define achievement levels
+- [ ] Create achievement model/table
+- [ ] Create certificate/document model/table
+- [ ] Link certificates to achievements where appropriate
+- [ ] Support certificate title/date/category
+- [ ] Support certificate file metadata
+- [ ] Support safe certificate upload
+- [ ] Support certificate replacement/versioning where required
+- [ ] Support achievement edit history
+- [ ] Support academic portfolio view inside Student Profile
+- [ ] Include academic achievements
+- [ ] Include sports/arts/club/scouting achievements
+- [ ] Include competition awards
+- [ ] Include O/L results
+- [ ] Include A/L results
+- [ ] Include other configured examination history
+- [ ] Ensure students can view their own permitted portfolio
+- [ ] Ensure parents can view only linked children's permitted portfolio
+- [ ] Ensure Office Staff/Admin write permissions are server-side enforced
 
 ---
 
@@ -612,11 +804,19 @@ Parent Account
 
 ## 8.2 Timetable Data
 
-- [ ] Timetable schema
-- [ ] Class-period assignments
-- [ ] Teacher-period assignments
-- [ ] Subject-period assignments
-- [ ] Room/resource assignments if enabled
+- [ ] Design timetable schema
+- [ ] Define class-period assignments
+- [ ] Define teacher-period assignments
+- [ ] Define subject-period assignments
+- [ ] Define room/resource assignments if enabled
+- [ ] Define weekly subject-period requirements
+- [ ] Define teacher availability
+- [ ] Define class availability
+- [ ] Define room/resource availability if enabled
+- [ ] Define single-period lesson blocks
+- [ ] Define double-period lesson blocks
+- [ ] Ensure double periods cannot cross the interval
+- [ ] Define timetable status: `DRAFT`, `REVIEW`, `PUBLISHED`
 
 ## 8.3 Conflict Detection
 
@@ -625,6 +825,12 @@ Parent Account
 - [ ] Subject conflict validation
 - [ ] Room/resource conflict detection
 - [ ] Duplicate period prevention
+- [ ] Weekly subject-period count validation
+- [ ] Teacher availability validation
+- [ ] Class availability validation
+- [ ] Interval boundary validation
+- [ ] Double-period two-slot conflict detection
+- [ ] Double-period consecutive-slot validation
 - [ ] Clear conflict messages
 
 ## 8.4 Timetable UI
@@ -634,17 +840,91 @@ Parent Account
 - [ ] Teacher timetable
 - [ ] Student timetable
 - [ ] Parent timetable view
+- [ ] Admin automatic generator screen
+- [ ] Generated draft review screen
+- [ ] Conflict display/highlighting
 - [ ] Admin timetable editor
+- [ ] Manual single-period adjustment
+- [ ] Manual double-period adjustment
 - [ ] Mobile timetable view
 - [ ] Print-friendly timetable
 
-## 8.5 Future Automation
+## 8.5 Automatic Class–Subject–Period Matching Engine
 
-- [ ] Define timetable generation constraints
-- [ ] Define optimization rules
-- [ ] Prototype automatic timetable generator
-- [ ] Validate generated timetable
+### Input Collection
+
+- [ ] Collect classes/sections
+- [ ] Collect subjects
+- [ ] Collect teacher-subject assignments
+- [ ] Collect weekly required periods for each class/subject
+- [ ] Collect teacher availability
+- [ ] Collect class availability
+- [ ] Collect room/resource availability where enabled
+- [ ] Collect double-period requirements
+- [ ] Validate that all required input data exists before generation
+
+### Hard Constraints
+
+- [ ] A teacher cannot teach two classes in the same period
+- [ ] A class cannot have two subjects in the same period
+- [ ] A room/resource cannot be double-booked
+- [ ] A teacher cannot be scheduled outside availability
+- [ ] A class cannot be scheduled outside availability
+- [ ] Interval cannot contain a teaching assignment
+- [ ] Double periods require two consecutive available periods
+- [ ] Double periods cannot cross the interval
+- [ ] Required weekly subject periods must be satisfied
+- [ ] Duplicate class-subject-period assignments are forbidden
+
+### Soft Constraints / Optimization
+
+- [ ] Balance teacher workloads where possible
+- [ ] Balance class workloads across the week
+- [ ] Avoid unnecessary consecutive same-subject lessons
+- [ ] Prefer sensible distribution of subject periods across days
+- [ ] Respect configured subject scheduling preferences
+- [ ] Prefer suitable placement of double periods
+- [ ] Score candidate timetables
+- [ ] Keep the best valid candidate found
+
+### Generation Process
+
+```text
+Collect Inputs
+      ↓
+Validate Requirements
+      ↓
+Build Available Slots
+      ↓
+Place Hardest / Most Constrained Lessons First
+      ↓
+Reserve Double-Period Blocks
+      ↓
+Match Teacher + Class + Subject
+      ↓
+Validate Conflicts
+      ↓
+Score / Optimize Candidate
+      ↓
+Generate DRAFT
+      ↓
+Admin Review
+      ↓
+Manual Adjustment if Needed
+      ↓
+Final Conflict Validation
+      ↓
+PUBLISH
+```
+
+- [ ] Prototype automatic generator
+- [ ] Support regeneration of draft timetable
+- [ ] Explain unsatisfied constraints when a valid timetable cannot be generated
+- [ ] Never silently publish an incomplete or conflicting timetable
+- [ ] Validate generated timetable before saving/publishing
 - [ ] Allow manual adjustment after generation
+- [ ] Re-run final conflict validation after manual changes
+- [ ] Publish only a conflict-free validated timetable
 
 ---
 
@@ -661,6 +941,7 @@ Parent Account
 - [ ] Daily/monthly/term summaries
 - [ ] Class attendance statistics
 - [ ] Parent and Student attendance views
+- [ ] Include attendance summary in authorized Student Leaving / Completion Report
 
 ---
 
@@ -676,6 +957,45 @@ Parent Account
 - [ ] Subject and overall result calculation
 - [ ] Student and Parent result views
 - [ ] Printable result report
+
+### Historical Academic Results
+
+- [ ] Create historical academic result model/service
+- [ ] Allow authorized Office Staff to record historical results without changing protected live marks workflows
+- [ ] Store examination type
+- [ ] Store examination year
+- [ ] Store subject
+- [ ] Store grade/result
+- [ ] Store marks where required
+- [ ] Store index/reference number where required
+- [ ] Store attempt information where applicable
+- [ ] Store verification status
+- [ ] Store who recorded/updated the result
+
+### G.C.E. O/L Results
+
+- [ ] O/L result entry form
+- [ ] O/L result list by student
+- [ ] O/L subject/result validation
+- [ ] O/L examination year
+- [ ] O/L index/reference where required
+- [ ] O/L attempt handling where required
+- [ ] O/L historical result report
+- [ ] O/L result audit logging
+- [ ] O/L permission checks
+
+### G.C.E. A/L Results
+
+- [ ] A/L result entry form
+- [ ] A/L result list by student
+- [ ] A/L subject/result validation
+- [ ] A/L examination year
+- [ ] A/L index/reference where required
+- [ ] A/L stream handling where required
+- [ ] A/L attempt handling where required
+- [ ] A/L historical result report
+- [ ] A/L result audit logging
+- [ ] A/L permission checks
 
 ---
 
@@ -706,6 +1026,8 @@ Parent Account
 - [ ] Upcoming examinations
 - [ ] Recent activities/notices
 - [ ] Attendance chart and quick actions
+- [ ] Achievement/certificate overview where useful
+- [ ] Student leaving/completion statistics where useful
 
 ## Secretary / Office Staff
 - [ ] Total students
@@ -717,6 +1039,10 @@ Parent Account
 - [ ] Quick Add Student
 - [ ] Quick Add Parent
 - [ ] Recent student/parent changes
+- [ ] Quick Student Profile search
+- [ ] Achievement/certificate quick actions
+- [ ] O/L/A/L historical-result quick actions where permitted
+- [ ] Student leaving/completion quick actions
 
 ## Teacher
 - [ ] Today's classes
@@ -731,6 +1057,9 @@ Parent Account
 - [ ] Assignments
 - [ ] Results
 - [ ] Notices
+- [ ] Achievements
+- [ ] Certificates
+- [ ] Academic history where permitted
 
 ## Parent
 - [ ] Linked children
@@ -743,6 +1072,7 @@ Parent Account
 - [ ] Timetable for selected child
 - [ ] Assignments for selected child
 - [ ] Notices for selected child where applicable
+- [ ] Achievements/certificates for selected child where permitted
 - [ ] Clear success/error feedback when adding a child
 
 ---
@@ -752,6 +1082,13 @@ Parent Account
 - [ ] Global search
 - [ ] Student/Teacher/Parent/Class/Subject search
 - [ ] Secretary student/parent search
+- [ ] Student Profile search
+- [ ] Search by Student Code
+- [ ] Search by Admission Number
+- [ ] Search by student name
+- [ ] Search/filter achievements
+- [ ] Search/filter certificates
+- [ ] Search/filter O/L/A/L records
 - [ ] Attendance/Result/Assignment/Notice filters
 - [ ] Pagination and sorting
 - [ ] AJAX/Fetch search where beneficial
@@ -768,10 +1105,20 @@ Parent Account
 - [ ] Teacher workload/timetable/assignment reports
 - [ ] Parent/student relationship reports
 - [ ] Examination/subject/grade reports
+- [ ] O/L result reports
+- [ ] A/L result reports
+- [ ] Student achievement reports
+- [ ] Certificate lists/reports
+- [ ] Student portfolio report
+- [ ] Student Leaving / School Completion Report
+- [ ] Include O/L/A/L history in leaving report where applicable
+- [ ] Include attendance summary in leaving report
+- [ ] Include achievements/certificates in leaving report
 - [ ] Class and Teacher timetable print views
 - [ ] Printable HTML reports
 - [ ] CSV export where useful
 - [ ] PDF export if required later
+- [ ] Unique report/reference number for formal Student Leaving / Completion Reports
 
 ---
 
@@ -784,6 +1131,11 @@ Parent Account
 - [ ] Result/grade settings
 - [ ] User settings
 - [ ] Role/permission settings
+- [ ] Achievement category settings
+- [ ] Achievement level settings
+- [ ] Certificate/document upload settings
+- [ ] Student exit-status settings
+- [ ] Student report settings
 - [ ] Notification settings
 - [ ] Theme settings
 - [ ] Dark mode if implemented
@@ -803,6 +1155,7 @@ Parent Account
 - [ ] Notice notifications
 - [ ] Attendance notifications if required
 - [ ] Optional notification when a parent successfully links a new child
+- [ ] Optional notification when an achievement/certificate is added if school policy requires it
 
 Email/SMS/push notifications are optional future extensions and should not block the core system.
 
@@ -820,6 +1173,12 @@ Email/SMS/push notifications are optional future extensions and should not block
 - [ ] Assignment attachments if required
 - [ ] Profile images if required
 - [ ] Notice attachments if required
+- [ ] Student certificate uploads
+- [ ] Student achievement supporting documents
+- [ ] O/L/A/L supporting result documents where permitted
+- [ ] Student Leaving / Completion supporting documents where permitted
+- [ ] Keep private student documents access-controlled
+- [ ] Log sensitive document uploads/replacements/deletions
 
 ---
 
@@ -837,6 +1196,12 @@ Email/SMS/push notifications are optional future extensions and should not block
 - [ ] Teacher registration/pre-registration activity
 - [ ] Attendance changes
 - [ ] Result changes
+- [ ] O/L result changes
+- [ ] A/L result changes
+- [ ] Achievement creation/update/delete events
+- [ ] Certificate upload/replacement/delete events
+- [ ] Student exit/completion status changes
+- [ ] Student Leaving / Completion Report generation events
 - [ ] Timetable changes
 - [ ] Notice changes
 - [ ] Parent ↔ student relationship changes
@@ -855,6 +1220,8 @@ Email/SMS/push notifications are optional future extensions and should not block
 - [ ] Test with 3000+ student records
 - [ ] Test with large parent/student relationship datasets
 - [ ] Test parent dashboard with multiple linked children
+- [ ] Test Student Profile with large academic/achievement histories
+- [ ] Test large certificate/document lists
 - [ ] Cache appropriate read-heavy data if required
 - [ ] Optimize dashboard statistics
 
@@ -871,6 +1238,9 @@ Email/SMS/push notifications are optional future extensions and should not block
 - [ ] Responsive student/parent/Secretary workflows
 - [ ] Accessible Parent Registration form
 - [ ] Accessible Add Child flow
+- [ ] Accessible Student Profile
+- [ ] Accessible achievement/certificate controls
+- [ ] Accessible report preview/download controls
 
 ---
 
@@ -894,7 +1264,48 @@ Email/SMS/push notifications are optional future extensions and should not block
 - [ ] Search/filter tests
 - [ ] Student Code generation tests
 - [ ] Parent One-Time Registration Code generation tests
+- [ ] Student Profile authorization tests
+- [ ] Student Profile IDOR/access-control tests
 - [ ] Large dataset tests with 3000+ students
+
+## Achievements & Certificates
+
+- [ ] Achievement creation tests
+- [ ] Achievement editing tests
+- [ ] Achievement category/level validation tests
+- [ ] Achievement permission tests
+- [ ] Certificate upload tests
+- [ ] Certificate MIME/extension/size validation tests
+- [ ] Certificate download authorization tests
+- [ ] Certificate replacement/delete permission tests
+- [ ] Student can view only own permitted achievements/certificates
+- [ ] Parent can view only linked child's permitted achievements/certificates
+- [ ] Audit logging tests for achievement/certificate changes
+
+## Historical O/L / A/L Results
+
+- [ ] O/L result creation tests
+- [ ] O/L result validation tests
+- [ ] O/L permission tests
+- [ ] O/L audit logging tests
+- [ ] A/L result creation tests
+- [ ] A/L result validation tests
+- [ ] A/L permission tests
+- [ ] A/L audit logging tests
+- [ ] Historical result report tests
+- [ ] Verify Office Staff cannot bypass protected live marks/result workflows
+
+## Student Leaving / Completion
+
+- [ ] Student exit-status authorization tests
+- [ ] Leaving/completion date validation tests
+- [ ] Leaving report reference-number tests
+- [ ] Leaving report data completeness tests
+- [ ] Verify O/L/A/L results appear correctly where applicable
+- [ ] Verify attendance summary appears correctly
+- [ ] Verify achievements/certificates appear correctly
+- [ ] Verify archived student history remains accessible to authorized users
+- [ ] Verify unauthorized users cannot generate/download sensitive reports
 
 ## Parent Management
 
@@ -930,19 +1341,38 @@ Email/SMS/push notifications are optional future extensions and should not block
 
 ## Secretary Role
 
-- [ ] Secretary can add/edit students
-- [ ] Secretary can add/edit parents
+- [ ] Secretary login works with their own staff account
+- [ ] Secretary can search students by Student Code
+- [ ] Secretary can search students by Admission Number
+- [ ] Secretary can search students by name
+- [ ] Secretary can open authorized student profiles
+- [ ] Secretary can add/edit permitted student profile fields
 - [ ] Secretary can generate Student Codes
 - [ ] Secretary can generate/reissue Parent One-Time Registration Codes where permitted
 - [ ] Secretary can view code status without exposing stored raw codes
 - [ ] Secretary can link parents and students when authorized
+- [ ] Secretary can add/edit achievements where permitted
+- [ ] Secretary can add/edit certificate records where permitted
+- [ ] Secretary can upload certificate documents where permitted
+- [ ] Secretary can add/edit O/L results where permitted
+- [ ] Secretary can add/edit A/L results where permitted
+- [ ] Secretary can generate Student Leaving / Completion Reports where permitted
 - [ ] Secretary cannot access Admin-only settings
 - [ ] Secretary cannot change unauthorized roles/permissions
+- [ ] Secretary cannot bypass protected academic permissions
 - [ ] Secretary actions appear in audit logs
 
 ## System Testing
 
 - [ ] Timetable conflict tests
+- [ ] Automatic timetable generation tests
+- [ ] Impossible-schedule/unsatisfied-constraint tests
+- [ ] Double-period generation tests
+- [ ] Double-period interval-boundary tests
+- [ ] Double-period teacher/class conflict tests
+- [ ] Timetable weekly subject-count tests
+- [ ] Draft → Review → Published workflow tests
+- [ ] Manual timetable adjustment + revalidation tests
 - [ ] Attendance tests
 - [ ] Examination/result tests
 - [ ] Assignment tests
@@ -964,6 +1394,7 @@ Email/SMS/push notifications are optional future extensions and should not block
 - [ ] Database migrations
 - [ ] Initial admin account setup
 - [ ] Initial Secretary / Office Staff account setup
+- [ ] Private student-document storage configuration
 - [ ] Backup strategy
 - [ ] Restore procedure
 - [ ] Production error logging
@@ -977,6 +1408,11 @@ Email/SMS/push notifications are optional future extensions and should not block
 - [ ] Database setup guide
 - [ ] Admin guide
 - [ ] Secretary / Office Staff guide
+- [ ] Office Staff Student Profile guide
+- [ ] Achievement & Certificate guide
+- [ ] O/L result management guide
+- [ ] A/L result management guide
+- [ ] Student Leaving / Completion Report guide
 - [ ] Teacher guide
 - [ ] Student guide
 - [ ] Parent guide
@@ -984,6 +1420,8 @@ Email/SMS/push notifications are optional future extensions and should not block
 - [ ] Add Child guide
 - [ ] Parent Code reissue guide for authorized staff
 - [ ] Timetable guide
+- [ ] Automatic timetable generation guide
+- [ ] Double-period timetable guide
 - [ ] Attendance guide
 - [ ] Examination/result guide
 - [ ] Backup/restore guide
@@ -996,6 +1434,8 @@ Email/SMS/push notifications are optional future extensions and should not block
 - [ ] All core roles implemented
 - [ ] Admin permissions verified
 - [ ] Secretary / Office Staff permissions verified
+- [ ] Office Staff student-profile workflow verified
+- [ ] Office Staff student verification/search workflow verified
 - [ ] Teacher pre-registration flow verified end-to-end
 - [ ] Student admission/registration flow verified end-to-end
 - [ ] Student Code generation verified end-to-end
@@ -1010,8 +1450,17 @@ Email/SMS/push notifications are optional future extensions and should not block
 - [ ] One-time codes cannot be reused
 - [ ] Parent cannot claim a student using Student Code alone
 - [ ] Parent can only access linked children
+- [ ] Student achievements module verified
+- [ ] Certificate upload/download permissions verified
+- [ ] O/L historical result workflow verified
+- [ ] A/L historical result workflow verified
+- [ ] Student Leaving / Completion Report verified
+- [ ] Student records archive verified
 - [ ] 3000+ student performance verified
-- [ ] Timetable requirements verified
+- [ ] Timetable automatic matching requirements verified
+- [ ] Double-period timetable support verified
+- [ ] Timetable conflict validation verified
+- [ ] Timetable publish guard verified
 - [ ] Attendance verified
 - [ ] Examinations/results verified
 - [ ] Assignments verified
@@ -1041,6 +1490,10 @@ ADMIN + SECRETARY/OFFICE STAFF
   ↓
 STUDENTS + STUDENT CODES
   ↓
+STUDENT PROFILES + ACHIEVEMENTS + CERTIFICATES
+  ↓
+HISTORICAL O/L + A/L RESULTS
+  ↓
 PARENT REGISTRATION + ONE-TIME CODES
   ↓
 AUTOMATIC FIRST-CHILD LINKING
@@ -1051,11 +1504,13 @@ TEACHERS + TEACHER REGISTRATION
   ↓
 CLASSES + SUBJECTS + ACADEMIC YEARS
   ↓
-TIMETABLE
+TIMETABLE AUTO-GENERATION + DOUBLE PERIODS
   ↓
 ATTENDANCE
   ↓
 EXAMS + RESULTS
+  ↓
+STUDENT LEAVING / COMPLETION REPORTS
   ↓
 ASSIGNMENTS
   ↓
@@ -1099,3 +1554,5 @@ A module is considered complete only when:
 The task file is the master implementation checklist. Student and Parent management is explicitly designed around the **Secretary / Office Staff role** so the system can scale to schools with 3000+ students without requiring the Admin to manually handle every student and parent record.
 
 The confirmed Parent registration architecture uses a **Student Code + One-Time Parent Registration Code**. The first successful parent registration automatically links the child to the newly created parent account. After login, the Parent Dashboard provides **+ Add Child**, where the parent enters the next child's Student Code + One-Time Parent Registration Code and the system automatically adds that child to the same parent account. The design supports 2nd, 3rd, 4th, and additional children without creating duplicate parent accounts or imposing an artificial child-count limit.
+
+The confirmed Student Profile architecture now preserves a student's long-term school history, including **achievements, certificates, historical examination records, G.C.E. O/L results, G.C.E. A/L results, and Student Leaving / School Completion information**. Authorized Office Staff can maintain permitted profile/history records, while protected live academic workflows remain controlled by their designated permissions. All sensitive changes must be authorization-checked and auditable.
