@@ -418,11 +418,69 @@ The mobile interface should feel like an application rather than a desktop page 
 
 ## Teacher Management
 
-- Teacher profiles/accounts
-- Subject assignments
-- Class assignments
-- Timetable assignments
-- Teacher status
+Teachers use a **pre-registration + self-completion** flow. A teacher cannot create an unrestricted public account.
+
+### Teacher Pre-Registration
+
+1. Admin opens **Teachers → Pre-Register Teacher**.
+2. Admin enters the teacher's **full name**.
+3. SSMS automatically generates a unique random **secret registration code**.
+4. The pre-registration is stored with `PENDING` status.
+5. Admin securely shares the generated code with that teacher.
+
+Example:
+
+```text
+Teacher: Kamal Perera
+Secret Code: TCH-7K9P-X4Q2
+Status: PENDING
+```
+
+### Teacher Registration
+
+On the Teacher Registration page, the teacher must first enter:
+
+- Pre-registered Full Name
+- Secret Registration Code
+
+SSMS must verify that **both values match the same pending pre-registration record**.
+
+If verification succeeds, the remaining teacher registration fields become available, for example:
+
+- Email
+- Phone number
+- Address
+- Date of birth
+- Qualification
+- Username
+- Password
+- Other approved profile information
+
+The verified pre-registered full name should remain locked so the registration cannot be transferred to another teacher name.
+
+### Registration Completion
+
+```text
+Admin Pre-Registers Teacher
+          ↓
+System Generates Unique Secret Code
+          ↓
+Admin Shares Code with Teacher
+          ↓
+Teacher Enters Full Name + Secret Code
+          ↓
+SSMS Verifies Both Against PENDING Record
+          ↓
+Teacher Completes Remaining Information
+          ↓
+Account Created
+          ↓
+Pre-registration → REGISTERED
+          ↓
+Teacher Can Login
+```
+
+The secret registration code should be **one-time use**. After successful registration it becomes invalid and cannot create another account. It should be securely generated and preferably stored as a hash. An optional expiry time may be supported.
 
 ## Parent Management
 
@@ -539,6 +597,10 @@ Planned protections:
 - Secure file handling if uploads are introduced
 - Login protections where appropriate
 - Never expose database credentials to frontend code
+- Secure generation and storage of teacher secret registration codes
+- Teacher registration codes must be single-use
+- Teacher registration must verify both full name and secret code
+- A registration code must never grant access to another teacher's account
 
 ---
 
@@ -549,6 +611,14 @@ users
  ├── teachers
  ├── students
  └── parents
+
+teacher_pre_registrations
+ ├── full_name
+ ├── secret_code_hash
+ ├── status
+ ├── expires_at
+ ├── registered_at
+ └── teacher_id
 
 classes
 subjects
@@ -626,6 +696,7 @@ This structure is a plan and may evolve during implementation.
 - [x] Define official UI theme
 - [ ] Finalize database ERD
 - [ ] Finalize permission matrix
+- [ ] Finalize teacher pre-registration and secret-code workflow
 
 ### Phase 2 — Foundation
 
@@ -643,6 +714,7 @@ This structure is a plan and may evolve during implementation.
 - [ ] Password hashing
 - [ ] Session handling
 - [ ] Role-based authorization
+- [ ] Teacher registration verification flow
 
 ### Phase 4 — School Management
 
@@ -720,7 +792,7 @@ SSMS should also be usable on a school local network when internet access is una
 
 This repository is currently the central planning and design document for SSMS. The application itself has not been built yet.
 
-The README defines the system scope, architecture, modules, timetable requirements, and official visual theme that should guide future development.
+The README defines the system scope, architecture, modules, timetable requirements, registration workflows, and official visual theme that should guide future development.
 
 ---
 
