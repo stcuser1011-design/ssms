@@ -130,7 +130,92 @@ The timetable must be highly readable and responsive.
 - Interval: **10:30 AM – 10:50 AM**
 - School ends at **1:30 PM**
 
-The timetable system should prevent teacher, class, subject, room/resource, and period conflicts.
+### Automatic Class–Subject–Period Matching
+
+SSMS must support an **automatic timetable generation and matching system**. Admin should not have to manually select every Class + Subject + Teacher + Period combination.
+
+The system should use configured academic data such as:
+
+- Classes / sections
+- Subjects
+- Teacher-subject assignments
+- Required periods per subject per week
+- Teacher availability
+- Class availability
+- School days and periods
+- Room/resource availability where enabled
+- Teacher workload constraints
+- Subject scheduling rules
+
+The automatic generator should build a **DRAFT timetable**, validate it, and present it to the Admin for review before publication.
+
+```text
+Classes + Subjects + Teachers
+             ↓
+Subject Period Requirements
+             ↓
+Availability + Scheduling Rules
+             ↓
+Automatic Matching Engine
+             ↓
+Conflict Detection
+             ↓
+Generated DRAFT Timetable
+             ↓
+Admin Review / Manual Adjustment
+             ↓
+Final Conflict Check
+             ↓
+PUBLISH
+```
+
+### Timetable Matching Rules
+
+The generator must prevent or minimize:
+
+- Teacher conflicts — one teacher cannot teach two classes in the same period.
+- Class conflicts — one class cannot have two subjects in the same period.
+- Room/resource conflicts when rooms/resources are enabled.
+- Duplicate assignments for the same class, subject, and period.
+- Incorrect weekly subject-period counts.
+- Invalid assignments during the school interval.
+- Unavailable teacher/class periods.
+- Unbalanced teacher workloads where the configured rules allow optimization.
+
+The generator should prefer a well-balanced timetable rather than simply filling empty cells randomly.
+
+### Double Period Support
+
+A subject may require **double periods** (two consecutive periods treated as one longer lesson block). Double periods are a first-class timetable requirement, not an exception.
+
+For example:
+
+```text
+Monday
+Period 3 + Period 4 → Science (Double Period)
+```
+
+The automatic matching engine must reserve both consecutive periods together, ensure the teacher and class are available for both, and prevent another assignment from occupying either slot.
+
+Admin should also be able to manually create or adjust double-period blocks after automatic generation. The system must validate double-period conflicts in the same way as normal single-period assignments.
+
+### Timetable States
+
+- `DRAFT` — generated or edited but not visible to normal users.
+- `REVIEW` — ready for Admin review and adjustment.
+- `PUBLISHED` — approved timetable visible to authorized Teachers, Students, and Parents.
+
+Only a conflict-validated timetable should be publishable.
+
+### Timetable Views
+
+- Admin — automatic generator, draft review, manual adjustment, conflict display, and publish controls.
+- Teacher — personal teaching timetable.
+- Student — own class timetable.
+- Parent — selected child's timetable.
+- Desktop — weekly grid with days and periods.
+- Mobile — day/card-based timetable view.
+- Print — print-friendly class and teacher timetable.
 
 ## 📱 Responsive Design
 
@@ -567,6 +652,15 @@ teacher_subject_assignments
 parent_student_links
 
 timetable
+ ├── class_id
+ ├── subject_id
+ ├── teacher_id
+ ├── day
+ ├── period_start
+ ├── period_end
+ ├── is_double_period
+ └── status
+
 attendance
 examinations
 exam_results
@@ -577,7 +671,7 @@ settings
 activity_logs
 ```
 
-The final database schema will be designed before implementation. Parent registration codes must be associated with a student and tracked independently from the parent account so the first successful registration can claim the child and later codes can add further children to the same parent account.
+The final database schema will be designed before implementation. Parent registration codes must be associated with a student and tracked independently from the parent account so the first successful registration can claim the child and later codes can add further children to the same parent account. Timetable records must support both single-period assignments and consecutive double-period blocks.
 
 ---
 
@@ -636,6 +730,8 @@ This structure is a plan and may evolve during implementation.
 - [x] Confirm Student Code + Parent One-Time Code registration flow
 - [x] Confirm automatic parent-child linking
 - [x] Confirm multi-child Parent Dashboard linking
+- [x] Confirm automatic Class–Subject–Period timetable matching
+- [x] Confirm double-period timetable support
 - [ ] Finalize database ERD
 - [ ] Finalize permission matrix
 
@@ -678,6 +774,14 @@ This structure is a plan and may evolve during implementation.
 ### Phase 5 — Academic Modules
 
 - [ ] Timetable
+- [ ] Automatic Class–Subject–Period matching engine
+- [ ] Subject weekly-period requirements
+- [ ] Teacher/class availability constraints
+- [ ] Single-period assignment support
+- [ ] Double-period assignment support
+- [ ] Automatic conflict detection and validation
+- [ ] Draft → Review → Published timetable workflow
+- [ ] Manual adjustment after automatic generation
 - [ ] Attendance
 - [ ] Examinations
 - [ ] Results
@@ -700,6 +804,8 @@ This structure is a plan and may evolve during implementation.
 - [ ] Performance testing with large student datasets
 - [ ] Parent registration-code lifecycle testing
 - [ ] Multi-child linking testing
+- [ ] Automatic timetable generation testing
+- [ ] Timetable conflict and double-period testing
 - [ ] Deployment documentation
 - [ ] Backup/restore documentation
 
@@ -727,7 +833,7 @@ MariaDB/MySQL
 
 This repository is currently the central planning and design document for SSMS. The application itself has not been built yet.
 
-The README defines the system scope, architecture, modules, timetable requirements, official visual theme, role permissions, and registration/management workflows.
+The README defines the system scope, architecture, modules, timetable requirements, automatic timetable generation/matching rules, double-period support, official visual theme, role permissions, and registration/management workflows.
 
 ---
 
@@ -735,7 +841,7 @@ The README defines the system scope, architecture, modules, timetable requiremen
 
 Possible future capabilities:
 
-- Advanced timetable auto-generation
+- Advanced timetable auto-generation and optimization
 - Detailed analytics
 - Notification system
 - Printable reports
