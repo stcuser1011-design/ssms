@@ -8,8 +8,9 @@
 
 ### User Roles
 
-- **Admin** — manages school settings, users, classes, subjects, timetable, attendance, examinations, reports, and notices.
-- **Teacher** — manages classes, attendance, assignments, marks, timetable, and student information.
+- **Admin** — manages school settings, users, teachers, classes, subjects, timetable, attendance, examinations, reports, notices, and system permissions.
+- **Secretary / Office Staff** — manages student and parent records, student admissions, parent accounts, and student-parent linking. This role reduces the administrative workload of managing a large student population.
+- **Teacher** — manages assigned classes, attendance, assignments, marks, timetable, and student information.
 - **Student** — views timetable, attendance, results, assignments, notices, and academic information.
 - **Parent** — monitors linked students, attendance, results, timetable, assignments, and notices.
 
@@ -39,8 +40,6 @@ The interface should feel like a modern school-management SaaS platform: profess
 - Avoid excessive neon effects
 - Prioritize usability over decoration
 
----
-
 ## 🎨 Official Color Palette
 
 | Purpose | Hex | Usage |
@@ -64,58 +63,30 @@ The interface should feel like a modern school-management SaaS platform: profess
     --primary: #2563EB;
     --primary-light: #3B82F6;
     --accent: #06B6DA;
-
     --success: #10B981;
     --warning: #F59E0B;
     --danger: #EF4444;
-
     --background: #F8FAFC;
     --surface: #FFFFFF;
-
     --text-primary: #0F172A;
     --text-secondary: #64748B;
     --border: #E2E8F0;
-
     --shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
-
     --radius-sm: 8px;
     --radius-md: 12px;
     --radius-lg: 16px;
 }
 ```
 
----
-
 ## ✍️ Typography
 
-### Primary Font
-
-**Inter** is the primary UI font for dashboards, tables, forms, navigation, and mobile interfaces.
-
-### Heading Option
-
-**Poppins** may be used for selected large headings or branding elements.
-
-### Recommended Hierarchy
-
-```text
-Page Title       → Inter / Poppins, SemiBold
-Section Heading  → Inter, SemiBold
-Card Heading     → Inter, SemiBold
-Body Text        → Inter, Regular
-UI Text          → Inter, Medium
-Small Text       → Inter, Regular
-```
-
-Keep typography consistent and avoid unnecessary font families.
-
----
+- **Inter** is the primary UI font.
+- **Poppins** may be used for selected headings or branding.
+- Keep typography consistent and readable.
 
 ## 🧊 Glassmorphism
 
-Glassmorphism must remain **subtle** and should not reduce readability.
-
-Recommended style:
+Glassmorphism must remain subtle and must not reduce readability.
 
 ```css
 .glass {
@@ -127,52 +98,13 @@ Recommended style:
 }
 ```
 
-Use glass effects mainly for:
-
-- Floating panels
-- Modals
-- Header elements
-- Important dashboard widgets
-- Login card
-- Selected navigation elements
-
-Do not apply heavy blur to every component.
-
----
+Use glass effects mainly for floating panels, modals, headers, important dashboard widgets, login cards, and selected navigation elements.
 
 ## 🧭 Navigation Theme
 
-### Desktop Sidebar
-
-The desktop sidebar uses a **deep blue/navy visual treatment** to separate navigation from the light workspace.
-
-Navigation items:
-
-- Dashboard
-- Students
-- Teachers
-- Classes
-- Timetable
-- Examinations
-- Attendance
-- Reports
-- Settings
-
-The SSMS logo and school branding should appear at the top, with school identity information optionally displayed at the bottom.
-
-### Active Navigation
-
-Use the primary blue treatment with strong contrast and rounded corners for the active item.
-
-### Mobile Navigation
-
-On small screens, transform the sidebar into a compact drawer or mobile navigation system.
-
----
+Desktop uses a deep blue/navy sidebar with Dashboard, Students, Teachers, Parents, Classes, Timetable, Examinations, Attendance, Reports, and Settings as appropriate to the logged-in role. Mobile uses a compact drawer/navigation system.
 
 ## 🖥️ Dashboard Theme
-
-The main dashboard uses:
 
 ```text
 Background → #F8FAFC
@@ -182,71 +114,13 @@ Text       → #0F172A
 Secondary  → #64748B
 ```
 
-### Header
-
-Recommended elements:
-
-- Search bar
-- Notifications
-- User profile
-- Role indicator
-- Date/time where useful
-
-### Welcome Area
-
-Example:
-
-```text
-Good Morning, Admin!
-Here's what's happening at your school today.
-```
-
-### Statistics Cards
-
-Recommended cards:
-
-- Total Students
-- Total Teachers
-- Total Classes
-- Today's Attendance
-
-Cards should use white surfaces, rounded corners, soft shadows, clear number hierarchy, and small colored icon circles.
-
----
-
-## 📊 Charts & Data Visualization
-
-Charts should be clean, simple, and readable.
-
-Use them for:
-
-- Attendance trends
-- Student statistics
-- Examination performance
-- Class distribution
-- Academic summaries
-
-Use the primary blue and status colors consistently. Avoid excessive gradients and unnecessary colors.
-
----
+Dashboards should provide clear statistics, search, notifications, profile information, role indicators, and useful quick actions.
 
 ## 📅 Timetable Theme
 
-The timetable is a major SSMS interface and should be highly readable.
-
-### Visual Rules
-
-- Clear time column
-- Day columns
-- Compact subject cards
-- Teacher/room information where necessary
-- Subtle subject indicators
-- Strong visual distinction for breaks
-- Responsive horizontal scrolling on small screens
+The timetable must be highly readable and responsive.
 
 ### Sri Lankan School Schedule
-
-The project timetable engine follows these requirements:
 
 - **8 periods per day**
 - **40 minutes per period**
@@ -256,141 +130,11 @@ The project timetable engine follows these requirements:
 - Interval: **10:30 AM – 10:50 AM**
 - School ends at **1:30 PM**
 
-The timetable system should prevent conflicts between teachers, classes, subjects, rooms/resources, and periods.
-
----
-
-## 🔐 Login Page Theme
-
-The login page should use a professional school-oriented design with a school/SSMS visual area and a clean login card.
-
-Recommended composition:
-
-```text
-┌─────────────────────────────────────────────┐
-│                                             │
-│  School Branding       ┌─────────────────┐  │
-│  / Background          │   Welcome Back  │  │
-│                        │                 │  │
-│                        │ Username/Email  │  │
-│                        │ Password        │  │
-│                        │                 │  │
-│                        │     Login       │  │
-│                        └─────────────────┘  │
-│                                             │
-└─────────────────────────────────────────────┘
-```
-
-The login card should use a white/glass surface, rounded corners, and a soft shadow.
-
-Primary login button: `#2563EB`.
-
----
-
-## 🧩 Component System
-
-### Buttons
-
-**Primary**
-- Background: `#2563EB`
-- Text: white
-- Hover: `#3B82F6`
-
-**Secondary**
-- White/light surface
-- Blue border/text
-- Subtle hover background
-
-**Success**
-- Background: `#10B981`
-
-**Warning**
-- Background: `#F59E0B`
-
-**Danger**
-- Background: `#EF4444`
-
-All buttons should have consistent height, spacing, typography, and rounded corners.
-
-### Form Controls
-
-Inputs/selects/textareas should use:
-
-- White background
-- `#E2E8F0` border
-- Rounded corners
-- Comfortable height
-- Clear labels
-- Primary blue focus state
-
-Recommended focus state:
-
-```css
-input:focus,
-select:focus,
-textarea:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
-}
-```
-
-### Status Badges
-
-| Status | Color |
-|---|---|
-| Active / Success | `#10B981` |
-| Pending | `#F59E0B` |
-| Inactive | `#64748B` |
-| Error | `#EF4444` |
-
-Status should not rely on color alone; use text or icons too.
-
----
-
-## 🪟 Cards & Surfaces
-
-Standard cards:
-
-```text
-Background: #FFFFFF
-Border:     #E2E8F0
-Radius:     12–16px
-Shadow:     Soft / low contrast
-Padding:    20–24px
-```
-
-Cards should have enough spacing to prevent a crowded interface.
-
----
+The timetable system should prevent teacher, class, subject, room/resource, and period conflicts.
 
 ## 📱 Responsive Design
 
-SSMS must be responsive from the beginning.
-
-### Desktop
-
-- Full sidebar
-- Multi-column dashboard
-- Full data tables
-- Full timetable view
-
-### Tablet
-
-- Compact sidebar
-- Reduced dashboard columns
-- Scrollable tables where necessary
-
-### Mobile
-
-- Collapsible navigation
-- Single-column cards
-- Mobile-friendly forms
-- Responsive timetable
-- Large touch targets
-- Compact header
-
-The mobile interface should feel like an application rather than a desktop page squeezed onto a phone.
+SSMS must support desktop, laptop, tablet, and mobile layouts. Tables, forms, dashboards, navigation, and timetable views must adapt without becoming difficult to use.
 
 ---
 
@@ -407,14 +151,40 @@ The mobile interface should feel like an application rather than a desktop page 
 
 ## Student Management
 
-- Student registration
-- Admission information
-- Student ID/reference number
-- Class assignment
-- Parent linking
+Students are managed by the **Secretary / Office Staff** role so the Admin does not need to manually handle thousands of student records.
+
+### Student Registration / Admission Flow
+
+1. Secretary opens **Students → Add Student**.
+2. Secretary enters the student's school/admission information.
+3. The system creates the student record and assigns the relevant academic year, grade, and class.
+4. The student receives a system account/activation method according to the school's chosen account policy.
+5. The student can later log in and access only their own academic information.
+
+### Student Information
+
+The student record can include:
+
+- Admission / Student Number
+- Full Name
+- Date of Birth
+- Gender where required by the school
+- Grade
+- Class / Section
+- Academic Year
+- Address
+- Parent/Guardian relationship
 - Student status
+- Admission information
 - Academic history
-- Search/filtering
+
+### Student Management Rules
+
+- Secretary can add, edit, search, filter, and manage student records.
+- Secretary can assign students to classes.
+- Secretary can link students to parent accounts.
+- Admin retains system-level authority and permissions.
+- Students cannot edit protected school/admission information themselves.
 
 ## Teacher Management
 
@@ -428,37 +198,16 @@ Teachers use a **pre-registration + self-completion** flow. A teacher cannot cre
 4. The pre-registration is stored with `PENDING` status.
 5. Admin securely shares the generated code with that teacher.
 
-Example:
-
-```text
-Teacher: Kamal Perera
-Secret Code: TCH-7K9P-X4Q2
-Status: PENDING
-```
-
 ### Teacher Registration
 
-On the Teacher Registration page, the teacher must first enter:
+The teacher first enters:
 
 - Pre-registered Full Name
 - Secret Registration Code
 
-SSMS must verify that **both values match the same pending pre-registration record**.
+SSMS verifies that both values match the **same PENDING pre-registration**. If successful, the remaining fields become available, such as email, phone, address, date of birth, qualification, username, and password. The verified pre-registered full name remains locked.
 
-If verification succeeds, the remaining teacher registration fields become available, for example:
-
-- Email
-- Phone number
-- Address
-- Date of birth
-- Qualification
-- Username
-- Password
-- Other approved profile information
-
-The verified pre-registered full name should remain locked so the registration cannot be transferred to another teacher name.
-
-### Registration Completion
+### Teacher Completion
 
 ```text
 Admin Pre-Registers Teacher
@@ -480,14 +229,82 @@ Pre-registration → REGISTERED
 Teacher Can Login
 ```
 
-The secret registration code should be **one-time use**. After successful registration it becomes invalid and cannot create another account. It should be securely generated and preferably stored as a hash. An optional expiry time may be supported.
+The teacher secret code is one-time use, securely generated, preferably stored as a hash, and optionally expiry-controlled.
+
+## Secretary / Office Staff Management
+
+The **Secretary / Office Staff** role is specifically designed for schools with a large number of students, such as 3000+ students. It separates daily student/parent data entry from system administration.
+
+### Secretary Responsibilities
+
+- Add new students
+- Edit student records
+- Search and filter students
+- Assign students to grades/classes/sections
+- Manage admission information
+- Add parent records
+- Edit parent contact information
+- Link parents to students
+- Support multiple children for one parent
+- View relevant student/parent reports
+
+### Secretary Restrictions
+
+The Secretary must not have unrestricted access to:
+
+- System settings
+- Role/permission administration
+- Admin account management
+- Teacher pre-registration
+- Timetable configuration unless explicitly permitted
+- Sensitive system configuration
+- Destructive changes to protected academic records
+
+All Secretary actions must be checked server-side by the authorization layer and recorded in the activity/audit log where appropriate.
 
 ## Parent Management
 
-- Parent profiles/accounts
-- Student-parent relationships
-- Multiple children support
-- Contact information
+Parent accounts are managed through the Secretary / Office Staff workflow rather than requiring the Admin to manually handle every parent.
+
+### Parent Registration / Account Creation Flow
+
+1. Secretary opens **Parents → Add Parent**.
+2. Secretary enters the parent's basic information.
+3. Secretary creates or activates the parent account according to the school's account policy.
+4. Secretary links the parent to one or more existing student records.
+5. The parent can log in and see only their linked children.
+
+### Parent ↔ Student Linking
+
+The system must support one parent linked to multiple children and, where the school requires it, multiple parents/guardians linked to the same student.
+
+```text
+Parent Account
+      │
+      ├── Student A — Grade 10A
+      ├── Student B — Grade 7B
+      └── Student C — Grade 5C
+```
+
+The relationship is stored separately so adding another child does not require creating another parent account.
+
+### Parent Information
+
+- Full Name
+- Relationship to student
+- Phone number
+- Email where available
+- Address
+- Parent/guardian status
+- Linked student records
+- Account status
+
+### Parent Access Rules
+
+- Parent can view only linked children's information.
+- Parent cannot edit protected academic records.
+- Parent cannot view unrelated students.
+- Multiple-child support is required.
 
 ## Class & Subject Management
 
@@ -537,6 +354,7 @@ The secret registration code should be **one-time use**. After successful regist
 - Examination/result reports
 - Class reports
 - Teacher reports
+- Parent/student reports
 - Timetable reports
 - Academic summaries
 
@@ -579,7 +397,7 @@ Apache / PHP
 | Web Server | Apache |
 | Development | XAMPP / WampServer |
 
-No frontend framework or PHP framework is required for the planned core system.
+No frontend or PHP framework is required for the planned core system.
 
 ---
 
@@ -597,10 +415,12 @@ Planned protections:
 - Secure file handling if uploads are introduced
 - Login protections where appropriate
 - Never expose database credentials to frontend code
-- Secure generation and storage of teacher secret registration codes
-- Teacher registration codes must be single-use
-- Teacher registration must verify both full name and secret code
-- A registration code must never grant access to another teacher's account
+- Audit important Secretary actions
+- Prevent Secretary access to Admin-only functions
+- Prevent students/parents from accessing unrelated records
+- Prevent IDOR-style access to another student's data
+
+Teacher registration codes must be securely generated, preferably hashed, single-use, and invalidated after successful registration.
 
 ---
 
@@ -694,9 +514,10 @@ This structure is a plan and may evolve during implementation.
 - [x] Define technology stack
 - [x] Define timetable requirements
 - [x] Define official UI theme
+- [x] Confirm scalable Student/Parent management through Secretary / Office Staff
+- [x] Confirm Teacher pre-registration workflow
 - [ ] Finalize database ERD
 - [ ] Finalize permission matrix
-- [ ] Finalize teacher pre-registration and secret-code workflow
 
 ### Phase 2 — Foundation
 
@@ -709,12 +530,14 @@ This structure is a plan and may evolve during implementation.
 
 ### Phase 3 — Authentication
 
-- [ ] Login
-- [ ] Logout
+- [ ] Login/logout
 - [ ] Password hashing
 - [ ] Session handling
 - [ ] Role-based authorization
 - [ ] Teacher registration verification flow
+- [ ] Secretary authentication and permissions
+- [ ] Student authentication
+- [ ] Parent authentication
 
 ### Phase 4 — School Management
 
@@ -722,9 +545,11 @@ This structure is a plan and may evolve during implementation.
 - [ ] Students
 - [ ] Teachers
 - [ ] Parents
+- [ ] Secretary / Office Staff
 - [ ] Classes
 - [ ] Subjects
 - [ ] Academic years/terms
+- [ ] Student-parent linking
 
 ### Phase 5 — Academic Modules
 
@@ -748,7 +573,7 @@ This structure is a plan and may evolve during implementation.
 - [ ] Security testing
 - [ ] Functional testing
 - [ ] Database integrity testing
-- [ ] Performance testing
+- [ ] Performance testing with large student datasets
 - [ ] Deployment documentation
 - [ ] Backup/restore documentation
 
@@ -756,33 +581,17 @@ This structure is a plan and may evolve during implementation.
 
 # 🌐 Deployment Concept
 
-### Local Development
+SSMS should work on a school local network as well as a properly configured server deployment.
 
 ```text
-Windows
+Users
   ↓
-XAMPP / WampServer
+Apache
   ↓
-Apache + PHP + MariaDB
+PHP SSMS Application
   ↓
-SSMS
+MariaDB/MySQL
 ```
-
-### Server
-
-```text
-Internet / LAN
-      ↓
-    Apache
-      ↓
-     PHP
-      ↓
-   SSMS App
-      ↓
- MariaDB/MySQL
-```
-
-SSMS should also be usable on a school local network when internet access is unavailable.
 
 ---
 
@@ -792,7 +601,7 @@ SSMS should also be usable on a school local network when internet access is una
 
 This repository is currently the central planning and design document for SSMS. The application itself has not been built yet.
 
-The README defines the system scope, architecture, modules, timetable requirements, registration workflows, and official visual theme that should guide future development.
+The README defines the system scope, architecture, modules, timetable requirements, official visual theme, role permissions, and registration/management workflows.
 
 ---
 
