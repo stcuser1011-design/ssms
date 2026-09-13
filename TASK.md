@@ -48,6 +48,12 @@
 - [ ] Define Parent One-Time Registration Code generation, expiry, and claim rules
 - [ ] Define first-child parent registration flow
 - [ ] Define additional-child linking flow from the Parent Dashboard
+- [ ] Define School Administration requirements
+- [ ] Define School Calendar and Event requirements
+- [ ] Define Library requirements
+- [ ] Define Advanced Dashboard and Analytics requirements
+- [ ] Define Alumni requirements
+- [ ] Define Global Search requirements
 
 ## 1.2 Permission Matrix
 
@@ -69,6 +75,13 @@
 - [ ] Define who can manually correct parent ↔ student links
 - [ ] Define who can change student status to `COMPLETED` / `LEFT`
 - [ ] Define who can delete/archive achievement and certificate records
+- [ ] Define School Administration permissions
+- [ ] Define Event creation/publishing permissions
+- [ ] Define Library administrator/librarian permissions
+- [ ] Define Library student/teacher borrowing permissions
+- [ ] Define Analytics visibility by role
+- [ ] Define Alumni access permissions
+- [ ] Define Global Search result permissions
 
 ## 1.3 Database Design
 
@@ -96,6 +109,18 @@
 - [ ] Design `student_exit_records` / leaving-completion records
 - [ ] Design report/reference-number generation for student exit reports
 - [ ] Design secure student-document storage metadata
+- [ ] Design school administration/settings records
+- [ ] Design school calendar records
+- [ ] Design school event records
+- [ ] Design staff leave records
+- [ ] Design staff attendance records
+- [ ] Design duty roster records
+- [ ] Design library books and book copies
+- [ ] Design library members
+- [ ] Design library issue/return/renewal transactions
+- [ ] Design overdue/lost/damaged library states
+- [ ] Design alumni records linked to archived students
+- [ ] Design global search indexes/query strategy
 - [ ] Prepare migration SQL
 - [ ] Prepare seed/demo data
 
@@ -126,6 +151,12 @@
 - [ ] Define table/list patterns
 - [ ] Define empty/loading/error states
 - [ ] Define confirmation dialogs
+- [ ] Define School Administration screens
+- [ ] Define School Calendar/Event screens
+- [ ] Define Library screens and borrowing flows
+- [ ] Define Advanced Analytics dashboard layouts by role
+- [ ] Define Alumni directory/profile screens
+- [ ] Define Global Search UI and result grouping
 
 ---
 
@@ -166,6 +197,12 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Certificate/document preview components
 - [ ] Student profile timeline/history components
 - [ ] Report preview/download controls
+- [ ] Calendar/event components
+- [ ] Library book/copy status components
+- [ ] Borrowing transaction components
+- [ ] Analytics chart/statistic components
+- [ ] Alumni profile/directory components
+- [ ] Global search result components
 
 ## 2.4 Glassmorphism Rules
 
@@ -187,6 +224,11 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Responsive Student Profile
 - [ ] Responsive achievement/certificate lists
 - [ ] Responsive report preview
+- [ ] Responsive calendar/events
+- [ ] Responsive library catalogue/borrowing screens
+- [ ] Responsive analytics dashboards
+- [ ] Responsive alumni directory
+- [ ] Responsive global search
 
 ---
 
@@ -225,6 +267,12 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Define O/L and A/L history routes
 - [ ] Define Student Leaving / Completion routes
 - [ ] Define Report routes
+- [ ] Define School Administration routes
+- [ ] Define School Calendar/Event routes
+- [ ] Define Library routes
+- [ ] Define Analytics routes
+- [ ] Define Alumni routes
+- [ ] Define Global Search routes/API endpoints
 - [ ] Define API/AJAX routes if needed
 - [ ] Add route protection
 
@@ -255,6 +303,13 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Notice controller
 - [ ] Report controller
 - [ ] Settings controller
+- [ ] School Administration controller
+- [ ] School Calendar/Event controller
+- [ ] Library controller
+- [ ] Library transaction controller
+- [ ] Analytics controller
+- [ ] Alumni controller
+- [ ] Global Search controller
 
 ## 4.3 Services
 
@@ -275,6 +330,14 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Class, Subject, Timetable services
 - [ ] Attendance, Examination, Result services
 - [ ] Assignment, Notice, Report services
+- [ ] School Administration service
+- [ ] School Calendar/Event service
+- [ ] Staff leave/attendance/duty service
+- [ ] Library catalogue service
+- [ ] Library borrowing/return service
+- [ ] Analytics service
+- [ ] Alumni service
+- [ ] Global Search service
 - [ ] Notification service if required
 
 ---
@@ -308,6 +371,13 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Require permission checks for historical O/L/A/L record changes
 - [ ] Require permission checks for Student Leaving / Completion status changes
 - [ ] Require permission checks for report generation and sensitive report downloads
+- [ ] Require permission checks for School Administration settings
+- [ ] Require permission checks for event creation/edit/delete/publish
+- [ ] Require permission checks for library catalogue administration
+- [ ] Require permission checks for issue/return/renewal transactions
+- [ ] Require permission checks for alumni records
+- [ ] Apply record-level authorization to Global Search results
+- [ ] Apply role-aware filtering to Analytics data
 
 ## 5.3 Security Hardening
 
@@ -331,6 +401,11 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Prevent executable uploads
 - [ ] Store private student documents outside executable public paths where possible
 - [ ] Permission-check every private document download
+- [ ] Validate library/imported metadata before storage
+- [ ] Protect library transaction records from unauthorized edits
+- [ ] Protect alumni data according to retention/privacy rules
+- [ ] Ensure search cannot reveal unauthorized records through autocomplete/results
+- [ ] Ensure analytics cannot leak individual student data to unauthorized roles
 
 ---
 
@@ -350,7 +425,12 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Timetable/Examinations/Attendance/Assignments/Notices/Reports/Settings navigation
 - [ ] Secretary-specific Students and Parents navigation
 - [ ] Secretary-specific Student Profile management navigation
-- [ ] Global search UI
+- [ ] School Administration navigation for authorized Admin users
+- [ ] Events/Calendar navigation according to permissions
+- [ ] Library navigation according to permissions
+- [ ] Alumni navigation according to permissions
+- [ ] Global Search UI
+- [ ] Global search keyboard shortcut where appropriate
 - [ ] Parent Dashboard child selector
 - [ ] Parent Dashboard **Add Child** action
 - [ ] Toasts, loading states, form errors, confirmations
@@ -634,36 +714,6 @@ Use the approved SSMS blue/white visual direction.
 - [ ] Prevent the same code from being used again
 - [ ] Send the parent to the Parent Dashboard after successful registration
 
-### Parent Registration Flow
-
-```text
-Secretary Adds Student
-          ↓
-Student Record Created
-          ↓
-System Generates Student Code
-          ↓
-System Generates One-Time Parent Code
-          ↓
-Secretary Gives Both Codes to Parent
-          ↓
-Parent Registration
-          ↓
-Enter Student Code + One-Time Parent Code
-          ↓
-SSMS Verifies Matching Student + Unused Code
-          ↓
-Parent Completes Account Information
-          ↓
-Parent Account Created
-          ↓
-Child Automatically Linked
-          ↓
-One-Time Code Invalidated
-          ↓
-Parent Dashboard
-```
-
 ### Parent ↔ Student Linking
 
 - [ ] Use `parent_student_links` as the relationship table
@@ -785,6 +835,23 @@ Parent Dashboard
 - [ ] Ensure students can view their own permitted portfolio
 - [ ] Ensure parents can view only linked children's permitted portfolio
 - [ ] Ensure Office Staff/Admin write permissions are server-side enforced
+
+## 7.10 School Administration
+
+- [ ] Create School Profile/settings model
+- [ ] Store school name, address, contact details, logo, and official identity
+- [ ] Configure active academic year and terms
+- [ ] Manage grade/class/section organization
+- [ ] Create school calendar
+- [ ] Manage public holidays
+- [ ] Manage special school days
+- [ ] Create staff directory
+- [ ] Add staff leave management
+- [ ] Add staff attendance management
+- [ ] Add duty roster management
+- [ ] Configure administrative settings
+- [ ] Use school identity in formal reports/certificates
+- [ ] Restrict administrative settings to authorized roles
 
 ---
 
@@ -942,6 +1009,8 @@ PUBLISH
 - [ ] Class attendance statistics
 - [ ] Parent and Student attendance views
 - [ ] Include attendance summary in authorized Student Leaving / Completion Report
+- [ ] Staff attendance management where enabled
+- [ ] Staff attendance reports where enabled
 
 ---
 
@@ -1028,6 +1097,10 @@ PUBLISH
 - [ ] Attendance chart and quick actions
 - [ ] Achievement/certificate overview where useful
 - [ ] Student leaving/completion statistics where useful
+- [ ] School events/upcoming calendar overview
+- [ ] Library overview where useful
+- [ ] Advanced analytics widgets
+- [ ] Pending administrative tasks
 
 ## Secretary / Office Staff
 - [ ] Total students
@@ -1043,6 +1116,9 @@ PUBLISH
 - [ ] Achievement/certificate quick actions
 - [ ] O/L/A/L historical-result quick actions where permitted
 - [ ] Student leaving/completion quick actions
+- [ ] Admissions analytics
+- [ ] Pending student-record tasks
+- [ ] Event/calendar quick view where permitted
 
 ## Teacher
 - [ ] Today's classes
@@ -1050,6 +1126,9 @@ PUBLISH
 - [ ] Attendance shortcut
 - [ ] Pending assignments
 - [ ] Notices and student overview
+- [ ] Personal workload summary
+- [ ] Relevant school events
+- [ ] Library borrowing status where permitted
 
 ## Student
 - [ ] Today's timetable
@@ -1060,6 +1139,8 @@ PUBLISH
 - [ ] Achievements
 - [ ] Certificates
 - [ ] Academic history where permitted
+- [ ] Upcoming school events
+- [ ] Personal library borrowing status where enabled
 
 ## Parent
 - [ ] Linked children
@@ -1073,6 +1154,7 @@ PUBLISH
 - [ ] Assignments for selected child
 - [ ] Notices for selected child where applicable
 - [ ] Achievements/certificates for selected child where permitted
+- [ ] Upcoming relevant school events
 - [ ] Clear success/error feedback when adding a child
 
 ---
@@ -1095,6 +1177,29 @@ PUBLISH
 - [ ] Debounced live search
 - [ ] No-result states
 - [ ] Parent child selector/search behavior where needed
+
+### Global Search Expansion
+
+- [ ] Search Teacher names
+- [ ] Search Parent names
+- [ ] Search Class/Section
+- [ ] Search Subject
+- [ ] Search Achievement title/event
+- [ ] Search Certificate title/reference
+- [ ] Search authorized examination/result records
+- [ ] Search authorized Library records
+- [ ] Search School Events
+- [ ] Group results by module/type
+- [ ] Exact-match priority for Student Code and Admission Number
+- [ ] Partial/fuzzy-friendly matching where appropriate
+- [ ] Search filters by module
+- [ ] Search filters by class/grade/year/date where appropriate
+- [ ] Keyboard-friendly result navigation
+- [ ] Mobile-friendly search interface
+- [ ] Permission-filter every result
+- [ ] Prevent search autocomplete from revealing unauthorized data
+- [ ] Add indexes for frequent search fields
+- [ ] Add search performance monitoring where useful
 
 ---
 
@@ -1119,6 +1224,13 @@ PUBLISH
 - [ ] CSV export where useful
 - [ ] PDF export if required later
 - [ ] Unique report/reference number for formal Student Leaving / Completion Reports
+- [ ] School administration reports
+- [ ] School event reports
+- [ ] Library inventory report
+- [ ] Library borrowing/overdue reports
+- [ ] Staff leave/attendance reports
+- [ ] Alumni reports
+- [ ] Analytics summary/export reports where appropriate
 
 ---
 
@@ -1141,6 +1253,13 @@ PUBLISH
 - [ ] Dark mode if implemented
 - [ ] Maintenance settings
 - [ ] Parent registration-code expiry/reissue settings if configurable
+- [ ] School calendar settings
+- [ ] Event category settings
+- [ ] Library settings
+- [ ] Library borrowing limits
+- [ ] Library due-date/renewal rules
+- [ ] Alumni settings
+- [ ] Search configuration where needed
 
 ---
 
@@ -1156,6 +1275,9 @@ PUBLISH
 - [ ] Attendance notifications if required
 - [ ] Optional notification when a parent successfully links a new child
 - [ ] Optional notification when an achievement/certificate is added if school policy requires it
+- [ ] Optional event reminders
+- [ ] Optional overdue library reminders
+- [ ] Optional alumni communication notifications where enabled
 
 Email/SMS/push notifications are optional future extensions and should not block the core system.
 
@@ -1177,6 +1299,7 @@ Email/SMS/push notifications are optional future extensions and should not block
 - [ ] Student achievement supporting documents
 - [ ] O/L/A/L supporting result documents where permitted
 - [ ] Student Leaving / Completion supporting documents where permitted
+- [ ] Event attachments where permitted
 - [ ] Keep private student documents access-controlled
 - [ ] Log sensitive document uploads/replacements/deletions
 
@@ -1205,6 +1328,12 @@ Email/SMS/push notifications are optional future extensions and should not block
 - [ ] Timetable changes
 - [ ] Notice changes
 - [ ] Parent ↔ student relationship changes
+- [ ] School Administration setting changes
+- [ ] School Event create/update/delete/publish events
+- [ ] Library book/copy changes
+- [ ] Library issue/return/renewal changes
+- [ ] Alumni record changes
+- [ ] Sensitive search/access events where required
 - [ ] Record who performed the action
 - [ ] Record timestamp
 - [ ] Restrict audit log access
@@ -1224,6 +1353,11 @@ Email/SMS/push notifications are optional future extensions and should not block
 - [ ] Test large certificate/document lists
 - [ ] Cache appropriate read-heavy data if required
 - [ ] Optimize dashboard statistics
+- [ ] Optimize calendar/event queries
+- [ ] Optimize library catalogue and transaction queries
+- [ ] Optimize global search across modules
+- [ ] Optimize analytics queries
+- [ ] Test alumni search with large archived datasets
 
 ---
 
@@ -1241,6 +1375,11 @@ Email/SMS/push notifications are optional future extensions and should not block
 - [ ] Accessible Student Profile
 - [ ] Accessible achievement/certificate controls
 - [ ] Accessible report preview/download controls
+- [ ] Accessible School Calendar/Event controls
+- [ ] Accessible Library catalogue and transaction controls
+- [ ] Accessible analytics charts with text summaries
+- [ ] Accessible Alumni directory/profile controls
+- [ ] Accessible Global Search results and keyboard navigation
 
 ---
 
@@ -1362,6 +1501,97 @@ Email/SMS/push notifications are optional future extensions and should not block
 - [ ] Secretary cannot bypass protected academic permissions
 - [ ] Secretary actions appear in audit logs
 
+## School Administration
+
+- [ ] School profile creation/editing tests
+- [ ] School identity appears correctly in reports
+- [ ] Academic year/term administration tests
+- [ ] School calendar tests
+- [ ] Public holiday tests
+- [ ] Staff directory tests
+- [ ] Staff leave tests
+- [ ] Staff attendance tests
+- [ ] Duty roster tests
+- [ ] Admin-only settings authorization tests
+- [ ] Verify Secretary cannot access restricted administration settings
+
+## School Events & Calendar
+
+- [ ] Event creation tests
+- [ ] Event editing tests
+- [ ] Event deletion/archive tests
+- [ ] Event publish/unpublish tests
+- [ ] Date/time validation tests
+- [ ] Event audience targeting tests
+- [ ] Student/Parent/Teacher visibility tests
+- [ ] Calendar display tests
+- [ ] Event attachment security tests where enabled
+- [ ] Event audit logging tests
+
+## Library
+
+- [ ] Book creation/edit/archive tests
+- [ ] Multiple-copy tracking tests
+- [ ] Barcode/reference uniqueness tests
+- [ ] Book search/filter tests
+- [ ] Student member tests
+- [ ] Teacher/staff member tests
+- [ ] Book issue tests
+- [ ] Due-date tests
+- [ ] Book return tests
+- [ ] Renewal tests where enabled
+- [ ] Overdue detection tests
+- [ ] Lost/damaged state tests
+- [ ] Borrowing history tests
+- [ ] Borrowing-limit tests where configured
+- [ ] Library permission tests
+- [ ] Library privacy tests
+- [ ] Library report tests
+
+## Analytics
+
+- [ ] Admin analytics correctness tests
+- [ ] Secretary analytics correctness tests
+- [ ] Teacher analytics correctness tests
+- [ ] Student analytics scope tests
+- [ ] Parent linked-child analytics scope tests
+- [ ] Verify analytics do not expose unrelated student data
+- [ ] Analytics performance tests
+- [ ] Dashboard widget loading/error tests
+
+## Alumni
+
+- [ ] Alumni creation from completed/left student tests
+- [ ] Verify original student record remains preserved
+- [ ] Alumni status tests
+- [ ] Alumni academic-history preservation tests
+- [ ] Alumni O/L/A/L history visibility tests
+- [ ] Alumni achievement/certificate history tests
+- [ ] Alumni search/filter tests
+- [ ] Alumni privacy/access-control tests
+- [ ] Alumni report tests
+
+## Global Search
+
+- [ ] Student Code search tests
+- [ ] Admission Number search tests
+- [ ] Student name search tests
+- [ ] Teacher name search tests
+- [ ] Parent name search tests
+- [ ] Class/Subject search tests
+- [ ] Achievement/Certificate search tests
+- [ ] Authorized Examination/Result search tests
+- [ ] Authorized Library search tests
+- [ ] School Event search tests
+- [ ] Exact-match priority tests
+- [ ] Partial-match tests
+- [ ] Filter/sort/pagination tests
+- [ ] Debounced search tests
+- [ ] No-result tests
+- [ ] Unauthorized-result filtering tests
+- [ ] Global Search IDOR tests
+- [ ] Search performance tests with 3000+ students
+
 ## System Testing
 
 - [ ] Timetable conflict tests
@@ -1380,6 +1610,7 @@ Email/SMS/push notifications are optional future extensions and should not block
 - [ ] Report tests
 - [ ] Security regression tests
 - [ ] Responsive/mobile tests
+- [ ] Cross-module integration tests
 
 ---
 
@@ -1398,6 +1629,10 @@ Email/SMS/push notifications are optional future extensions and should not block
 - [ ] Backup strategy
 - [ ] Restore procedure
 - [ ] Production error logging
+- [ ] School event/calendar production configuration
+- [ ] Library storage/configuration
+- [ ] Alumni data retention configuration
+- [ ] Search/analytics performance configuration
 
 ---
 
@@ -1426,6 +1661,15 @@ Email/SMS/push notifications are optional future extensions and should not block
 - [ ] Examination/result guide
 - [ ] Backup/restore guide
 - [ ] Security notes
+- [ ] School Administration guide
+- [ ] School Calendar & Events guide
+- [ ] Library administrator/librarian guide
+- [ ] Library student/teacher usage guide
+- [ ] Dashboard & Analytics guide
+- [ ] Alumni management guide
+- [ ] Global Search guide
+- [ ] New-module permission matrix documentation
+- [ ] Cross-module data/privacy documentation
 
 ---
 
@@ -1466,6 +1710,13 @@ Email/SMS/push notifications are optional future extensions and should not block
 - [ ] Assignments verified
 - [ ] Notices verified
 - [ ] Reports verified
+- [ ] School Administration verified
+- [ ] School Calendar/Event system verified
+- [ ] Library module verified
+- [ ] Advanced Dashboard/Analytics verified
+- [ ] Global Search verified
+- [ ] Alumni module verified
+- [ ] Cross-module authorization verified
 - [ ] Security checks passed
 - [ ] Mobile/responsive checks passed
 - [ ] Documentation completed
@@ -1483,6 +1734,8 @@ DATABASE + ARCHITECTURE
 PROJECT FOUNDATION
   ↓
 AUTH + SECURITY + ROLES
+  ↓
+SCHOOL ADMINISTRATION
   ↓
 SHARED UI + NAVIGATION
   ↓
@@ -1510,19 +1763,25 @@ ATTENDANCE
   ↓
 EXAMS + RESULTS
   ↓
-STUDENT LEAVING / COMPLETION REPORTS
+STUDENT LEAVING / COMPLETION
   ↓
-ASSIGNMENTS
+ASSIGNMENTS + NOTICES
   ↓
-NOTICES
+SCHOOL EVENTS + CALENDAR
   ↓
-DASHBOARDS
+LIBRARY
   ↓
-SEARCH + REPORTS
+REPORTS + DOCUMENT GENERATION
   ↓
-SETTINGS + NOTIFICATIONS
+ADVANCED DASHBOARD + ANALYTICS
   ↓
-TESTING + SECURITY
+GLOBAL SEARCH
+  ↓
+ALUMNI
+  ↓
+CROSS-MODULE INTEGRATION
+  ↓
+TESTING + SECURITY + PERFORMANCE
   ↓
 DEPLOYMENT + DOCUMENTATION
   ↓
@@ -1556,3 +1815,5 @@ The task file is the master implementation checklist. Student and Parent managem
 The confirmed Parent registration architecture uses a **Student Code + One-Time Parent Registration Code**. The first successful parent registration automatically links the child to the newly created parent account. After login, the Parent Dashboard provides **+ Add Child**, where the parent enters the next child's Student Code + One-Time Parent Registration Code and the system automatically adds that child to the same parent account. The design supports 2nd, 3rd, 4th, and additional children without creating duplicate parent accounts or imposing an artificial child-count limit.
 
 The confirmed Student Profile architecture now preserves a student's long-term school history, including **achievements, certificates, historical examination records, G.C.E. O/L results, G.C.E. A/L results, and Student Leaving / School Completion information**. Authorized Office Staff can maintain permitted profile/history records, while protected live academic workflows remain controlled by their designated permissions. All sensitive changes must be authorization-checked and auditable.
+
+The approved full-system expansion now also includes **School Administration, School Calendar & Events, Library Management, Advanced Dashboard & Analytics, Alumni Management, and Global Search & Advanced Data Discovery**. These modules are part of the planned SSMS scope and must follow the same blue/white, subtle-glassmorphism design language, role-based authorization, audit requirements, responsive UX, and performance expectations as the existing system.
