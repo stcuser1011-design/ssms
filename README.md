@@ -574,17 +574,6 @@ The Parent Dashboard should provide a clear child selector or child cards. After
 - Certificates
 - Other permitted academic information
 
-Example:
-
-```text
-Parent Account
-      │
-      ├── Student A — Grade 10A
-      ├── Student B — Grade 7B
-      ├── Student C — Grade 5C
-      └── Student D — Grade 3A
-```
-
 ### Parent ↔ Student Linking Rules
 
 - One parent account can be linked to multiple children.
@@ -722,6 +711,153 @@ The report should be printable and suitable for later PDF export. Archived stude
 - Parent/student reports
 - Timetable reports
 - Academic summaries
+
+---
+
+# 🏫 Additional Approved SSMS Modules
+
+The following modules are now part of the planned full SSMS scope. Existing modules are not duplicated; these sections define the additional capabilities approved for the system.
+
+## 1. School Administration
+
+SSMS should provide centralized school administration tools for authorized Admin users, including:
+
+- School profile, name, contact information, logo, and official details
+- Academic years and terms
+- Grades, classes, sections, and class organization
+- School calendar
+- Public holidays and special school days
+- Staff directory
+- Staff leave management
+- Staff attendance management
+- Staff duty roster and assigned duties
+- School-wide administrative settings
+- Configurable school information used in reports and certificates
+
+Administrative controls must remain protected by role and permission checks.
+
+## 11. School Events & Calendar
+
+SSMS should provide a school events system integrated with the school calendar.
+
+Supported events can include:
+
+- Sports meets
+- Prize giving ceremonies
+- Parent meetings
+- School trips
+- Competitions
+- Workshops and seminars
+- Clubs and society events
+- School functions
+- Examination-related dates
+- Other configured school events
+
+Events should support title, description, date/time, location, target audience, organizer, status, and optional attachments. Authorized users can publish or update events, while students, parents, teachers, and staff see only events relevant to them.
+
+## 14. Library Management
+
+SSMS should include a complete school library module.
+
+Core capabilities:
+
+- Book catalogue
+- Book title, author, ISBN/reference, category, publisher, and edition information
+- Multiple physical copies of the same title
+- Copy/barcode/reference tracking
+- Student and teacher library members
+- Book issue/checkout
+- Book return
+- Due dates
+- Renewal where permitted
+- Overdue tracking
+- Lost/damaged status
+- Borrowing history
+- Search and filtering
+- Library availability status
+- Library reports and statistics
+
+Library access must be permission-controlled, and student/teacher borrowing history should be visible only to authorized users and the relevant account holder where applicable.
+
+## 20. Advanced Dashboard & Analytics
+
+SSMS dashboards should provide role-specific analytics rather than only static counters.
+
+Admin analytics can include:
+
+- Total students, teachers, parents, and classes
+- Student distribution by grade/class
+- Daily/monthly attendance trends
+- Examination performance summaries
+- Upcoming examinations and events
+- Recent achievements and certificates
+- Student leaving/completion statistics
+- Recent system activity
+- Data-quality or pending-action indicators
+
+Secretary dashboards can focus on admissions, student records, parent links, pending data tasks, and profile updates. Teacher dashboards can focus on teaching workload, attendance, assignments, and results. Student and Parent dashboards should show useful personal/linked-child summaries.
+
+Analytics must respect role permissions and must not expose unrelated student data.
+
+## 22. Alumni Management
+
+Students who complete or leave the school can optionally transition into an Alumni record without deleting their historical school data.
+
+Alumni capabilities can include:
+
+- Alumni profile created from the archived student record
+- Leaving/completion year
+- Admission and school history
+- Final grade/class
+- Academic history
+- O/L and A/L results where permitted
+- Achievements and activities
+- Certificate history
+- Alumni status
+- Contact information where the school chooses to maintain it
+- Alumni search and directory
+- Alumni reports
+
+The alumni system must preserve the original student record and follow the school's retention and privacy policies.
+
+## 24. Global Search & Advanced Data Discovery
+
+SSMS should provide a fast, permission-aware global search experience.
+
+Search targets can include:
+
+- Student Code
+- Admission Number
+- Student name
+- Teacher name
+- Parent name
+- Class/section
+- Subject
+- Achievement title/event
+- Certificate title/reference
+- Examination/result records where authorized
+- Library records where authorized
+- School events
+
+Search results must be filtered by the authenticated user's permissions. A search result must never become a way to bypass normal record-level authorization.
+
+The search system should support:
+
+- Debounced live search
+- Exact and partial matching
+- Filters
+- Sorting
+- Pagination
+- No-result states
+- Keyboard-friendly navigation
+- Mobile-friendly search
+- Fast database indexes for common search fields
+
+---
+
+# 🧩 Full SSMS Scope Expansion
+
+The full planned SSMS system now includes the existing core academic, student, parent, teacher, timetable, attendance, examination, assignment, notice, achievement/certificate, reporting, security, and audit modules plus the newly approved School Administration, School Events, Library, Advanced Analytics, Alumni, and Global Search capabilities.
 
 ---
 
@@ -958,6 +1094,12 @@ This structure is a plan and may evolve during implementation.
 - [x] Confirm O/L and A/L historical result records
 - [x] Confirm Student Leaving / Completion Report workflow
 - [x] Confirm Office Staff student-profile management permissions
+- [x] Approve School Administration module
+- [x] Approve School Events & Calendar module
+- [x] Approve Library Management module
+- [x] Approve Advanced Dashboard & Analytics module
+- [x] Approve Alumni Management module
+- [x] Approve Global Search & Advanced Data Discovery module
 - [ ] Finalize database ERD
 - [ ] Finalize permission matrix
 
@@ -1001,6 +1143,14 @@ This structure is a plan and may evolve during implementation.
 - [ ] Student achievements and certificates
 - [ ] Historical O/L and A/L results
 - [ ] Student leaving/completion records
+- [ ] School Administration
+- [ ] School profile and official school identity
+- [ ] School calendar
+- [ ] Public holiday management
+- [ ] Staff directory
+- [ ] Staff leave management
+- [ ] Staff attendance management
+- [ ] Staff duty roster
 
 ### Phase 5 — Academic Modules
 
@@ -1013,19 +1163,48 @@ This structure is a plan and may evolve during implementation.
 - [ ] Assignments
 - [ ] Notices
 
-### Phase 6 — Reports & UX
+### Phase 6 — School Services
+
+- [ ] School Events & Calendar
+- [ ] Event creation/editing/publishing
+- [ ] Event audience targeting
+- [ ] Event calendar view
+- [ ] Library catalogue
+- [ ] Library book-copy tracking
+- [ ] Library issue/return
+- [ ] Library overdue tracking
+- [ ] Library borrowing history
+- [ ] Library reports
+
+### Phase 7 — Reports, Analytics & UX
 
 - [ ] Student profile reports
 - [ ] Achievement/certificate reports
 - [ ] O/L and A/L result reports
 - [ ] Student Leaving / School Completion Report
-- [ ] Reports
-- [ ] Search/filtering
+- [ ] Printable reports
 - [ ] Dashboard statistics
+- [ ] Advanced role-specific analytics
+- [ ] Attendance/examination trend analytics
+- [ ] Admissions and pending-task analytics
 - [ ] Responsive improvements
 - [ ] Accessibility improvements
 
-### Phase 7 — Testing & Deployment
+### Phase 8 — Search & Alumni
+
+- [ ] Global Search service
+- [ ] Permission-aware search across approved modules
+- [ ] Student/Teacher/Parent/Class/Subject search
+- [ ] Achievement/Certificate search
+- [ ] Examination/Library/Event search where authorized
+- [ ] Search filters/sorting/pagination
+- [ ] Debounced live search
+- [ ] Alumni record lifecycle
+- [ ] Alumni directory
+- [ ] Alumni search/filter
+- [ ] Alumni reports
+
+### Phase 9 — Testing & Deployment
 
 - [ ] Security testing
 - [ ] Functional testing
@@ -1039,6 +1218,13 @@ This structure is a plan and may evolve during implementation.
 - [ ] Student leaving/completion report testing
 - [ ] Automatic timetable generation testing
 - [ ] Timetable conflict and double-period testing
+- [ ] School Administration permission testing
+- [ ] Events/calendar visibility testing
+- [ ] Library issue/return/overdue testing
+- [ ] Analytics data-scope and performance testing
+- [ ] Alumni archive/privacy testing
+- [ ] Global Search authorization/IDOR/performance testing
+- [ ] Cross-module integration testing
 - [ ] Deployment documentation
 - [ ] Backup/restore documentation
 
@@ -1066,7 +1252,7 @@ MariaDB/MySQL
 
 This repository is currently the central planning and design document for SSMS. The application itself has not been built yet.
 
-The README defines the system scope, architecture, modules, timetable requirements, automatic timetable matching, official visual theme, role permissions, Office Staff workflows, student achievements/certificates, O/L/A/L historical results, and student leaving/completion reporting.
+The README defines the system scope, architecture, modules, timetable requirements, automatic timetable matching, official visual theme, role permissions, Office Staff workflows, student achievements/certificates, O/L/A/L historical results, student leaving/completion reporting, School Administration, School Events, Library, Advanced Analytics, Alumni, and Global Search.
 
 ---
 
